@@ -1,6 +1,14 @@
 {
   "name": "point-of-sale",
   "version": "0.1.0",
+  "author": {
+    "name": "Eleomar Pedro Lorenzo",
+    "email": "eleomarpedrolorenzo@gmail.com",
+    "url": "https://eleomarpl.dev"
+  },
+  "description": "Punto de venta general, gestionando compras y ventas con una interfaz intuitiva",
+  "main": "./public/electron.js",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
@@ -15,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "electron-dev": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -34,5 +43,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.1",
+    "cross-env": "^7.0.3",
+    "electron": "^14.0.0",
+    "electron-builder": "^22.11.7",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.25.1",
+    "wait-on": "^6.0.0"
   }
 }
