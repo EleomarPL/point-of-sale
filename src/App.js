@@ -22,10 +22,10 @@ const App = () => {
           <PublicRoute exact path="/">
             <Home />
           </PublicRoute>
-          <MyRouter exact path="/my">
+          <MyRouter path="/my">
             <My />
           </MyRouter>
-          <AdminRouter exact path="/admin">
+          <AdminRouter path="/admin">
             <Admin />
           </AdminRouter>
         </Switch>

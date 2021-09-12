@@ -3,6 +3,7 @@
   --principal: #BED7AA;
   --menu-button: #8EB7C0;
   --button-personalized: #F6EDED;
+  --active: #0291B0
 }
 
 .button-personalized{
@@ -24,6 +25,8 @@
   transition: all .3s ease-in-out;
 }
 .is-menu:hover, .is-button-personalized:hover{
-  border: 1px solid black;
-  background-color: #8fd3e2;
+  background-color: #029fc2;
+}
+.active-admin{
+  background-color: var(--active);
 }
