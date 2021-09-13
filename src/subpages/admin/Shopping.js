@@ -7,6 +7,7 @@ import GroupRadioOptions from '../../components/views/GroupRadioOptions';
 const Shopping = () => {
 
   const [searcher, setSearcher] = useState('');
+  const [valueFirstRadio, setValueFirstRadio] = useState(true);
 
   let listShopping = [
     {
@@ -23,6 +24,8 @@ const Shopping = () => {
       <GroupRadioOptions
         textRadio1="Busqueda por empresa"
         textRadio2="Busqueda por fecha"
+        valueRadio1={ valueFirstRadio }
+        setValueRadio1={ setValueFirstRadio }
         component1={
           <SearcherPersonalized
             placeholder="Nombre"

@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const GroupRadioOptions = ({
-  textRadio1, textRadio2, className, component1, component2
+  textRadio1, textRadio2, className, component1, component2, valueRadio1, setValueRadio1
 }) => {
-
-  const [valueRadio1, setValueRadio1] = useState(true);
 
   return (
     <div className="w-100">
@@ -46,7 +44,9 @@ GroupRadioOptions.propTypes = {
   textRadio2: PropTypes.string.isRequired,
   className: PropTypes.string,
   component1: PropTypes.node,
-  component2: PropTypes.node
+  component2: PropTypes.node,
+  valueRadio1: PropTypes.bool,
+  setValueRadio1: PropTypes.func
 };
 
 export default GroupRadioOptions;
