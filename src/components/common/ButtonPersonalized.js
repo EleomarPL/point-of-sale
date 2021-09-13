@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ButtonPersonalized = ({ children, classNameIcon }) => {
+const ButtonPersonalized = ({ children, classNameIcon, isColumn = false }) => {
   return (
     <span
-      className="fw-bold d-flex flex-wrap justify-content-center align-items-center"
+      className={ `fw-bold d-flex ${isColumn && 'flex-column'} flex-wrap justify-content-center align-items-center` }
     >
       <i className={ classNameIcon }></i>
       { children }
@@ -14,7 +14,8 @@ const ButtonPersonalized = ({ children, classNameIcon }) => {
 
 ButtonPersonalized.propTypes = {
   classNameIcon: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  isColumn: PropTypes.bool
 };
 
 export default ButtonPersonalized;
