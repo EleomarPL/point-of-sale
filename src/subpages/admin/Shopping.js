@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
+import SearcherDatePersonalized from '../../components/common/SearcherDatePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import GroupRadioOptions from '../../components/views/GroupRadioOptions';
 
@@ -34,7 +35,9 @@ const Shopping = () => {
             title="Buscar"
           />
         }
-        component2={ <p>Componente 2</p> }
+        component2={
+          <SearcherDatePersonalized />
+        }
         className="d-flex justify-content-center"
       />
       <GroupPagesAdmin listButtons={ listShopping }>
