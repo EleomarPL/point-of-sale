@@ -4,11 +4,13 @@ import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import SearcherDatePersonalized from '../../components/common/SearcherDatePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import GroupRadioOptions from '../../components/views/GroupRadioOptions';
+import TablePersonalized from '../../components/common/TablePersonalized';
 
 const Shopping = () => {
 
   const [searcher, setSearcher] = useState('');
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
+  const [dataShopping, setDataShopping] = useState([]);
 
   let listShopping = [
     {
@@ -18,6 +20,15 @@ const Shopping = () => {
         console.log('Open modal shopping');
       }
     }
+  ];
+
+  let header = [
+    'Codigo', 'Articulo', 'Empresa',
+    'Cantidad', 'Precio', 'Total'
+  ];
+  let properties = [
+    'code', 'article', 'company',
+    'quantity', 'price', 'total'
   ];
 
   return (
@@ -41,7 +52,11 @@ const Shopping = () => {
         className="d-flex justify-content-center"
       />
       <GroupPagesAdmin listButtons={ listShopping }>
-        <p>Compras</p>
+        <TablePersonalized
+          header={ header }
+          listData={ dataShopping }
+          listProperties={ properties }
+        />
       </GroupPagesAdmin>
     </div>
   );

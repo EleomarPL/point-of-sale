@@ -29,7 +29,7 @@ const Admin = () => {
         >
           <NavigationAdmin navigation={ routesAdmin } />
         </div>
-        <div style={ {minHeight: '62vh', overflow: 'auto'} }>
+        <div style={ {maxHeight: '62vh', minHeight: '62vh', overflow: 'auto'} }>
           <Switch>
             <Route exact path="/admin">
               <p>Proveedor</p>

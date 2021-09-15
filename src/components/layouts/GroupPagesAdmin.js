@@ -22,7 +22,7 @@ const GroupPagesAdmin = ({children, listButtons}) => {
             )
         }
       </div>
-      <div style={ {width: '85%'} }>
+      <div style={ {width: '85%', maxHeight: '100%', overflow: 'auto'} }>
         { children }
       </div>
     </div>
