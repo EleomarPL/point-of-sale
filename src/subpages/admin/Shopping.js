@@ -11,6 +11,7 @@ const Shopping = () => {
   const [searcher, setSearcher] = useState('');
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
   const [dataShopping, setDataShopping] = useState([]);
+  const [dataSelected, setDataSelected] = useState({});
 
   let listShopping = [
     {
@@ -56,6 +57,8 @@ const Shopping = () => {
           header={ header }
           listData={ dataShopping }
           listProperties={ properties }
+          setDataSelected={ setDataSelected }
+          dataSelected={ dataSelected }
         />
       </GroupPagesAdmin>
     </div>
