@@ -4,6 +4,7 @@ import { HashRouter, Switch, Route } from 'react-router-dom';
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import NavigationAdmin from '../components/views/NavigationAdmin';
 import {routesAdmin} from '../data/routesAdmin';
+import Provider from '../subpages/admin/Provider';
 import Shopping from '../subpages/admin/Shopping';
 
 const Admin = () => {
@@ -32,7 +33,7 @@ const Admin = () => {
         <div style={ {maxHeight: '62vh', minHeight: '62vh', overflow: 'auto'} }>
           <Switch>
             <Route exact path="/admin">
-              <p>Proveedor</p>
+              <Provider />
             </Route>
             <Route path="/admin/shopping">
               <Shopping />

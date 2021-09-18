@@ -12,7 +12,7 @@ const GroupPagesAdmin = ({children, listButtons}) => {
                 type="button"
                 style={ {width: '90%', fontSize: '1rem'} }
                 onClick={ buttonToRenderer.onClick }
-                className="button-personalized is-button-personalized text-black text-decoration-none"
+                className="button-personalized is-button-personalized text-black text-decoration-none mb-2"
                 key={ buttonToRenderer.classNameIcon }
               >
                 <ButtonPersonalized classNameIcon={ buttonToRenderer.classNameIcon } isColumn={ true }>
