@@ -6,6 +6,7 @@ import NavigationAdmin from '../components/views/NavigationAdmin';
 import {routesAdmin} from '../data/routesAdmin';
 import Provider from '../subpages/admin/Provider';
 import Shopping from '../subpages/admin/Shopping';
+import Products from '../subpages/admin/Products';
 
 const Admin = () => {
 
@@ -39,7 +40,7 @@ const Admin = () => {
               <Shopping />
             </Route>
             <Route path="/admin/products">
-              <p>Productos</p>
+              <Products />
             </Route>
             <Route path="/admin/employees">
               <p>Empleados</p>
