@@ -7,6 +7,7 @@ import {routesAdmin} from '../data/routesAdmin';
 import Provider from '../subpages/admin/Provider';
 import Shopping from '../subpages/admin/Shopping';
 import Products from '../subpages/admin/Products';
+import Employees from '../subpages/admin/Employees';
 
 const Admin = () => {
 
@@ -43,7 +44,7 @@ const Admin = () => {
               <Products />
             </Route>
             <Route path="/admin/employees">
-              <p>Empleados</p>
+              <Employees />
             </Route>
             <Route path="/admin/sales">
               <p>Ventas</p>
