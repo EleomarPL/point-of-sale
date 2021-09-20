@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+import ModalCreateEditEmployee, {openmodalCreateEditEmployee} from '../../components/modals/ModalCreateEditEmployee';
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
@@ -7,14 +9,15 @@ const Employees = () => {
   const [searcher, setSearcher] = useState('');
   const [dataEmployees, setDataEmployees] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const [isCreateEmployee, setIsCreateEmployee] = useState(true);
 
   let header = [
-    'Codigo', 'Producto', 'Precio compra',
-    'Precio venta', 'Existencia', 'Cantidad', 'Estado'
+    'Codigo', 'Nombre', 'Apellido Paterno',
+    'Apellido Materno', 'Sexo', 'Edad', 'Estado'
   ];
   let properties = [
-    'code', 'product', 'purchasePrice',
-    'salesPrice', 'stock', 'quantity', 'status'
+    'code', 'name', 'lastName',
+    'motherLastName', 'gender', 'age', 'state'
   ];
 
   let listProviders = [
@@ -22,14 +25,16 @@ const Employees = () => {
       classNameIcon: 'bi bi-person-plus-fill',
       text: 'Agregar',
       onClick: () => {
-        console.log('Open modal add');
+        setIsCreateEmployee(true);
+        openmodalCreateEditEmployee();
       }
     },
     {
       classNameIcon: 'bi bi-pencil-fill',
       text: 'Modificar',
       onClick: () => {
-        console.log('Open modal modify');
+        setIsCreateEmployee(false);
+        openmodalCreateEditEmployee();
       }
     },
     {
@@ -67,6 +72,11 @@ const Employees = () => {
           listData={ dataEmployees }
         />
       </GroupPagesAdmin>
+      <ModalCreateEditEmployee
+        dataEmployee={ dataSelected }
+        isCreateEmployee={ isCreateEmployee }
+        setDataSelected={ setDataSelected }
+      />
     </div>
   );
 };

@@ -16,6 +16,17 @@
   font-size: 1.6rem;
   margin-right: 0.5rem;
 }
+.button-btn-modals{
+  background-color: var(--menu-button);
+  border: 0;
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.1rem;
+  transition: all .3s ease-in-out;
+}
+.button-btn-modals:hover{
+  background-color: #029fc2;
+}
 .is-menu{
   background-color: var(--menu-button);
   transition: all .3s ease-in-out;
