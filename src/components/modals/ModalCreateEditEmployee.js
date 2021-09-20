@@ -36,6 +36,20 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
       });
   }, [isCreateEmployee, dataEmployee]);
 
+  const handleSubmitEmployee = (evt) => {
+    evt.preventDefault();
+    console.log({
+      name: evt.target[0].value,
+      lastName: evt.target[1].value,
+      motherLastName: evt.target[2].value,
+      user: evt.target[3].value,
+      password: evt.target[4].value,
+      radio1: evt.target[5].checked,
+      radio2: evt.target[6].checked,
+      age: evt.target[7].value
+    });
+  };
+
   return (
     <div className="modal fade" id="modalCreateEditEmployee"
       data-bs-backdrop="static" data-bs-keyboard="false"
@@ -50,7 +64,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
             </h5>
           </div>
           <div className="modal-body">
-            <form>
+            <form onSubmit={ handleSubmitEmployee } id="form-employee">
               <table className="w-100">
                 <tbody>
                   { inputEmployees &&
@@ -131,7 +145,9 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
                 Salir
               </ButtonPersonalized>
             </button>
-            <button type="button" className="button-btn-modals">
+            <button type="submit" className="button-btn-modals"
+              form="form-employee"
+            >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
                 { isCreateEmployee ? 'Agregar Empleado' : 'Editar Empleado' }
               </ButtonPersonalized>
