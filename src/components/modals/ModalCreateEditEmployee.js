@@ -25,8 +25,8 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
   useEffect(() => {
     if (!isCreateEmployee) {
       setValueUser({
-        code: 123123, name: 'Name', lastName: 'LastName', motherLastName: 'MotherLastName',
-        user: 'user123', password: 'password', gender: 'F', age: '20'
+        ...dataEmployee,
+        user: 'user123', password: 'password'
       });
       setRadio1(false);
     } else
@@ -34,7 +34,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         code: '', name: '', lastName: '', motherLastName: '',
         user: '', password: '', gender: 'M', age: 18
       });
-  }, [isCreateEmployee]);
+  }, [isCreateEmployee, dataEmployee]);
 
   return (
     <div className="modal fade" id="modalCreateEditEmployee"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ModalCreateEditEmployee, {openmodalCreateEditEmployee} from '../../components/modals/ModalCreateEditEmployee';
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
@@ -10,6 +10,19 @@ const Employees = () => {
   const [dataEmployees, setDataEmployees] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isCreateEmployee, setIsCreateEmployee] = useState(true);
+
+  useEffect(() => {
+    setDataEmployees([
+      {
+        code: 1234, name: 'Name', lastName: 'LastName',
+        motherLastName: 'MotherLastName', gender: 'F', age: '20', state: 0
+      },
+      {
+        code: 1235, name: 'Name2', lastName: 'LastName2',
+        motherLastName: 'MotherLastName2', gender: 'F', age: '20', state: 0
+      }
+    ]);
+  }, []);
 
   let header = [
     'Codigo', 'Nombre', 'Apellido Paterno',
