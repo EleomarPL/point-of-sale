@@ -45,6 +45,7 @@ const Employees = () => {
     {
       classNameIcon: 'bi bi-pencil-fill',
       text: 'Modificar',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
         setIsCreateEmployee(false);
         openmodalCreateEditEmployee();

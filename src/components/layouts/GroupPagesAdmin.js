@@ -9,7 +9,7 @@ const GroupPagesAdmin = ({children, listButtons}) => {
         { listButtons &&
             listButtons.map(buttonToRenderer =>
               <button
-                type="button"
+                type="button" disabled={ buttonToRenderer.disabled || false }
                 style={ {width: '90%', fontSize: '1rem'} }
                 onClick={ buttonToRenderer.onClick }
                 className="button-personalized is-button-personalized text-black text-decoration-none mb-2"

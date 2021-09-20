@@ -62,7 +62,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
                             placeholder={ employee.placeholder } aria-label={ employee.id.toUpperCase() }
                             aria-describedby={ employee.id }
                             style={ {backgroundColor: '#f6eded'} }
-                            value={ valueUser[employee.id] }
+                            value={ valueUser[employee.id] || '' }
                             onChange={ (evt) => setValueUser({
                               ...valueUser,
                               [employee.id]: evt.target.value
@@ -99,7 +99,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
                     <td>Edad</td>
                     <td>
                       <select className="form-select"
-                        value={ valueUser.age } onChange={ (evt => setValueUser({
+                        value={ valueUser.age || 18 } onChange={ (evt => setValueUser({
                           ...valueUser,
                           age: evt.target.value
                         })) }
@@ -123,7 +123,9 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
           </div>
           <div className="modal-footer d-flex justify-content-evenly">
             <button type="button" className="button-btn-modals"
-              data-bs-dismiss="modal" onClick={ () => setDataSelected({}) }
+              data-bs-dismiss="modal" onClick={ () => {
+                setDataSelected({});
+              } }
             >
               <ButtonPersonalized classNameIcon="bi bi-x-circle-fill" isColumn={ true }>
                 Salir
@@ -131,7 +133,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
             </button>
             <button type="button" className="button-btn-modals">
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                { isCreateEmployee ? 'Crear Empleado' : 'Editar Empleado' }
+                { isCreateEmployee ? 'Agregar Empleado' : 'Editar Empleado' }
               </ButtonPersonalized>
             </button>
           </div>
