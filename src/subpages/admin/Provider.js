@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
@@ -11,6 +11,13 @@ const Provider = () => {
   const [dataProvider, setDataProvider] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isCreateProvider, setIsCreateProvider] = useState(true);
+
+  useEffect(() => {
+    setDataProvider([
+      {code: 1, company: 'Company', name: 'Name', lastName: 'LastName', motherLastName: 'MotherLastName'},
+      {code: 2, company: 'Company2', name: 'Name2', lastName: 'LastName2', motherLastName: 'MotherLastName2'}
+    ]);
+  }, []);
 
   let header = [
     'Codigo', 'Empresa', 'Nombre',
