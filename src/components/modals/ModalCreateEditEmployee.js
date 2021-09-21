@@ -3,6 +3,7 @@ import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
 import {inputEmployees} from '../../data/admin/modalEmployee';
+import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 
 export const openmodalCreateEditEmployee = () => {
@@ -38,12 +39,42 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
+    let dataEmployee = {
+      name: {
+        name: 'Nombre',
+        minLength: 2,
+        maxLength: 50,
+        value: evt.target[0].value
+      },
+      lastName: {
+        name: 'Apellido paterno',
+        minLength: 2,
+        maxLength: 50,
+        value: evt.target[1].value
+      },
+      motherLastName: {
+        name: 'Apellido materno',
+        minLength: 2,
+        maxLength: 50,
+        value: evt.target[2].value
+      },
+      userName: {
+        name: 'Usuario',
+        minLength: 6,
+        maxLength: 50,
+        value: evt.target[3].value
+      },
+      password: {
+        name: 'Contraseña',
+        minLength: 6,
+        maxLength: 50,
+        value: evt.target[4].value
+      }
+    };
+    if ( !isObjectValuesNull(dataEmployee) && validateLength(dataEmployee) ) {
+      console.log('passed the test');
+    }
     console.log({
-      name: evt.target[0].value,
-      lastName: evt.target[1].value,
-      motherLastName: evt.target[2].value,
-      user: evt.target[3].value,
-      password: evt.target[4].value,
       radio1: evt.target[5].checked,
       radio2: evt.target[6].checked,
       age: evt.target[7].value

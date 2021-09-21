@@ -1,9 +1,11 @@
 import React from 'react';
 import {HashRouter, Switch} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'react-toastify/dist/ReactToastify.css';
 import '@fontsource/roboto';
 
 import {AuthProvider} from './contexts/Auth';
@@ -30,6 +32,12 @@ const App = () => {
           </AdminRouter>
         </Switch>
       </HashRouter>
+      <ToastContainer position="top-right"
+        autoClose={ 5000 } hideProgressBar={ false }
+        newestOnTop={ false } closeOnClick
+        rtl={ false } pauseOnFocusLoss
+        draggable={ false } pauseOnHover
+      />
     </AuthProvider>
   );
 };

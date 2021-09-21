@@ -7,11 +7,12 @@ export const isObjectValuesNull = (objectData) => {
   Object.keys(objectData).forEach(key => {
     if (validator.isEmpty(objectData[key].value)) {
       isNull = true;
-      notifyWarning('Rellene todos los campos');
       return isNull;
     }
   });
-  
+  if (isNull)
+    notifyWarning('Rellene todos los campos');
+
   return isNull;
 };
 export const validateLength = ( objectData ) => {
