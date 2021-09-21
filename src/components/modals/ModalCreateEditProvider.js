@@ -17,17 +17,17 @@ export const openmodalCreateEditProvider = () => {
 };
 
 const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelected}) => {
-  const [valueUser, setValueUser] = useState({
+  const [valueProvider, setValueProvider] = useState({
     code: '', company: '', name: '', lastName: '', motherLastName: ''
   });
 
   useEffect(() => {
     if (!isCreateProvider) {
-      setValueUser({
+      setValueProvider({
         ...dataProvider
       });
     } else
-      setValueUser({
+      setValueProvider({
         code: '', company: '', name: '',
         lastName: '', motherLastName: ''
       });
@@ -92,9 +92,9 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
                           placeholder={ provider.placeholder } aria-label={ provider.id.toUpperCase() }
                           aria-describedby={ provider.id }
                           style={ {backgroundColor: '#f6eded'} }
-                          value={ valueUser[provider.id] || '' }
-                          onChange={ (evt) => setValueUser({
-                            ...valueUser,
+                          value={ valueProvider[provider.id] || '' }
+                          onChange={ (evt) => setValueProvider({
+                            ...valueProvider,
                             [provider.id]: evt.target.value
                           }) }
                         />
