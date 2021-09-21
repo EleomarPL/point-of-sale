@@ -8,6 +8,7 @@ import Provider from '../subpages/admin/Provider';
 import Shopping from '../subpages/admin/Shopping';
 import Products from '../subpages/admin/Products';
 import Employees from '../subpages/admin/Employees';
+import Sales from '../subpages/admin/Sales';
 
 const Admin = () => {
 
@@ -47,7 +48,7 @@ const Admin = () => {
               <Employees />
             </Route>
             <Route path="/admin/sales">
-              <p>Ventas</p>
+              <Sales />
             </Route>
           </Switch>
         </div>
