@@ -3,6 +3,7 @@ import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
 import {inputProvider} from '../../data/admin/modalProvider';
+import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 
 export const openmodalCreateEditProvider = () => {
@@ -34,7 +35,35 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
 
   const handleSubmitProvider = (evt) => {
     evt.preventDefault();
-    
+    let dataProvider = {
+      company: {
+        name: 'Empresa',
+        minLength: 2,
+        maxLength: 30,
+        value: evt.target[0].value
+      },
+      name: {
+        name: 'Nombre',
+        minLength: 2,
+        maxLength: 40,
+        value: evt.target[1].value
+      },
+      lastName: {
+        name: 'Apellido paterno',
+        minLength: 2,
+        maxLength: 40,
+        value: evt.target[2].value
+      },
+      motherLastName: {
+        name: 'Apellido materno',
+        minLength: 2,
+        maxLength: 40,
+        value: evt.target[3].value
+      }
+    };
+    if ( !isObjectValuesNull(dataProvider) && validateLength(dataProvider) ) {
+      console.log('passed the test');
+    }
   };
 
   return (
