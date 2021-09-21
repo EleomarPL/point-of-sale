@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
@@ -10,6 +10,13 @@ const Products = () => {
   const [searcher, setSearcher] = useState('');
   const [dataProducts, setDataProducts] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+
+  useEffect(() => {
+    setDataProducts([
+      {code: 1, product: 'Product', purchasePrice: 12, salesPrice: 23, stock: 2},
+      {code: 2, product: 'Product2', purchasePrice: 32, salesPrice: 33, stock: 2}
+    ]);
+  }, []);
 
   let header = [
     'Codigo', 'Producto', 'Precio compra',
