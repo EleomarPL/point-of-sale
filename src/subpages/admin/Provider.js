@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
+import ModalCreateEditProvider from '../../components/modals/ModalCreateEditProvider';
+import {openmodalCreateEditProvider} from '../../components/modals/ModalCreateEditProvider';
 
 const Provider = () => {
   const [searcher, setSearcher] = useState('');
   const [dataProvider, setDataProvider] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const [isCreateProvider, setIsCreateProvider] = useState(true);
 
   let header = [
     'Codigo', 'Empresa', 'Nombre',
@@ -22,14 +26,17 @@ const Provider = () => {
       classNameIcon: 'bi bi-person-plus-fill',
       text: 'Agregar',
       onClick: () => {
-        console.log('Open modal add');
+        setIsCreateProvider(true);
+        openmodalCreateEditProvider();
       }
     },
     {
       classNameIcon: 'bi bi-person-lines-fill',
       text: 'Modificar',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
-        console.log('Open modal modify');
+        setIsCreateProvider(false);
+        openmodalCreateEditProvider();
       }
     }
   ];
@@ -53,6 +60,11 @@ const Provider = () => {
           listData={ dataProvider }
         />
       </GroupPagesAdmin>
+      <ModalCreateEditProvider
+        dataProvider={ dataSelected }
+        isCreateProvider={ isCreateProvider }
+        setDataSelected={ setDataSelected }
+      />
     </div>
   );
 };
