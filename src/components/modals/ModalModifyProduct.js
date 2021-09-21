@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import {inputProduct} from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
+import {isInteger} from '../../services/validations/generalValidations';
 
 export const openmodalModifyProduct = () => {
   let myModal = new Modal(
@@ -26,7 +27,9 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
 
   const handleSubmitProduct = (evt) => {
     evt.preventDefault();
-    
+    if (isInteger({ name: 'Precio Venta', value: evt.target[2].value })) {
+      console.log('passed the test');
+    }
   };
 
   return (

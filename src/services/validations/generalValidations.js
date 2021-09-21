@@ -50,3 +50,11 @@ export const isValidateEmail = (email) => {
 
   return isValidate;
 };
+export const isInteger = ({name, value}) => {
+  let isNumber = true;
+  if (!validator.isInt(value)) {
+    isNumber = false;
+    notifyWarning(`${name} debe ser un número entero`);
+  }
+  return isNumber;
+};
