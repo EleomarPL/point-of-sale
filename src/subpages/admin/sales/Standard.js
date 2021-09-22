@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearcherDatePersonalized from '../../../components/common/SearcherDatePersonalized';
 import SearcherPersonalized from '../../../components/common/SearcherPersonalized';
@@ -10,6 +10,19 @@ const Standard = () => {
   const [searcher, setSearcher] = useState('');
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
   const [dataSelected, setDataSelected] = useState({});
+
+  useEffect(() => {
+    setDataSales([
+      {
+        folio: 1, box: 1, product: 'Product',
+        sold: 11, price: 11, totalPurchase: 11, date: new Date().toISOString()
+      },
+      {
+        folio: 2, box: 2, product: 'Product2',
+        sold: 22, price: 22, totalPurchase: 22, date: new Date().toISOString()
+      }
+    ]);
+  }, []);
 
   let header = [
     'Folio', 'Caja', 'Producto',
