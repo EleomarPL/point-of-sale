@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import SearcherDatePersonalized from '../../components/common/SearcherDatePersonalized';
@@ -12,6 +12,17 @@ const Shopping = () => {
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
   const [dataShopping, setDataShopping] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+
+  useEffect(() => {
+    setDataShopping([
+      {
+        code: 1, article: 'Article', company: 'Company', quantity: 11, price: 11, total: 11
+      },
+      {
+        code: 2, article: 'Article2', company: 'Company2', quantity: 22, price: 22, total: 22
+      }
+    ]);
+  }, []);
 
   let listShopping = [
     {
