@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ButtonSearch = ({ onClick }) => {
+const ButtonSearch = ({ onClick, isTypeSubmit = false }) => {
   return (
     <button
-      type="button"
+      type={ isTypeSubmit ? 'submit' : 'button' }
       className="btn btn-secondary"
       style={ {marginLeft: '1rem'} }
       onClick={ onClick }
@@ -15,7 +15,8 @@ const ButtonSearch = ({ onClick }) => {
 };
 
 ButtonSearch.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  isTypeSubmit: PropTypes.bool
 };
 
 export default ButtonSearch;
