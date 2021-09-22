@@ -5,6 +5,7 @@ import NavigationAdmin from '../../components/views/NavigationAdmin';
 import {routesAdminSales} from '../../data/routesAdminSales';
 import Standard from './sales/Standard';
 import Stock from './sales/Stock';
+import Debts from './sales/Debts';
 
 const Sales = () => {
   return (
@@ -23,7 +24,7 @@ const Sales = () => {
             <Stock />
           </Route>
           <Route exact path="/admin/sales/debts">
-            <p>Deudas</p>
+            <Debts />
           </Route>
         </Switch>
       </div>
