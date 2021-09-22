@@ -3,6 +3,7 @@ import { HashRouter, Switch, Route } from 'react-router-dom';
 
 import NavigationAdmin from '../../components/views/NavigationAdmin';
 import {routesAdminSales} from '../../data/routesAdminSales';
+import Standard from './sales/Standard';
 
 const Sales = () => {
   return (
@@ -15,7 +16,7 @@ const Sales = () => {
       <div style={ {maxHeight: '52vh', minHeight: '52vh', overflow: 'auto'} }>
         <Switch>
           <Route exact path="/admin/sales">
-            <p>Estandar</p>
+            <Standard />
           </Route>
           <Route exact path="/admin/sales/stock">
             <p>Stock</p>

@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TablePersonalized = ({header, listData, listProperties, setDataSelected, dataSelected}) => {
+const TablePersonalized = ({
+  header, listData, listProperties, setDataSelected, dataSelected, maxHeight = '50vh'
+}) => {
 
   const handleDataSelected = (object) => {
     setDataSelected(object);
   };
 
   return (
-    <div className="table-responsive" style={ {maxHeight: '50vh'} }>
+    <div className="table-responsive" style={ {maxHeight} }>
       <table className="table table-striped table-hover text-center"
         style={ {backgroundColor: '#D7D7D7'} }
       >
@@ -52,7 +54,8 @@ TablePersonalized.propTypes = {
   listData: PropTypes.array.isRequired,
   listProperties: PropTypes.array.isRequired,
   dataSelected: PropTypes.object.isRequired,
-  setDataSelected: PropTypes.func.isRequired
+  setDataSelected: PropTypes.func.isRequired,
+  maxHeight: PropTypes.string
 };
 
 export default TablePersonalized;
