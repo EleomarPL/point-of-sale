@@ -36,7 +36,7 @@ const Standard = () => {
   return (
     <div className="w-100">
       <GroupRadioOptions
-        textRadio1="Busqueda por empresa"
+        textRadio1="Busqueda por caja"
         textRadio2="Busqueda por fecha"
         valueRadio1={ valueFirstRadio }
         setValueRadio1={ setValueFirstRadio }
