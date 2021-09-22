@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SelectProvider from './SelectProvider';
 
 const SearcherSelectPersonalized = ({setValue}) => {
   return (
@@ -16,10 +17,7 @@ const SearcherSelectPersonalized = ({setValue}) => {
         <option value="semester">Semestre</option>
         <option value="year">Año</option>
       </select>
-      <span className="mx-2">Proveedor: </span>
-      <select className="form-select mx-2" style={ {width: '20%'} }>
-        <option value="default">Provider</option>
-      </select>
+      <SelectProvider />
     </div>
   );
 };
