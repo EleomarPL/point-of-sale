@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import SearcherDatePersonalized from '../../../components/common/SearcherDatePersonalized';
 import SearcherSelectPersonalized from '../../../components/common/SearcherSelectPersonalized';
@@ -11,6 +11,15 @@ const Stock = () => {
   const [searcher, setSearcher] = useState('');
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
   const [dataSelected, setDataSelected] = useState({});
+
+  useEffect(() => {
+    setDataSales([
+      {
+        box: 1, company: 'Company', product: 'Product',
+        existence: 10, 'sold': 10, totalPurchase: 10
+      }
+    ]);
+  }, []);
 
   let header = [
     'Caja', 'Empresa', 'Producto',
