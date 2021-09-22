@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearcherPersonalized from '../../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../../components/common/TablePersonalized';
@@ -7,6 +7,15 @@ const Debts = () => {
   const [searcher, setSearcher] = useState('');
   const [dataDebts, setDataDebts] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+
+  useEffect(() => {
+    setDataDebts([
+      {
+        code: 1, name: 'Name', lastName: 'LastName',
+        motherLastName: 'MotherLastName', debt: 200
+      }
+    ]);
+  }, []);
 
   let header = [
     'Codigo', 'Nombre', 'Apellido Paterno',
