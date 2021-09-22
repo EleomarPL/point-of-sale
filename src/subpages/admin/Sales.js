@@ -4,6 +4,7 @@ import { HashRouter, Switch, Route } from 'react-router-dom';
 import NavigationAdmin from '../../components/views/NavigationAdmin';
 import {routesAdminSales} from '../../data/routesAdminSales';
 import Standard from './sales/Standard';
+import Stock from './sales/Stock';
 
 const Sales = () => {
   return (
@@ -19,7 +20,7 @@ const Sales = () => {
             <Standard />
           </Route>
           <Route exact path="/admin/sales/stock">
-            <p>Stock</p>
+            <Stock />
           </Route>
           <Route exact path="/admin/sales/debts">
             <p>Deudas</p>
