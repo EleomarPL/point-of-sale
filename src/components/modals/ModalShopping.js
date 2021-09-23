@@ -4,6 +4,7 @@ import { Modal } from 'bootstrap';
 import TablePersonalized from '../common/TablePersonalized';
 import BoxInputsShoppingModal from '../views/admin/BoxInputsShoppingModal';
 import ButtonPersonalized from '../common/ButtonPersonalized';
+import {isInteger, isObjectValuesNull, isNumberValue, validateLength} from '../../services/validations/generalValidations';
 
 export const openmodalShopping = () => {
   let myModal = new Modal(
@@ -32,6 +33,62 @@ const ModalShopping = () => {
   let header2 = ['Codigo', 'Articulo'];
   let properties2 = ['code', 'article'];
 
+  const handleAddNewPurchase = (evt) => {
+    evt.preventDefault();
+
+    let dataPurchase = {
+      code: {
+        name: 'Codigo',
+        minLength: 2,
+        maxLength: 20,
+        value: evt.target[0].value
+      },
+      article: {
+        name: 'Producto',
+        minLength: 2,
+        maxLength: 100,
+        value: evt.target[1].value
+      },
+      purchasePrice: {
+        name: 'Precio Compra',
+        minLength: 0,
+        maxLength: 6,
+        value: evt.target[2].value
+      },
+      salesPrice: {
+        name: 'Precio Venta',
+        minLength: 0,
+        maxLength: 6,
+        value: evt.target[3].value
+      },
+      stock: {
+        name: 'Existencia',
+        minLength: 0,
+        maxLength: 6,
+        value: evt.target[4].value
+      },
+      amount: {
+        name: 'Cantidad',
+        minLength: 0,
+        maxLength: 6,
+        value: evt.target[5].value
+      }
+    };
+    
+    if ( !isObjectValuesNull(dataPurchase) && validateLength(dataPurchase) ) {
+      if (isInteger({name: 'Codigo', value: dataPurchase.code.value}) &&
+        isInteger({name: 'Existencia', value: dataPurchase.stock.value}) &&
+        isInteger({name: 'Cantidad', value: dataPurchase.amount.value})
+      ) {
+        if (isNumberValue({name: 'Precio Compra', value: dataPurchase.purchasePrice.value}) &&
+          isNumberValue({name: 'Precio Venta', value: dataPurchase.salesPrice.value})
+        ) {
+          console.log('passed the test');
+        }
+      }
+    }
+  };
+
   return (
     <div className="modal fade" id="modalShopping"
       data-bs-backdrop="static" data-bs-keyboard="false"
@@ -52,7 +109,7 @@ const ModalShopping = () => {
           <div className="modal-body p-0 m-0" style={ {overflow: 'auto'} }>
             <div className="row col-md-12">
               <div className="col-md-5">
-                <form>
+                <form onSubmit={ handleAddNewPurchase } id="form-add-shopping">
                   <BoxInputsShoppingModal />
                 </form>
                 <div className="w-100 mt-1">
@@ -82,7 +139,9 @@ const ModalShopping = () => {
           <div className="modal-footer m-0 p-0 w-100">
             <div className="row col-md-12">
               <div className="col-md-5 d-flex justify-content-center">
-                <button type="button" className="button-btn-modals">
+                <button type="submit" className="button-btn-modals"
+                  form="form-add-shopping"
+                >
                   <ButtonPersonalized classNameIcon="bi bi-cart-plus-fill" isColumn={ true }>
                     Agregar Compra
                   </ButtonPersonalized>
