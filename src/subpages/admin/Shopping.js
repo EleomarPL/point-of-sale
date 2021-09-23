@@ -5,6 +5,8 @@ import SearcherDatePersonalized from '../../components/common/SearcherDatePerson
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import GroupRadioOptions from '../../components/views/GroupRadioOptions';
 import TablePersonalized from '../../components/common/TablePersonalized';
+import ModalShopping from '../../components/modals/ModalShopping';
+import {openmodalShopping} from '../../components/modals/ModalShopping';
 
 const Shopping = () => {
 
@@ -29,7 +31,7 @@ const Shopping = () => {
       classNameIcon: 'bi bi-cart-plus-fill',
       text: 'Agregar Compra',
       onClick: () => {
-        console.log('Open modal shopping');
+        openmodalShopping();
       }
     }
   ];
@@ -72,6 +74,9 @@ const Shopping = () => {
           dataSelected={ dataSelected }
         />
       </GroupPagesAdmin>
+      <ModalShopping
+       
+      />
     </div>
   );
 };
