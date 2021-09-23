@@ -5,11 +5,15 @@
   --button-personalized: #F6EDED;
   --active: #0291B0
 }
-
+.button-personalized:disabled{
+  opacity: 0.5;
+  color: #2e2e2e;
+}
 .button-personalized{
   font-size: 1.2rem;
   border-radius: 10px;
   padding: 0.6rem 1rem;
+  color: black;
   border: none;
 }
 .button-personalized i{
