@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch } from 'react-router-dom';
 
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import NavigationAdmin from '../components/views/NavigationAdmin';
@@ -9,6 +9,7 @@ import Shopping from '../subpages/admin/Shopping';
 import Products from '../subpages/admin/Products';
 import Employees from '../subpages/admin/Employees';
 import Sales from '../subpages/admin/Sales';
+import AdminRouter from '../components/router/AdminRouter';
 
 const Admin = () => {
 
@@ -35,21 +36,21 @@ const Admin = () => {
         </div>
         <div style={ {maxHeight: '62vh', minHeight: '62vh', overflow: 'auto'} }>
           <Switch>
-            <Route exact path="/admin">
+            <AdminRouter exact path="/admin">
               <Provider />
-            </Route>
-            <Route path="/admin/shopping">
+            </AdminRouter>
+            <AdminRouter path="/admin/shopping">
               <Shopping />
-            </Route>
-            <Route path="/admin/products">
+            </AdminRouter>
+            <AdminRouter path="/admin/products">
               <Products />
-            </Route>
-            <Route path="/admin/employees">
+            </AdminRouter>
+            <AdminRouter path="/admin/employees">
               <Employees />
-            </Route>
-            <Route path="/admin/sales">
+            </AdminRouter>
+            <AdminRouter path="/admin/sales">
               <Sales />
-            </Route>
+            </AdminRouter>
           </Switch>
         </div>
         <div style={ {minHeight: '10vh', backgroundColor: '#D5E1CC'} }>

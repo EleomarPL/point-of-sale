@@ -1,11 +1,12 @@
 import React from 'react';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch } from 'react-router-dom';
 
 import NavigationAdmin from '../../components/views/NavigationAdmin';
 import {routesAdminSales} from '../../data/routesAdminSales';
 import Standard from './sales/Standard';
 import Stock from './sales/Stock';
 import Debts from './sales/Debts';
+import AdminRouter from '../../components/router/AdminRouter';
 
 const Sales = () => {
   return (
@@ -17,15 +18,15 @@ const Sales = () => {
       </div>
       <div style={ {maxHeight: '52vh', minHeight: '52vh', overflow: 'auto'} }>
         <Switch>
-          <Route exact path="/admin/sales">
+          <AdminRouter exact path="/admin/sales">
             <Standard />
-          </Route>
-          <Route exact path="/admin/sales/stock">
+          </AdminRouter>
+          <AdminRouter exact path="/admin/sales/stock">
             <Stock />
-          </Route>
-          <Route exact path="/admin/sales/debts">
+          </AdminRouter>
+          <AdminRouter exact path="/admin/sales/debts">
             <Debts />
-          </Route>
+          </AdminRouter>
         </Switch>
       </div>
     </HashRouter>
