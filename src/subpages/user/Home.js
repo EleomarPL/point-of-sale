@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ButtonPersonalized from '../../components/common/ButtonPersonalized';
 import ButtonsMy from '../../components/views/ButtonsMy';
+import LogoutBox from '../../components/views/LogoutBox';
 
 const Home = () => {
 
@@ -35,10 +35,6 @@ const Home = () => {
       }
     }
   ];
-  
-  const handleLogout = () => {
-    console.log('logout');
-  };
 
   return (
     <section className="col-md-12" style={ {backgroundColor: '#BED7AA'} }>
@@ -58,23 +54,10 @@ const Home = () => {
 
         </div>
         <div className="col-md-3" style={ {backgroundColor: '#d2ecc6'} }>
-          
+
         </div>
       </div>
-      <div style={ {minHeight: '10vh', backgroundColor: '#D5E1CC'} }>
-        <div className="d-flex justify-content-end align-items-center">
-          <button
-            type="button"
-            className="button-personalized is-button-personalized"
-            style={ {borderRadius: '10px'} }
-            onClick={ handleLogout }
-          >
-            <ButtonPersonalized classNameIcon="bi bi-box-arrow-left">
-              Cerrar Sesión
-            </ButtonPersonalized>
-          </button>
-        </div>
-      </div>
+      <LogoutBox />
     </section>
   );
 };

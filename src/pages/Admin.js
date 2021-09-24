@@ -1,7 +1,6 @@
 import React from 'react';
 import { HashRouter, Switch } from 'react-router-dom';
 
-import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import NavigationAdmin from '../components/views/NavigationAdmin';
 import {routesAdmin} from '../data/routesAdmin';
 import Provider from '../subpages/admin/Provider';
@@ -10,13 +9,9 @@ import Products from '../subpages/admin/Products';
 import Employees from '../subpages/admin/Employees';
 import Sales from '../subpages/admin/Sales';
 import AdminRouter from '../components/router/AdminRouter';
+import LogoutBox from '../components/views/LogoutBox';
 
 const Admin = () => {
-
-  const handleLogout = () => {
-    console.log('logout');
-  };
-
   return (
     <HashRouter>
       <section className="col-md-12" style={ {backgroundColor: '#BED7AA'} }>
@@ -53,20 +48,7 @@ const Admin = () => {
             </AdminRouter>
           </Switch>
         </div>
-        <div style={ {minHeight: '10vh', backgroundColor: '#D5E1CC'} }>
-          <div className="d-flex justify-content-end align-items-center">
-            <button
-              type="button"
-              className="button-personalized is-button-personalized"
-              style={ {borderRadius: '10px'} }
-              onClick={ handleLogout }
-            >
-              <ButtonPersonalized classNameIcon="bi bi-box-arrow-left">
-                Cerrar Sesión
-              </ButtonPersonalized>
-            </button>
-          </div>
-        </div>
+        <LogoutBox />
       </section>
     </HashRouter>
   );
