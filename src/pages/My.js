@@ -1,8 +1,12 @@
 import React from 'react';
 
+import Home from '../subpages/user/Home';
+
 const My = () => {
   return (
-    <p>Caja</p>
+    <section>
+      <Home />
+    </section>
   );
 };
 
