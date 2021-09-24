@@ -110,7 +110,12 @@ const ModalShopping = () => {
             <div className="row col-md-12">
               <div className="col-md-5">
                 <form onSubmit={ handleAddNewPurchase } id="form-add-shopping">
-                  <BoxInputsShoppingModal />
+                  <BoxInputsShoppingModal
+                    setDataNewShopping={ setDataNewShopping }
+                    setDataProductTemp={ setDataProductTemp }
+                    dataSelected2={ dataSelected2 }
+                    setDataSelected2={ setDataSelected2 }
+                  />
                 </form>
                 <div className="w-100 mt-1">
                   <TablePersonalized
