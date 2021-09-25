@@ -38,13 +38,13 @@ const Home = () => {
 
   return (
     <section className="col-md-12" style={ {backgroundColor: '#BED7AA'} }>
-      <div style={ {minHeight: '7vh', maxHeight: '7vh', backgroundColor: '#cbd8c4'} }
+      <div style={ {minHeight: '5vh', maxHeight: '5vh', backgroundColor: '#cbd8c4'} }
         className="d-flex align-items-center"
       >
-        <i className="bi bi-person-badge-fill" style={ {fontSize: '2rem', marginRight: '1rem'} }></i>
+        <i className="bi bi-person-badge-fill" style={ {fontSize: '1.8rem', marginRight: '1rem'} }></i>
         <span style={ {fontSize: '1.5rem'} } >Caja 1</span>
       </div>
-      <div style={ {minHeight: '13vh', maxHeight: '13vh', backgroundColor: '#d5e1cc'} }
+      <div style={ {minHeight: '15vh', maxHeight: '15vh', backgroundColor: '#d5e1cc'} }
         className="d-flex flex-wrap align-items-center"
       >
         <ButtonsMy navigation={ buttonsMy } />
