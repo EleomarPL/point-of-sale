@@ -1,7 +1,23 @@
+import {useState} from 'react';
+
+import TablePersonalized from '../../components/common/TablePersonalized';
 import ButtonsMy from '../../components/views/ButtonsMy';
 import LogoutBox from '../../components/views/LogoutBox';
+import BoxInputsSales from '../../components/views/my/BoxInputsSales';
+import BoxStatusSales from '../../components/views/my/BoxStatusSales';
 
 const Home = () => {
+
+  const [dataSelected, setDataSelected] = useState({});
+
+  let header = [
+    'Codigo', 'Articulo', 'Precio',
+    'Existencia', 'Cantidad'
+  ];
+  let properties = [
+    'code', 'article', 'price',
+    'stock', 'amount'
+  ];
 
   const buttonsMy = [
     {
@@ -48,11 +64,30 @@ const Home = () => {
         <ButtonsMy navigation={ buttonsMy } />
       </div>
       <div className="row col-md-12 px-0 mx-0" style={ {minHeight: '70vh', maxHeight: '70vh'} }>
-        <div className="col-md-9">
-
+        <div className="col-md-9 px-0">
+          <div className="w-100 px-1"
+            style={ {maxHeight: '13vh', minHeight: '13vh'} }
+          >
+            <BoxInputsSales />
+          </div>
+          <div className="w-100"
+            style={ {maxHeight: '57vh', minHeight: '57vh'} }
+          >
+            <TablePersonalized
+              maxHeight="57vh"
+              header={ header }
+              listProperties={ properties }
+              listData={ [] }
+              dataSelected={ dataSelected }
+              setDataSelected={ setDataSelected }
+            />
+          </div>
         </div>
-        <div className="col-md-3" style={ {backgroundColor: '#d2ecc6'} }>
-
+        <div className="col-md-3" style={ {backgroundColor: '#d2ecc6', minHeight: '70vh', maxHeight: '70vh'} }>
+          <BoxStatusSales
+            dataSelected={ dataSelected }
+            setDataSelected={ setDataSelected }
+          />
         </div>
       </div>
       <LogoutBox />
