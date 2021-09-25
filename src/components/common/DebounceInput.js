@@ -1,4 +1,3 @@
-import React from 'react';
 import { DebounceInput as Input } from 'react-debounce-input';
 import PropTypes from 'prop-types';
 

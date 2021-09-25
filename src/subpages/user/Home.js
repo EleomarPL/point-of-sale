@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ButtonsMy from '../../components/views/ButtonsMy';
 import LogoutBox from '../../components/views/LogoutBox';
 

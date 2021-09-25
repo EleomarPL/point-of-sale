@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ButtonPersonalized from '../common/ButtonPersonalized';
 
 const LogoutBox = () => {

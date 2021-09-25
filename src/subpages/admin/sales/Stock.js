@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import SearcherDatePersonalized from '../../../components/common/SearcherDatePersonalized';
 import SearcherSelectPersonalized from '../../../components/common/SearcherSelectPersonalized';

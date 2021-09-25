@@ -1,4 +1,3 @@
-import React from 'react';
 import { HashRouter, Switch } from 'react-router-dom';
 
 import NavigationAdmin from '../../components/views/NavigationAdmin';

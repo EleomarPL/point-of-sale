@@ -7,6 +7,7 @@ module.exports = {
     'react/jsx-max-props-per-line': ['error', { 'maximum': 2 }],
     'react/jsx-tag-spacing': ['error', { 'beforeSelfClosing': 'always' }],
     'react/button-has-type': 'error',
+    'react/react-in-jsx-scope': 'off',
   
     'indent': ['error', 2],
     'linebreak-style': ['error', 'windows'],
