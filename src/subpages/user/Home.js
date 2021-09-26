@@ -37,6 +37,7 @@ const Home = () => {
     {
       text: 'Eliminar Producto',
       classNameIcon: 'bi bi-trash-fill',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
         console.log('delete article');
       }

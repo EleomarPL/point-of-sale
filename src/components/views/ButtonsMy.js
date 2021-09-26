@@ -10,6 +10,7 @@ const ButtonsMy = ({navigation}) => {
           <button
             type="button"
             key={ option.classNameIcon }
+            disabled={ option.disabled || false }
             className="button-personalized is-menu text-black text-decoration-none py-1"
             style={ {width: '19%', fontSize: '1rem'} }
             onClick={ option.onClick }
