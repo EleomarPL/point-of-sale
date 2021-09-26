@@ -26,7 +26,7 @@ const BoxInputsSales = ({setDataSelected}) => {
         </div>
       </div>
       <div className="w-100 d-flex justify-content-around">
-        <div className="input-group align-items-center">
+        <div className="input-group align-items-center" style={ {minWidth: '30vw'} }>
           <span id="name" className="px-1">Nombre: </span>
           <input type="text" className="form-control"
             placeholder="Nombre" aria-label="Name"
