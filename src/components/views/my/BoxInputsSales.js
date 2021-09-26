@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import DebounceInput from '../../common/DebounceInput';
 
-const BoxInputsSales = () => {
+const BoxInputsSales = ({setDataSelected}) => {
 
   const [article, setArticle] = useState('');
   const [name, setName] = useState('');
@@ -69,6 +71,10 @@ const BoxInputsSales = () => {
       </div>
     </div>
   );
+};
+
+BoxInputsSales.propTypes = {
+  setDataSelected: PropTypes.func.isRequired
 };
 
 export default BoxInputsSales;

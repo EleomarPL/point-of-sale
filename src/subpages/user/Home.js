@@ -68,7 +68,9 @@ const Home = () => {
           <div className="w-100 px-1"
             style={ {maxHeight: '13vh', minHeight: '13vh'} }
           >
-            <BoxInputsSales />
+            <BoxInputsSales
+              setDataSelected={ setDataSelected }
+            />
           </div>
           <div className="w-100"
             style={ {maxHeight: '57vh', minHeight: '57vh'} }
