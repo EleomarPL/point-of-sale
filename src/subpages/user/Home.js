@@ -5,7 +5,7 @@ import ButtonsMy from '../../components/views/ButtonsMy';
 import LogoutBox from '../../components/views/LogoutBox';
 import BoxInputsSales from '../../components/views/my/BoxInputsSales';
 import BoxStatusSales from '../../components/views/my/BoxStatusSales';
-import {openmodalAddProduct} from '../../components/modals/ModalAddProduct';
+import {openmodalAddArticle} from '../../components/modals/ModalAddArticle';
 
 const Home = () => {
 
@@ -25,7 +25,7 @@ const Home = () => {
       text: 'Buscar Articulo',
       classNameIcon: 'bi bi-search',
       onClick: () => {
-        openmodalAddProduct();
+        openmodalAddArticle();
       }
     },
     {

@@ -1,11 +1,11 @@
 import Home from '../subpages/user/Home';
-import ModalAddProduct from '../components/modals/ModalAddProduct';
+import ModalAddArticle from '../components/modals/ModalAddArticle';
 
 const My = () => {
   return (
     <section>
       <Home />
-      <ModalAddProduct />
+      <ModalAddArticle />
     </section>
   );
 };
