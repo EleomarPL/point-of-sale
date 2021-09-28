@@ -5,18 +5,18 @@ import SearcherPersonalized from '../common/SearcherPersonalized';
 import TablePersonalized from '../common/TablePersonalized';
 
 const ContainerShowProducts = ({
-  searcher, setSearcher, dataSelected, setDataSelected, classNameTable, children
+  searcher, setSearcher, dataSelected, setDataSelected, classNameTable, children, isQuery = false
 }) => {
 
   const [dataArticle, setDataArticle] = useState([]);
 
   let header = [
     'Codigo', 'Articulo', 'Precio',
-    'Existencia'
+    'Existencia', isQuery && 'Estado'
   ];
   let properties = [
     'code', 'article', 'price',
-    'stock'
+    'stock', isQuery && 'state'
   ];
   return (
     <>
@@ -47,7 +47,8 @@ ContainerShowProducts.propTypes = {
   dataSelected: PropTypes.object.isRequired,
   setDataSelected: PropTypes.func.isRequired,
   classNameTable: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
+  isQuery: PropTypes.bool
 };
 
 export default ContainerShowProducts;

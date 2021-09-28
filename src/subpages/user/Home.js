@@ -6,6 +6,7 @@ import LogoutBox from '../../components/views/LogoutBox';
 import BoxInputsSales from '../../components/views/my/BoxInputsSales';
 import BoxStatusSales from '../../components/views/my/BoxStatusSales';
 import {openmodalAddArticle} from '../../components/modals/ModalAddArticle';
+import { openmodalViewsArticles } from '../../components/modals/ModalViewArticles';
 
 const Home = () => {
 
@@ -32,7 +33,7 @@ const Home = () => {
       text: 'Verificar Precios',
       classNameIcon: 'bi bi-file-code-fill',
       onClick: () => {
-        console.log('open modal verify prices');
+        openmodalViewsArticles();
       }
     },
     {
