@@ -2,6 +2,7 @@ import { Modal } from 'bootstrap';
 import { NavLink, Switch } from 'react-router-dom';
 
 import { routesModalDebts } from '../../data/routesModalDebts';
+import Debts from '../../subpages/admin/sales/Debts';
 import AddDebtor from '../../subpages/user/modalDebts/AddDebtor';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import MyRouter from '../router/MyRouter';
@@ -64,7 +65,7 @@ const ModalDebts = () => {
                 <p>Pagar deuda</p>
               </MyRouter>
               <MyRouter exact path="/my/see-debts">
-                <p>Ver deudas</p>
+                <Debts />
               </MyRouter>
             </Switch>
           </div>
