@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import ButtonPersonalized from '../../common/ButtonPersonalized';
+import { openmodalDebts } from '../../modals/ModalDebts';
 
 const BoxStatusSales = ({dataSelected, setDataSelected}) => {
   return (
@@ -23,6 +24,7 @@ const BoxStatusSales = ({dataSelected, setDataSelected}) => {
         <button
           type="button" style={ {margin: '10px 0'} }
           className="button-personalized is-menu text-black text-decoration-none w-75"
+          onClick={ openmodalDebts }
         >
           <ButtonPersonalized isColumn={ true } classNameIcon="bi bi-currency-dollar">
             Deuda
