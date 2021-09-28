@@ -2,6 +2,7 @@ import { Modal } from 'bootstrap';
 import { NavLink, Switch } from 'react-router-dom';
 
 import { routesModalDebts } from '../../data/routesModalDebts';
+import AddDebtor from '../../subpages/user/modalDebts/AddDebtor';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import MyRouter from '../router/MyRouter';
 
@@ -51,10 +52,10 @@ const ModalDebts = () => {
               data-bs-dismiss="modal" aria-label="Close"
             ></button>
           </div>
-          <div className="modal-body p-0 m-0" style={ {overflow: 'auto'} }>
+          <div className="modal-body p-0 m-0 mt-1" style={ {overflow: 'auto'} }>
             <Switch>
               <MyRouter exact path="/my/">
-                <p>Agregar Deudores</p>
+                <AddDebtor />
               </MyRouter>
               <MyRouter exact path="/my/debtors">
                 <p>Agregar deuda</p>
