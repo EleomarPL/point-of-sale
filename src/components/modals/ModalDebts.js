@@ -3,6 +3,7 @@ import { NavLink, Switch } from 'react-router-dom';
 
 import { routesModalDebts } from '../../data/routesModalDebts';
 import Debts from '../../subpages/admin/sales/Debts';
+import AddDebt from '../../subpages/user/modalDebts/AddDebt';
 import AddDebtor from '../../subpages/user/modalDebts/AddDebtor';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import MyRouter from '../router/MyRouter';
@@ -59,7 +60,7 @@ const ModalDebts = () => {
                 <AddDebtor />
               </MyRouter>
               <MyRouter exact path="/my/debtors">
-                <p>Agregar deuda</p>
+                <AddDebt />
               </MyRouter>
               <MyRouter exact path="/my/pay-debt">
                 <p>Pagar deuda</p>
