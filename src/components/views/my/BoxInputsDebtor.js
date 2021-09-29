@@ -37,7 +37,7 @@ const BoxInputsDebtors = ({dataSelected, setDataSelected}) => {
               <td style={ {paddingBottom: '2rem'} }>
                 <input type={ inputDebtor.type } className="form-control"
                   placeholder={ inputDebtor.placeholder } aria-label={ inputDebtor.id.toUpperCase() }
-                  aria-describedby={ inputDebtor.id } value={ values[inputDebtor.id] }
+                  aria-describedby={ inputDebtor.id } value={ values[inputDebtor.id] || '' }
                   onChange={ (evt) => handleChangeValue({property: inputDebtor.id, value: evt.target.value}) }
                   style={ {backgroundColor: '#f6eded'} }
                 />
