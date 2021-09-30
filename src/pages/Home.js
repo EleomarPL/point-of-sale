@@ -2,14 +2,17 @@ import { useState } from 'react';
 
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import InputPersonalized from '../components/common/InputPersonalized';
+import useLogin from '../hooks/useLogin';
 
 const Home = () => {
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
+  const {login} = useLogin();
+
   const handleLogin = () => {
-    console.log({userName, password});
+    login({userName, password});
   };
 
   return (

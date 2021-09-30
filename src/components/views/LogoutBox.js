@@ -1,9 +1,12 @@
 import ButtonPersonalized from '../common/ButtonPersonalized';
+import useLogin from '../../hooks/useLogin';
 
 const LogoutBox = () => {
+
+  const {logout} = useLogin();
   
   const handleLogout = () => {
-    console.log('logout');
+    logout();
   };
 
   return (
