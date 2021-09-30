@@ -5,6 +5,7 @@ import { routesModalDebts } from '../../data/routesModalDebts';
 import Debts from '../../subpages/admin/sales/Debts';
 import AddDebt from '../../subpages/user/modalDebts/AddDebt';
 import AddDebtor from '../../subpages/user/modalDebts/AddDebtor';
+import PayDebt from '../../subpages/user/modalDebts/PayDebt';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import MyRouter from '../router/MyRouter';
 
@@ -63,7 +64,7 @@ const ModalDebts = () => {
                 <AddDebt />
               </MyRouter>
               <MyRouter exact path="/my/pay-debt">
-                <p>Pagar deuda</p>
+                <PayDebt />
               </MyRouter>
               <MyRouter exact path="/my/see-debts">
                 <Debts />
