@@ -4,14 +4,15 @@ Menu.setApplicationMenu(null);
 
 function createWindow() {
   const createWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 700,
     webPreferences: {
       nodeIntegration: true,
       nativeWindowOpen: true
     }
   });
   createWindow.loadURL('http://localhost:3000/');
+  createWindow.maximize();
   // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
 }
 
