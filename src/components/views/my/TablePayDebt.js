@@ -35,6 +35,7 @@ const TablePayDebt = ({ header, listDebts, setListDebts }) => {
                       <td><input type="radio"
                         className="form-check-input"
                         checked={ inputData.box }
+                        onChange={ () => {} }
                         onClick={ () => handleChangeValueRadio({debtCode: inputData.debtCode}) }
                       /></td>
                       <td>{ inputData.debtCode }</td>
