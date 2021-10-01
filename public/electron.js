@@ -1,4 +1,5 @@
 const { app, BrowserWindow, Menu } = require('electron');
+const path = require('path');
  
 Menu.setApplicationMenu(null);
 
@@ -8,7 +9,8 @@ function createWindow() {
     height: 700,
     webPreferences: {
       nodeIntegration: true,
-      nativeWindowOpen: true
+      nativeWindowOpen: true,
+      preload: path.join(__dirname, 'electron', 'preload.js')
     }
   });
   createWindow.loadURL('http://localhost:3000/');
