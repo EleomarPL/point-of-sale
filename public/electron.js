@@ -1,5 +1,11 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
+
+if (process.env.NODE_ENV !== 'production') {
+  require('electron-reload')(__dirname, {
+    electron: require(path.join(__dirname, '..', 'node_modules', 'electron'))
+  });
+}
  
 Menu.setApplicationMenu(null);
 
