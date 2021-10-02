@@ -1,14 +1,17 @@
 import { HashRouter, Switch } from 'react-router-dom';
+import {lazy, Suspense} from 'react';
 
 import NavigationAdmin from '../components/views/NavigationAdmin';
 import {routesAdmin} from '../data/routesAdmin';
-import Provider from '../subpages/admin/Provider';
-import Shopping from '../subpages/admin/Shopping';
-import Products from '../subpages/admin/Products';
-import Employees from '../subpages/admin/Employees';
-import Sales from '../subpages/admin/Sales';
 import AdminRouter from '../components/router/AdminRouter';
 import LogoutBox from '../components/views/LogoutBox';
+import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
+
+const Provider = lazy(() => import('../subpages/admin/Provider'));
+const Shopping = lazy(() => import('../subpages/admin/Shopping'));
+const Products = lazy(() => import('../subpages/admin/Products'));
+const Employees = lazy(() => import('../subpages/admin/Employees'));
+const Sales = lazy(() => import('../subpages/admin/Sales'));
 
 const Admin = () => {
   return (
@@ -31,19 +34,29 @@ const Admin = () => {
         <div style={ {maxHeight: '62vh', minHeight: '62vh', overflow: 'auto'} }>
           <Switch>
             <AdminRouter exact path="/admin">
-              <Provider />
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Provider />
+              </Suspense>
             </AdminRouter>
             <AdminRouter path="/admin/shopping">
-              <Shopping />
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Shopping />
+              </Suspense>
             </AdminRouter>
             <AdminRouter path="/admin/products">
-              <Products />
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Products />
+              </Suspense>
             </AdminRouter>
             <AdminRouter path="/admin/employees">
-              <Employees />
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Employees />
+              </Suspense>
             </AdminRouter>
             <AdminRouter path="/admin/sales">
-              <Sales />
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Sales />
+              </Suspense>
             </AdminRouter>
           </Switch>
         </div>

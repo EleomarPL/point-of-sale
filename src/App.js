@@ -1,3 +1,4 @@
+import {lazy, Suspense} from 'react';
 import {HashRouter, Switch} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
@@ -11,9 +12,11 @@ import {AuthProvider} from './contexts/Auth';
 import PublicRoute from './components/router/PublicRouter';
 import MyRouter from './components/router/MyRouter';
 import AdminRouter from './components/router/AdminRouter';
-import Home from './pages/Home';
-import My from './pages/My';
-import Admin from './pages/Admin';
+import SpinnerLoadingPage from './components/common/SpinnerLoadingPage';
+
+const Home = lazy(() => import('./pages/Home'));
+const My = lazy(() => import('./pages/My'));
+const Admin = lazy(() => import('./pages/Admin'));
 
 const App = () => {
   return (
@@ -21,13 +24,19 @@ const App = () => {
       <HashRouter>
         <Switch>
           <PublicRoute exact path="/">
-            <Home />
+            <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Home />
+            </Suspense>
           </PublicRoute>
           <MyRouter path="/my">
-            <My />
+            <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <My />
+            </Suspense>
           </MyRouter>
           <AdminRouter path="/admin">
-            <Admin />
+            <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Admin />
+            </Suspense>
           </AdminRouter>
         </Switch>
       </HashRouter>

@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import SearcherDatePersonalized from '../../components/common/SearcherDatePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import GroupRadioOptions from '../../components/views/GroupRadioOptions';
 import TablePersonalized from '../../components/common/TablePersonalized';
-import ModalShopping from '../../components/modals/ModalShopping';
 import {openmodalShopping} from '../../components/modals/ModalShopping';
+import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+
+const ModalShopping = lazy(() => import('../../components/modals/ModalShopping'));
 
 const Shopping = () => {
 
@@ -74,9 +76,9 @@ const Shopping = () => {
           dataSelected={ dataSelected }
         />
       </GroupPagesAdmin>
-      <ModalShopping
-       
-      />
+      <Suspense fallback={ <SpinnerLoadingPage /> }>
+        <ModalShopping />
+      </Suspense>
     </div>
   );
 };

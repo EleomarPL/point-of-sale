@@ -1,11 +1,15 @@
 import { HashRouter, Switch } from 'react-router-dom';
+import {lazy, Suspense} from 'react';
 
 import NavigationAdmin from '../../components/views/NavigationAdmin';
 import {routesAdminSales} from '../../data/routesAdminSales';
-import Standard from './sales/Standard';
-import Stock from './sales/Stock';
-import Debts from './sales/Debts';
 import AdminRouter from '../../components/router/AdminRouter';
+import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+
+const Standard = lazy(() => import('./sales/Standard'));
+const Stock = lazy(() => import('./sales/Stock'));
+const Debts = lazy(() => import('./sales/Debts'));
+
 
 const Sales = () => {
   return (
@@ -18,13 +22,19 @@ const Sales = () => {
       <div style={ {maxHeight: '52vh', minHeight: '52vh', overflow: 'auto'} }>
         <Switch>
           <AdminRouter exact path="/admin/sales">
-            <Standard />
+            <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Standard />
+            </Suspense>
           </AdminRouter>
           <AdminRouter exact path="/admin/sales/stock">
-            <Stock />
+            <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Stock />
+            </Suspense>
           </AdminRouter>
           <AdminRouter exact path="/admin/sales/debts">
-            <Debts />
+            <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Debts />
+            </Suspense>
           </AdminRouter>
         </Switch>
       </div>

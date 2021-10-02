@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
-import ModalCreateEditProvider from '../../components/modals/ModalCreateEditProvider';
 import {openmodalCreateEditProvider} from '../../components/modals/ModalCreateEditProvider';
+import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+
+const ModalCreateEditProvider = lazy(() => import('../../components/modals/ModalCreateEditProvider'));
 
 const Provider = () => {
   const [searcher, setSearcher] = useState('');
@@ -67,11 +69,13 @@ const Provider = () => {
           listData={ dataProvider }
         />
       </GroupPagesAdmin>
-      <ModalCreateEditProvider
-        dataProvider={ dataSelected }
-        isCreateProvider={ isCreateProvider }
-        setDataSelected={ setDataSelected }
-      />
+      <Suspense fallback={ <SpinnerLoadingPage /> }>
+        <ModalCreateEditProvider
+          dataProvider={ dataSelected }
+          isCreateProvider={ isCreateProvider }
+          setDataSelected={ setDataSelected }
+        />
+      </Suspense>
     </div>
   );
 };

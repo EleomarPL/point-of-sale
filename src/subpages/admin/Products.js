@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
-import ModalModifyProduct from '../../components/modals/ModalModifyProduct';
 import {openmodalModifyProduct} from '../../components/modals/ModalModifyProduct';
+import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+
+const ModalModifyProduct = lazy(() => import('../../components/modals/ModalModifyProduct'));
 
 const Products = () => {
   const [searcher, setSearcher] = useState('');
@@ -72,10 +74,12 @@ const Products = () => {
           listData={ dataProducts }
         />
       </GroupPagesAdmin>
-      <ModalModifyProduct
-        dataProduct={ dataSelected }
-        setDataSelected={ setDataSelected }
-      />
+      <Suspense fallback={ <SpinnerLoadingPage /> }>
+        <ModalModifyProduct
+          dataProduct={ dataSelected }
+          setDataSelected={ setDataSelected }
+        />
+      </Suspense>
     </div>
   );
 };

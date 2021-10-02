@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 
-import ModalCreateEditEmployee, {openmodalCreateEditEmployee} from '../../components/modals/ModalCreateEditEmployee';
+import {openmodalCreateEditEmployee} from '../../components/modals/ModalCreateEditEmployee';
 import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
+import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+
+const ModalCreateEditEmployee = lazy(() => import('../../components/modals/ModalCreateEditEmployee'));
 
 const Employees = () => {
   const [searcher, setSearcher] = useState('');
@@ -86,11 +89,13 @@ const Employees = () => {
           listData={ dataEmployees }
         />
       </GroupPagesAdmin>
-      <ModalCreateEditEmployee
-        dataEmployee={ dataSelected }
-        isCreateEmployee={ isCreateEmployee }
-        setDataSelected={ setDataSelected }
-      />
+      <Suspense fallback={ <SpinnerLoadingPage /> }>
+        <ModalCreateEditEmployee
+          dataEmployee={ dataSelected }
+          isCreateEmployee={ isCreateEmployee }
+          setDataSelected={ setDataSelected }
+        />
+      </Suspense>
     </div>
   );
 };
