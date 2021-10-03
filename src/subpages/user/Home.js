@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 
 import TablePersonalized from '../../components/common/TablePersonalized';
 import ButtonsMy from '../../components/views/ButtonsMy';
@@ -7,10 +7,12 @@ import BoxInputsSales from '../../components/views/my/BoxInputsSales';
 import BoxStatusSales from '../../components/views/my/BoxStatusSales';
 import {openmodalAddArticle} from '../../components/modals/ModalAddArticle';
 import { openmodalViewsArticles } from '../../components/modals/ModalViewArticles';
+import SalesContext from '../../contexts/Sales';
 
 const Home = () => {
 
   const [dataSelected, setDataSelected] = useState({});
+  const {listSales} = useContext(SalesContext);
 
   let header = [
     'Codigo', 'Articulo', 'Precio',
@@ -82,7 +84,7 @@ const Home = () => {
               maxHeight="57vh"
               header={ header }
               listProperties={ properties }
-              listData={ [] }
+              listData={ listSales }
               dataSelected={ dataSelected }
               setDataSelected={ setDataSelected }
             />
