@@ -1,4 +1,5 @@
 const {getConnection, closeConnection} = require('../connection');
+const {isThereAnAdmin} = require('./consults');
 
 const insertAdmin = async({ name, lastName, motherLastName, gender, age, username, password }) => {
   if (!(name && lastName && motherLastName && gender && age && username && password)) {
@@ -6,10 +7,9 @@ const insertAdmin = async({ name, lastName, motherLastName, gender, age, usernam
   }
   const {connection, pool} = await getConnection();
 
-  const userInfo = await connection.query('SELECT * FROM user WHERE type=0;');
-  let dataAdmin = userInfo[0] || null;
+  const isThereAdmin = await isThereAnAdmin();
 
-  if (dataAdmin !== null) return false;
+  if (isThereAdmin) return false;
   else {
     try {
       await connection.query(
