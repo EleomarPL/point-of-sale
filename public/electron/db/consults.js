@@ -10,7 +10,15 @@ const login = async({username, password}) => {
 
   return userInfo[0] || null;
 };
+const isThereAnAdmin = async() => {
+  const {connection, pool} = await getConnection();
+
+  const adminInfo = await connection.query('SELECT * FROM user WHERE type=0;');
+  closeConnection({connection, pool});
+
+  return adminInfo[0] ? true : false;
+};
 
 module.exports = {
-  login
+  login, isThereAnAdmin
 };
