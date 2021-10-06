@@ -24,7 +24,26 @@ const insertAdmin = async({ name, lastName, motherLastName, gender, age, usernam
     }
   }
 };
+const insertProvider = async({company, name, lastName, motherLastName}) => {
+  if (!(company && name && lastName && motherLastName)) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+  
+  try {
+    await connection.query(
+      'INSERT INTO provider VALUES(null, ?, ?, ?, ?);',
+      [company, name, lastName, motherLastName]
+    );
+    closeConnection({connection, pool});
+    return true;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+  
+};
 
 module.exports = {
-  insertAdmin
+  insertAdmin, insertProvider
 };
