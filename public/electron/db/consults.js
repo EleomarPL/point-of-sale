@@ -28,7 +28,24 @@ const getProviders = async({value = '', limit}) => {
 
   return getProviders;
 };
+const getPurchases = async({value = '', limit}) => {
+  const {connection, pool} = await getConnection();
+
+  const getDataPurchases = await connection.query(
+    `SELECT shopping.folio,article.article,provider.company,
+    shopping.amountShopping,article.purchasePrice,
+    shopping.amountShopping*article.purchasePrice FROM 
+    shopping INNER JOIN article INNER JOIN provider ON 
+    shopping.id_provider = provider.id and shopping.id_article = article.id 
+    WHERE CONCAT(article.article,provider.company) 
+    LIKE '%${value}%' ORDER BY shopping.folio DESC 
+    ${limit ? 'LIMIT 0,' + limit : ''};`
+  );
+  closeConnection({connection, pool});
+
+  return getDataPurchases;
+};
 
 module.exports = {
-  login, isThereAnAdmin, getProviders
+  login, isThereAnAdmin, getProviders, getPurchases
 };
