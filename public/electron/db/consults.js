@@ -28,17 +28,23 @@ const getProviders = async({value = '', limit}) => {
 
   return getProviders;
 };
-const getPurchases = async({value = '', limit}) => {
+const getPurchases = async({value, limit, startDate, endDate}) => {
   const {connection, pool} = await getConnection();
 
+  let query = '';
+
+  if (value !== undefined)
+    query = `CONCAT(article.article,provider.company) LIKE '%${value}%'`;
+  else
+    query = `shopping.date>='${startDate}' AND shopping.date<='${endDate}'`;
+  
   const getDataPurchases = await connection.query(
     `SELECT shopping.folio,article.article,provider.company,
     shopping.amountShopping,article.purchasePrice,
-    shopping.amountShopping*article.purchasePrice FROM 
-    shopping INNER JOIN article INNER JOIN provider ON 
-    shopping.id_provider = provider.id and shopping.id_article = article.id 
-    WHERE CONCAT(article.article,provider.company) 
-    LIKE '%${value}%' ORDER BY shopping.folio DESC 
+    shopping.amountShopping*article.purchasePrice FROM
+    shopping INNER JOIN article INNER JOIN provider ON
+    shopping.id_provider = provider.id and shopping.id_article = article.id
+    WHERE ${query} ORDER BY shopping.folio DESC
     ${limit ? 'LIMIT 0,' + limit : ''};`
   );
   closeConnection({connection, pool});
