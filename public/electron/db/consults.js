@@ -63,7 +63,17 @@ const getArticleById = async({id}) => {
 
   return getArticle;
 };
+const getProviderIdCompany = async() => {
+  const {connection, pool} = await getConnection();
+
+  const provider = await connection.query('SELECT id, company FROM provider;');
+  
+  closeConnection({connection, pool});
+
+  return provider;
+};
 
 module.exports = {
-  login, isThereAnAdmin, getProviders, getPurchases, getArticleById
+  login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
+  getProviderIdCompany
 };
