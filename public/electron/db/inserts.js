@@ -1,5 +1,6 @@
 const {getConnection, closeConnection} = require('../connection');
 const {isThereAnAdmin} = require('./consults');
+const {updateArticleByPurchase} = require('./updates');
 
 const insertAdmin = async({ name, lastName, motherLastName, gender, age, username, password }) => {
   if (!(name && lastName && motherLastName && gender && age && username && password)) {
@@ -43,7 +44,48 @@ const insertProvider = async({company, name, lastName, motherLastName}) => {
   }
   
 };
+const addPurchases = async({listPurchases}) => {
+  if (!listPurchases) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+
+  let idArticle = 0;
+  
+  listPurchases.forEach(async(purchase) => {
+    if (!(purchase.article && purchase.purchasePrice && purchase.salesPrice
+      && purchase.amount && purchase.idProvider, purchase.amountShopping
+    )) {
+      return false;
+    } else {
+      if (!purchase.isAdded) {
+        const result = await connection.query(
+          'INSERT INTO article VALUES(null, ?, ?, ?, ?, ?, \'unlocked\');',
+          [
+            purchase.article, purchase.purchasePrice, purchase.salesPrice,
+            purchase.amount, purchase.dateofExpiry || null
+          ]
+        );
+        idArticle = result.insertId;
+      } else {
+        await updateArticleByPurchase({
+          connection, id: purchase.id, purchasePrice: purchase.purchasePrice,
+          amount: purchase.amount, dateofExpiry: purchase.dateofExpiry
+        });
+        idArticle = purchase.id;
+      }
+      if (idArticle !== 0) {
+        await connection.query(
+          'INSERT INTO shopping VALUES(null, ?, ?, default, ?);',
+          [purchase.idProvider, idArticle, purchase.amountShopping]
+        );
+      }
+    }
+  });
+
+  closeConnection({connection, pool});
+};
 
 module.exports = {
-  insertAdmin, insertProvider
+  insertAdmin, insertProvider, addPurchases
 };

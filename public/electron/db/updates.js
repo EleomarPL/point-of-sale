@@ -19,5 +19,13 @@ const updateProvider = async({id, name, lastName, motherLastName}) => {
     return false;
   }
 };
+const updateArticleByPurchase = async({connection, purchasePrice, dateofExpiry, amount, id}) => {
+  await connection.query(
+    'UPDATE article SET purchasePrice=?, dateofExpiry=?, amount=amount+? WHERE id=? ;',
+    [ purchasePrice, dateofExpiry || null, amount, id ]
+  );
+};
 
-module.exports = {updateProvider};
+module.exports = {
+  updateProvider, updateArticleByPurchase
+};
