@@ -85,7 +85,26 @@ const addPurchases = async({listPurchases}) => {
 
   closeConnection({connection, pool});
 };
+const insertEmployee = async({name, lastName, motherLastName, IsAMan, age, username, password}) => {
+  if (!(name, lastName, motherLastName, age, username, password)) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+  
+  try {
+    await connection.query(
+      'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, 1);',
+      [name, lastName, motherLastName, IsAMan ? 'M' : 'W', age, username, password]
+    );
+    closeConnection({connection, pool});
+    return true;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+  
+};
 
 module.exports = {
-  insertAdmin, insertProvider, addPurchases
+  insertAdmin, insertProvider, addPurchases, insertEmployee
 };
