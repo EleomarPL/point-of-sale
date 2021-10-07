@@ -25,7 +25,26 @@ const updateArticleByPurchase = async({connection, purchasePrice, dateofExpiry, 
     [ purchasePrice, dateofExpiry || null, amount, id ]
   );
 };
+const updateSalesPriceArticle = async({id, salesPrice}) => {
+  if (!(salesPrice && id)) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+  
+  try {
+    const resultOperation = await connection.query(
+      'UPDATE article SET salesPrice=? WHERE id=? ;',
+      [salesPrice, id]
+    );
+    closeConnection({connection, pool});
+
+    return resultOperation;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+};
 
 module.exports = {
-  updateProvider, updateArticleByPurchase
+  updateProvider, updateArticleByPurchase, updateSalesPriceArticle
 };
