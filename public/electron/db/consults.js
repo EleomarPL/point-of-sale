@@ -72,8 +72,17 @@ const getProviderIdCompany = async() => {
 
   return provider;
 };
+const getArticleForAuxTable = async({value}) => {
+  const {connection, pool} = await getConnection();
+
+  const provider = await connection.query(`SELECT * FROM article WHERE article LIKE '%${value}%' LIMIT 0,3;`);
+  
+  closeConnection({connection, pool});
+
+  return provider;
+};
 
 module.exports = {
   login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
-  getProviderIdCompany
+  getProviderIdCompany, getArticleForAuxTable
 };
