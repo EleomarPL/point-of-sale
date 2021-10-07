@@ -44,7 +44,23 @@ const updateSalesPriceArticle = async({id, salesPrice}) => {
     return false;
   }
 };
+const updateStatusArticle = async({id, willItLocked}) => {
+  const {connection, pool} = await getConnection();
+  
+  try {
+    const resultOperation = await connection.query(
+      'UPDATE article SET statusArticle=? WHERE id=? ;',
+      [willItLocked ? 'locked' : 'unlocked', id]
+    );
+    closeConnection({connection, pool});
+
+    return resultOperation;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+};
 
 module.exports = {
-  updateProvider, updateArticleByPurchase, updateSalesPriceArticle
+  updateProvider, updateArticleByPurchase, updateSalesPriceArticle, updateStatusArticle
 };
