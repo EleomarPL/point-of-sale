@@ -2,8 +2,8 @@ const {getConnection, closeConnection} = require('../connection');
 const {isThereAnAdmin} = require('./consults');
 const {updateArticleByPurchase} = require('./updates');
 
-const insertAdmin = async({ name, lastName, motherLastName, gender, age, username, password }) => {
-  if (!(name && lastName && motherLastName && gender && age && username && password)) {
+const insertAdmin = async({ name, lastName, motherLastName, IsAMan, age, username, password }) => {
+  if (!(name && lastName && motherLastName && age && username && password)) {
     return false;
   }
   const {connection, pool} = await getConnection();
@@ -14,8 +14,8 @@ const insertAdmin = async({ name, lastName, motherLastName, gender, age, usernam
   else {
     try {
       await connection.query(
-        'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, 0);',
-        [name, lastName, motherLastName, gender, age, username, password]
+        'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'admin\', \'unlocked\');',
+        [name, lastName, motherLastName, IsAMan ? 'M' : 'W', age, username, password]
       );
       closeConnection({connection, pool});
       return true;
@@ -93,7 +93,7 @@ const insertEmployee = async({name, lastName, motherLastName, IsAMan, age, usern
   
   try {
     await connection.query(
-      'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, 1);',
+      'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'employee\', \'unlocked\');',
       [name, lastName, motherLastName, IsAMan ? 'M' : 'W', age, username, password]
     );
     closeConnection({connection, pool});
