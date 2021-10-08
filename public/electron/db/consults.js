@@ -28,6 +28,17 @@ const getProviders = async({value = '', limit}) => {
 
   return getProviders;
 };
+const getEmployees = async(value, limit) => {
+  const {connection, pool} = await getConnection();
+  const getDataEmployee = await connection.query(
+    `SELECT id, name, lastName, motherLastName, gender, age, username, type, 
+    statusUser FROM user WHERE CONCAT(id, name, lastName) LIKE '%${value}%' ORDER BY Id DESC
+    ${limit ? 'LIMIT 0,' + limit : ''};`
+  );
+  closeConnection({connection, pool});
+
+  return getDataEmployee;
+};
 const getPurchases = async({value, limit, startDate, endDate}) => {
   const {connection, pool} = await getConnection();
 
@@ -170,5 +181,6 @@ const getDebtsFromADebtor = async({idDebtor}) => {
 module.exports = {
   login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
   getProviderIdCompany, getArticleForAuxTable, getArticlesByIdArticle,
-  getStandardSales, getStockSales, getDebts, getDebtsFromADebtor
+  getStandardSales, getStockSales, getDebts, getDebtsFromADebtor,
+  getEmployees
 };
