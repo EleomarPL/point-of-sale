@@ -60,24 +60,24 @@ const addPurchases = async({listPurchases}) => {
     } else {
       if (!purchase.isAdded) {
         const result = await connection.query(
-          'INSERT INTO article VALUES(null, ?, ?, ?, ?, ?, \'unlocked\');',
+          'INSERT INTO article VALUES(null, ?, ?, ?, ?, ?, ?, \'unlocked\');',
           [
-            purchase.article, purchase.purchasePrice, purchase.salesPrice,
+            purchase.idProvider, purchase.article, purchase.purchasePrice, purchase.salesPrice,
             purchase.amount, purchase.dateofExpiry || null
           ]
         );
         idArticle = result.insertId;
       } else {
         await updateArticleByPurchase({
-          connection, id: purchase.id, purchasePrice: purchase.purchasePrice,
+          connection, idProvider: purchase.idProvider, id: purchase.id, purchasePrice: purchase.purchasePrice,
           amount: purchase.amount, dateofExpiry: purchase.dateofExpiry
         });
         idArticle = purchase.id;
       }
       if (idArticle !== 0) {
         await connection.query(
-          'INSERT INTO shopping VALUES(null, ?, ?, default, ?);',
-          [purchase.idProvider, idArticle, purchase.amountShopping]
+          'INSERT INTO shopping VALUES(null, ?, default, ?);',
+          [idArticle, purchase.amountShopping]
         );
       }
     }

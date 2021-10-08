@@ -43,7 +43,7 @@ const getPurchases = async({value, limit, startDate, endDate}) => {
     shopping.amountShopping,article.purchasePrice,
     shopping.amountShopping*article.purchasePrice FROM
     shopping INNER JOIN article INNER JOIN provider ON
-    shopping.id_provider = provider.id and shopping.id_article = article.id
+    article.id_provider = provider.id and shopping.id_article = article.id
     WHERE ${query} ORDER BY shopping.folio DESC
     ${limit ? 'LIMIT 0,' + limit : ''};`
   );

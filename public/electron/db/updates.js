@@ -19,10 +19,10 @@ const updateProvider = async({id, name, lastName, motherLastName}) => {
     return false;
   }
 };
-const updateArticleByPurchase = async({connection, purchasePrice, dateofExpiry, amount, id}) => {
+const updateArticleByPurchase = async({connection, idProvider, purchasePrice, dateofExpiry, amount, id}) => {
   await connection.query(
-    'UPDATE article SET purchasePrice=?, dateofExpiry=?, amount=amount+? WHERE id=? ;',
-    [ purchasePrice, dateofExpiry || null, amount, id ]
+    'UPDATE article SET id_provider=?, purchasePrice=?, dateofExpiry=?, amount=amount+? WHERE id=? ;',
+    [ idProvider, purchasePrice, dateofExpiry || null, amount, id ]
   );
 };
 const updateSalesPriceArticle = async({id, salesPrice}) => {
