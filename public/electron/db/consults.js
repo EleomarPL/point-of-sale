@@ -107,7 +107,7 @@ const getStandardSales = async({value, startDate, endDate, limit}) => {
     query = `ticketf.Fecha>='${startDate}' AND ticketf.Fecha<='${endDate}'`;
   }
 
-  const getDataPurchases = await connection.query(
+  const getSales = await connection.query(
     `SELECT ticketf.folio,ticketf.id_user,article.article, 
     salesrecord.amount,salesrecord.salesPrice, salesrecord.total, 
     ticketf.date FROM ticketf INNER JOIN salesrecord INNER JOIN article ON 
@@ -117,7 +117,28 @@ const getStandardSales = async({value, startDate, endDate, limit}) => {
   );
   closeConnection({connection, pool});
 
-  return getDataPurchases;
+  return getSales;
+};
+const getStockSales = async({value = '', startDate, endDate}) => {
+  if (!(startDate && endDate)) {
+    return [];
+  }
+
+  const {connection, pool} = await getConnection();
+
+  const getSales = await connection.query(
+    `SELECT ticketf.id_user,provider.company,article.article,article.amount,
+    SUM(salesrecord.amount),SUM(salesrecord.total) FROM (((article 
+    RIGHT JOIN salesrecord ON salesrecord.id_article=article.id ) 
+    RIGHT JOIN ticketf ON salesrecord.folio=ticketf.folio) 
+    RIGHT JOIN provider ON article.id_provider=provider.id) WHERE 
+    provider.id LIKE '%${value}%' AND ticketf.date>='${startDate}' 
+    AND ticketf.date<='${endDate}' GROUP BY article.id 
+    ORDER BY SUM(salesrecord.amount) DESC;`
+  );
+  closeConnection({connection, pool});
+
+  return getSales;
 };
 const getDebts = async({value = '', isGroupByDebtor}) => {
   const {connection, pool} = await getConnection();
@@ -136,5 +157,5 @@ const getDebts = async({value = '', isGroupByDebtor}) => {
 module.exports = {
   login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
   getProviderIdCompany, getArticleForAuxTable, getArticlesByIdArticle,
-  getStandardSales, getDebts
+  getStandardSales, getStockSales, getDebts
 };
