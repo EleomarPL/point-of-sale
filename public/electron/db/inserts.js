@@ -156,8 +156,26 @@ const insertDebtor = async({name, lastName, motherLastName, address, IsAMan}) =>
     return false;
   }
 };
+const insertDebt = async({idDebtor, idArticle, idUser, amount, price, total}) => {
+  if (!(idDebtor, idArticle, idUser, amount, price, total)) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+  
+  try {
+    await connection.query(
+      'INSERT INTO debts VALUES(null, ?, ?, ?, ?, ?, ?, default);',
+      [idDebtor, idArticle, idUser, amount, price, total]
+    );
+    closeConnection({connection, pool});
+    return true;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+};
 
 module.exports = {
   insertAdmin, insertProvider, addPurchases, insertEmployee, insertSales,
-  insertDebtor
+  insertDebtor, insertDebt
 };
