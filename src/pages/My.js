@@ -4,10 +4,10 @@ import {lazy, Suspense} from 'react';
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
 import Home from '../subpages/user/Home';
 import { SalesProvider } from '../contexts/Sales';
+import ModalDebts from '../components/modals/ModalDebts';
 
 const ModalAddArticle = lazy(() => import('../components/modals/ModalAddArticle'));
 const ModalViewsArticles = lazy(() => import('../components/modals/ModalViewArticles'));
-const ModalDebts = lazy(() => import('../components/modals/ModalViewArticles'));
 
 const My = () => {
   return (
@@ -17,10 +17,10 @@ const My = () => {
         <Suspense fallback={ <SpinnerLoadingPage /> }>
           <ModalAddArticle />
           <ModalViewsArticles />
-          <HashRouter>
-            <ModalDebts />
-          </HashRouter>
         </Suspense>
+        <HashRouter>
+          <ModalDebts />
+        </HashRouter>
       </section>
     </SalesProvider>
   );
