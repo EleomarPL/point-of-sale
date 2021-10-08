@@ -63,6 +63,12 @@ const updateArticleByPurchase = async({connection, idProvider, purchasePrice, da
     [ idProvider, purchasePrice, dateofExpiry || null, amount, id ]
   );
 };
+const updateAmountArticle = async({connection, id, amountToSubtract}) => {
+  await connection.query(
+    'UPDATE article SET amount=amount-? WHERE id=? AND amount-?>=0 AND statusArticle=\'unlocked\';',
+    [amountToSubtract, id, amountToSubtract]
+  );
+};
 const updateSalesPriceArticle = async({id, salesPrice}) => {
   if (!(salesPrice && id)) {
     return false;
@@ -136,5 +142,6 @@ const updateStatusEmployee = async({id, willIsLocked}) => {
 
 module.exports = {
   updateProvider, updateArticleByPurchase, updateSalesPriceArticle, updateStatusArticle,
-  updateUsernamePasswordAgeEmployee, updateStatusEmployee, updateUsernameAdmin, updatePasswordAdmin
+  updateUsernamePasswordAgeEmployee, updateStatusEmployee, updateUsernameAdmin, updatePasswordAdmin,
+  updateAmountArticle
 };

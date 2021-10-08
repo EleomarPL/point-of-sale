@@ -1,6 +1,6 @@
 const {getConnection, closeConnection} = require('../connection');
 const {isThereAnAdmin} = require('./consults');
-const {updateArticleByPurchase} = require('./updates');
+const {updateArticleByPurchase, updateAmountArticle} = require('./updates');
 
 const insertAdmin = async({ name, lastName, motherLastName, IsAMan, age, username, password }) => {
   if (!(name && lastName && motherLastName && age && username && password)) {
@@ -104,7 +104,41 @@ const insertEmployee = async({name, lastName, motherLastName, IsAMan, age, usern
   }
   
 };
+const insertSales = async({idUser, total, salesRecords}) => {
+  if (!(idUser && total)) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+  
+  try {
+    const resultInsert = await connection.query(
+      'INSERT INTO ticketf VALUES(null, default, ?, ?);',
+      [idUser, total]
+    );
+
+    if (resultInsert.affectedRows) {
+      let folioTicketf = resultInsert.insertId;
+      salesRecords.forEach(async sale => {
+        if (!(sale.idArticle && sale.salesPrice && sale.amount && sale.total)) {
+          return false;
+        }
+        await connection.query(
+          'INSERT INTO salesrecord VALUES(?, ?, ?, ?, ?) ;',
+          [folioTicketf, sale.idArticle, sale.salesPrice, sale.amount, sale.total]
+        );
+        await updateAmountArticle({connection, id: sale.idArticle, amountToSubtract: sale.amount});
+      });
+
+    }
+
+    closeConnection({connection, pool});
+    return true;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+};
 
 module.exports = {
-  insertAdmin, insertProvider, addPurchases, insertEmployee
+  insertAdmin, insertProvider, addPurchases, insertEmployee, insertSales
 };
