@@ -19,6 +19,44 @@ const updateProvider = async({id, name, lastName, motherLastName}) => {
     return false;
   }
 };
+const updatePasswordAdmin = async({id, password}) => {
+  if (!(password && id)) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+  
+  try {
+    const resultOperation = await connection.query(
+      'UPDATE user SET password=? WHERE id=? ;',
+      [password, id]
+    );
+    closeConnection({connection, pool});
+
+    return resultOperation;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+};
+const updateUsernameAdmin = async({id, username}) => {
+  if (!(username && id)) {
+    return false;
+  }
+  const {connection, pool} = await getConnection();
+  
+  try {
+    const resultOperation = await connection.query(
+      'UPDATE user SET username=? WHERE id=? ;',
+      [username, id]
+    );
+    closeConnection({connection, pool});
+
+    return resultOperation;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+};
 const updateArticleByPurchase = async({connection, idProvider, purchasePrice, dateofExpiry, amount, id}) => {
   await connection.query(
     'UPDATE article SET id_provider=?, purchasePrice=?, dateofExpiry=?, amount=amount+? WHERE id=? ;',
@@ -98,5 +136,5 @@ const updateStatusEmployee = async({id, willIsLocked}) => {
 
 module.exports = {
   updateProvider, updateArticleByPurchase, updateSalesPriceArticle, updateStatusArticle,
-  updateUsernamePasswordAgeEmployee, updateStatusEmployee
+  updateUsernamePasswordAgeEmployee, updateStatusEmployee, updateUsernameAdmin, updatePasswordAdmin
 };
