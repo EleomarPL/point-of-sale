@@ -119,9 +119,22 @@ const getStandardSales = async({value, startDate, endDate, limit}) => {
 
   return getDataPurchases;
 };
+const getDebts = async({value = '', isGroupByDebtor}) => {
+  const {connection, pool} = await getConnection();
+  
+  const getDataDebts = await connection.query(
+    `SELECT debtor.id,debtor.name,debtor.lastName,debtor.motherLastName,
+    ${isGroupByDebtor ? 'SUM(debts.total)' : 'debts.total'} FROM debts INNER JOIN debtor ON 
+    debts.id_debtor=debtor.id AND CONCAT(debtor.id,debtor.name,
+    debtor.lastName) LIKE '%${value}%' ${isGroupByDebtor ? 'GROUP BY debtor.id' : ''} ;`
+  );
+  closeConnection({connection, pool});
+
+  return getDataDebts;
+};
 
 module.exports = {
   login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
   getProviderIdCompany, getArticleForAuxTable, getArticlesByIdArticle,
-  getStandardSales
+  getStandardSales, getDebts
 };
