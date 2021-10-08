@@ -93,8 +93,35 @@ const getArticlesByIdArticle = async({value = '', limit}) => {
 
   return getArticles;
 };
+const getStandardSales = async({value, startDate, endDate, limit}) => {
+  const {connection, pool} = await getConnection();
+
+  let query = '';
+
+  if (value !== undefined)
+    query = `CONCAT(ticketf.folio,ticketf.id_user,article.article) LIKE '%${value}%'`;
+  else {
+    if (!(startDate && endDate)) {
+      return [];
+    }
+    query = `ticketf.Fecha>='${startDate}' AND ticketf.Fecha<='${endDate}'`;
+  }
+
+  const getDataPurchases = await connection.query(
+    `SELECT ticketf.folio,ticketf.id_user,article.article, 
+    salesrecord.amount,salesrecord.salesPrice, salesrecord.total, 
+    ticketf.date FROM ticketf INNER JOIN salesrecord INNER JOIN article ON 
+    ticketf.folio=salesrecord.folio AND salesrecord.id_article=article.id 
+    WHERE ${query} ORDER BY ticketf.folio DESC 
+    ${limit ? 'LIMIT 0,' + limit : ''};`
+  );
+  closeConnection({connection, pool});
+
+  return getDataPurchases;
+};
 
 module.exports = {
   login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
-  getProviderIdCompany, getArticleForAuxTable, getArticlesByIdArticle
+  getProviderIdCompany, getArticleForAuxTable, getArticlesByIdArticle,
+  getStandardSales
 };
