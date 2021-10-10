@@ -13,12 +13,12 @@ const insertAdmin = async({ name, lastName, motherLastName, IsAMan, age, usernam
   if (isThereAdmin) return false;
   else {
     try {
-      await connection.query(
+      const resultOperation = await connection.query(
         'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'admin\', \'unlocked\');',
         [name, lastName, motherLastName, IsAMan ? 'M' : 'W', age, username, password]
       );
       closeConnection({connection, pool});
-      return true;
+      return resultOperation;
     } catch (err) {
       closeConnection({connection, pool});
       return false;
@@ -32,12 +32,12 @@ const insertProvider = async({company, name, lastName, motherLastName}) => {
   const {connection, pool} = await getConnection();
   
   try {
-    await connection.query(
+    const resultOperation = await connection.query(
       'INSERT INTO provider VALUES(null, ?, ?, ?, ?);',
       [company, name, lastName, motherLastName]
     );
     closeConnection({connection, pool});
-    return true;
+    return resultOperation;
   } catch (err) {
     closeConnection({connection, pool});
     return false;
@@ -92,12 +92,12 @@ const insertEmployee = async({name, lastName, motherLastName, IsAMan, age, usern
   const {connection, pool} = await getConnection();
   
   try {
-    await connection.query(
+    const resultOperation = await connection.query(
       'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'employee\', \'unlocked\');',
       [name, lastName, motherLastName, IsAMan ? 'M' : 'W', age, username, password]
     );
     closeConnection({connection, pool});
-    return true;
+    return resultOperation;
   } catch (err) {
     closeConnection({connection, pool});
     return false;
@@ -145,12 +145,12 @@ const insertDebtor = async({name, lastName, motherLastName, address, IsAMan}) =>
   const {connection, pool} = await getConnection();
   
   try {
-    await connection.query(
+    const resultOperation = await connection.query(
       'INSERT INTO debtor VALUES(null, ?, ?, ?, ?, ?);',
       [name, lastName, motherLastName, address, IsAMan ? 'M' : 'W']
     );
     closeConnection({connection, pool});
-    return true;
+    return resultOperation;
   } catch (err) {
     closeConnection({connection, pool});
     return false;
@@ -163,12 +163,12 @@ const insertDebt = async({idDebtor, idArticle, idUser, amount, price, total}) =>
   const {connection, pool} = await getConnection();
   
   try {
-    await connection.query(
+    const resultOperation = await connection.query(
       'INSERT INTO debts VALUES(null, ?, ?, ?, ?, ?, ?, default);',
       [idDebtor, idArticle, idUser, amount, price, total]
     );
     closeConnection({connection, pool});
-    return true;
+    return resultOperation;
   } catch (err) {
     closeConnection({connection, pool});
     return false;
