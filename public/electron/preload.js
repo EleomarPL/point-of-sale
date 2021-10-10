@@ -1,5 +1,24 @@
 const {contextBridge, ipcRenderer} = require('electron');
 
 contextBridge.exposeInMainWorld(
-  'electron', {}
+  'electron', {
+    provider: {
+
+    },
+    shopping: {
+
+    },
+    article: {
+
+    },
+    employee: {
+
+    },
+    sales: {
+
+    },
+    debts: {
+      
+    }
+  }
 );
