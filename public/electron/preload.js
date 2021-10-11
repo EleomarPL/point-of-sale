@@ -1,6 +1,6 @@
 const {contextBridge, ipcRenderer} = require('electron');
 
-const validChannels = ['render:get-provider', 'main:get-provider'];
+const validChannels = ['render:get-provider', 'main:get-provider', 'render:insert-provider', 'main:insert-provider'];
 
 contextBridge.exposeInMainWorld(
   'electron', {
