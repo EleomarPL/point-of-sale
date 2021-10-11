@@ -26,7 +26,7 @@ function createWindow() {
   createMainWindow.loadURL('http://localhost:3000/');
   createMainWindow.maximize();
 
-  triggerEventsProvider({window: createMainWindow});
+  triggerEventsProvider({windowToSend: createMainWindow});
   // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
 }
 
