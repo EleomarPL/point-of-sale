@@ -2,7 +2,7 @@ const {ipcMain} = require('electron');
 
 const {getProviders} = require('../db/consults');
 
-const activateEventsProvider = ({windowToSend}) => {
+const triggerEventsProvider = ({windowToSend}) => {
 
   ipcMain.on('main:get-provider', async(_, { keyword, limit }) => {
     const dataProviders = await getProviders({value: keyword, limit});
@@ -12,5 +12,5 @@ const activateEventsProvider = ({windowToSend}) => {
 };
 
 module.exports = {
-  activateEventsProvider
+  triggerEventsProvider
 };

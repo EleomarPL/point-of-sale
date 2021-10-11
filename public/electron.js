@@ -3,7 +3,7 @@ require('dotenv').config();
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
-const {activateEventsProvider} = require('./electron/evtContextBridge/provider');
+const {triggerEventsProvider} = require('./electron/evtContextBridge/provider');
 
 if (process.env.NODE_ENV !== 'production') {
   require('electron-reload')(__dirname, {
@@ -26,7 +26,7 @@ function createWindow() {
   createMainWindow.loadURL('http://localhost:3000/');
   createMainWindow.maximize();
 
-  activateEventsProvider({window: createMainWindow});
+  triggerEventsProvider({window: createMainWindow});
   // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
 }
 
