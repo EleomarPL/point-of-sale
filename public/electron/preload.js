@@ -1,6 +1,16 @@
 const {contextBridge, ipcRenderer} = require('electron');
 
-const validChannels = ['render:get-provider', 'main:get-provider', 'render:insert-provider', 'main:insert-provider'];
+const channelsProvider = require('./common/channelsProvider');
+const channelsShopping = require('./common/channelsShopping');
+const channelsArticle = require('./common/channelsArticle');
+const channelsEmployee = require('./common/channelsEmployee');
+const channelsSales = require('./common/channelsSales');
+const channelsDebts = require('./common/channelsDebts');
+
+const validChannels = [
+  ...channelsProvider, ...channelsShopping, ...channelsArticle,
+  ...channelsEmployee, ...channelsSales, ...channelsDebts
+];
 
 contextBridge.exposeInMainWorld(
   'electron', {
