@@ -1,6 +1,7 @@
 const {ipcMain} = require('electron');
 
 const {getPurchases} = require('../db/consults');
+const {addPurchases} = require('../db/inserts');
 
 const triggerEventsShopping = ({windowToSend}) => {
   
@@ -8,6 +9,11 @@ const triggerEventsShopping = ({windowToSend}) => {
     const dataPurchases = await getPurchases({value, startDate, endDate, limit});
 
     windowToSend.webContents.send('render:get-purchases', dataPurchases);
+  });
+  ipcMain.on('main:insert-purchases', async(_, {listPurchases}) => {
+    const resultOperation = await addPurchases({listPurchases});
+
+    windowToSend.webContents.send('render:insert-purchases', resultOperation);
   });
 };
 
