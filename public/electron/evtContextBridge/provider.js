@@ -16,7 +16,7 @@ const triggerEventsProvider = ({windowToSend}) => {
 
     windowToSend.webContents.send('render:insert-provider', dataInsertProvider);
   });
-  ipcMain.on('main:update-provider', async({id, name, lastName, motherLastName}) => {
+  ipcMain.on('main:update-provider', async(_, {id, name, lastName, motherLastName}) => {
     const dataUpdateProvider = await updateProvider({id, name, lastName, motherLastName});
 
     windowToSend.webContents.send('render:update-provider', dataUpdateProvider);
