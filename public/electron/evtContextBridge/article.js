@@ -1,7 +1,7 @@
 const {ipcMain} = require('electron');
 
 const {updateSalesPriceArticle, updateStatusArticle} = require('../db/updates');
-const {getArticleById} = require('../db/consults');
+const {getArticleById, getArticlesByIdArticle} = require('../db/consults');
 
 const triggerEventsArticle = ({windowToSend}) => {
   ipcMain.on('main:update-salesprice-article', async(_, { id, salesPrice }) => {
@@ -18,6 +18,11 @@ const triggerEventsArticle = ({windowToSend}) => {
     const dataArticle = await getArticleById({id});
     
     windowToSend.webContents.send('render:get-article-by-id', dataArticle);
+  });
+  ipcMain.on('main:get-article-by-keyword', async(_, { value, limit }) => {
+    const dataArticle = await getArticlesByIdArticle({value, limit});
+    
+    windowToSend.webContents.send('render:get-article-by-keyword', dataArticle);
   });
 };
 
