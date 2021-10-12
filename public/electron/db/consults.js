@@ -28,7 +28,7 @@ const getProviders = async({value = '', limit}) => {
 
   return getProviders;
 };
-const getEmployees = async(value, limit) => {
+const getEmployees = async({value, limit}) => {
   const {connection, pool} = await getConnection();
   const getDataEmployee = await connection.query(
     `SELECT id, name, lastName, motherLastName, gender, age, username, type, 
