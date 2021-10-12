@@ -4,6 +4,7 @@ const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
 const {triggerEventsProvider} = require('./electron/evtContextBridge/provider');
+const {triggerEventsShopping} = require('./electron/evtContextBridge/shopping');
 
 if (process.env.NODE_ENV !== 'production') {
   require('electron-reload')(__dirname, {
@@ -27,6 +28,7 @@ function createWindow() {
   createMainWindow.maximize();
 
   triggerEventsProvider({windowToSend: createMainWindow});
+  triggerEventsShopping({windowToSend: createMainWindow});
   // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
 }
 
