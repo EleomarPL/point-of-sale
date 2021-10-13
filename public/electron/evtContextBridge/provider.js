@@ -1,6 +1,6 @@
 const {ipcMain} = require('electron');
 
-const {getProviders} = require('../db/consults');
+const {getProviders, getProviderIdCompany} = require('../db/consults');
 const {insertProvider} = require('../db/inserts');
 const {updateProvider} = require('../db/updates');
 
@@ -10,6 +10,11 @@ const triggerEventsProvider = ({windowToSend}) => {
     const dataProviders = await getProviders({value: keyword, limit});
     
     windowToSend.webContents.send('render:get-provider', dataProviders);
+  });
+  ipcMain.on('main:get-provider-forselect', async() => {
+    const dataProviders = await getProviderIdCompany();
+    
+    windowToSend.webContents.send('render:get-provider-forselect', dataProviders);
   });
   ipcMain.on('main:insert-provider', async(_, { name, lastName, motherLastName, company }) => {
     const dataInsertProvider = await insertProvider({name, lastName, motherLastName, company});
