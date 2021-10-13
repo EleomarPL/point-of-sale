@@ -2,7 +2,7 @@ const {ipcMain} = require('electron');
 
 const {getEmployees} = require('../db/consults');
 const {insertEmployee} = require('../db/inserts');
-const {updateUsernamePasswordAgeEmployee} = require('../db/updates');
+const {updateUsernamePasswordAgeEmployee, updateStatusEmployee} = require('../db/updates');
 
 const triggerEventsEmployee = ({windowToSend}) => {
   ipcMain.on('main:get-employees', async(_, { value, limit }) => {
@@ -21,6 +21,11 @@ const triggerEventsEmployee = ({windowToSend}) => {
     });
     
     windowToSend.webContents.send('render:update-employee', resultOperation);
+  });
+  ipcMain.on('main:update-status-employee', async(_, { id, willIsLocked }) => {
+    const resultOperation = await updateStatusEmployee({id, willIsLocked});
+    
+    windowToSend.webContents.send('render:update-status-employee', resultOperation);
   });
 };
 
