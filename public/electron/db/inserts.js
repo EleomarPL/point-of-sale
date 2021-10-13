@@ -138,7 +138,7 @@ const insertSales = async({idUser, total, salesRecords}) => {
     return false;
   }
 };
-const insertDebtor = async({name, lastName, motherLastName, address, IsAMan}) => {
+const insertDebtor = async({name, lastName, motherLastName, address, isAMan}) => {
   if (!(name, lastName, motherLastName, address)) {
     return false;
   }
@@ -147,7 +147,7 @@ const insertDebtor = async({name, lastName, motherLastName, address, IsAMan}) =>
   try {
     const resultOperation = await connection.query(
       'INSERT INTO debtor VALUES(null, ?, ?, ?, ?, ?);',
-      [name, lastName, motherLastName, address, IsAMan ? 'M' : 'W']
+      [name, lastName, motherLastName, address, isAMan ? 'M' : 'W']
     );
     closeConnection({connection, pool});
     return resultOperation;
