@@ -6,10 +6,13 @@ const channelsArticle = require('./common/channelsArticle');
 const channelsEmployee = require('./common/channelsEmployee');
 const channelsSales = require('./common/channelsSales');
 const channelsDebts = require('./common/channelsDebts');
+const channelsAdmin = require('./common/channelsAdmin');
+const channelsLogin = require('./common/channelsLogin');
 
 const validChannels = [
   ...channelsProvider, ...channelsShopping, ...channelsArticle,
-  ...channelsEmployee, ...channelsSales, ...channelsDebts
+  ...channelsEmployee, ...channelsSales, ...channelsDebts,
+  ...channelsAdmin, ...channelsLogin
 ];
 
 contextBridge.exposeInMainWorld(
