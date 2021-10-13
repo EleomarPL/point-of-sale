@@ -2,7 +2,7 @@ const {getConnection, closeConnection} = require('../connection');
 const {isThereAnAdmin} = require('./consults');
 const {updateArticleByPurchase, updateAmountArticle} = require('./updates');
 
-const insertAdmin = async({ name, lastName, motherLastName, IsAMan, age, username, password }) => {
+const insertAdmin = async({ name, lastName, motherLastName, isAMan, age, username, password }) => {
   if (!(name && lastName && motherLastName && age && username && password)) {
     return false;
   }
@@ -15,7 +15,7 @@ const insertAdmin = async({ name, lastName, motherLastName, IsAMan, age, usernam
     try {
       const resultOperation = await connection.query(
         'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'admin\', \'unlocked\');',
-        [name, lastName, motherLastName, IsAMan ? 'M' : 'W', age, username, password]
+        [name, lastName, motherLastName, isAMan ? 'M' : 'W', age, username, password]
       );
       closeConnection({connection, pool});
       return resultOperation;
