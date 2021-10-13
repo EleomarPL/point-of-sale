@@ -9,8 +9,8 @@ const triggerEventsEmployee = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:get-employees', dataEmployees);
   });
-  ipcMain.on('main:insert-employee', async(_, { name, lastName, motherLastName, age, IsAMan, username, password }) => {
-    const resultOperation = await insertEmployee({name, lastName, motherLastName, age, IsAMan, username, password});
+  ipcMain.on('main:insert-employee', async(_, { name, lastName, motherLastName, age, isAMan, username, password }) => {
+    const resultOperation = await insertEmployee({name, lastName, motherLastName, age, isAMan, username, password});
     
     windowToSend.webContents.send('render:insert-employee', resultOperation);
   });

@@ -85,7 +85,7 @@ const addPurchases = async({listPurchases}) => {
 
   closeConnection({connection, pool});
 };
-const insertEmployee = async({name, lastName, motherLastName, IsAMan, age, username, password}) => {
+const insertEmployee = async({name, lastName, motherLastName, isAMan, age, username, password}) => {
   if (!(name, lastName, motherLastName, age, username, password)) {
     return false;
   }
@@ -94,7 +94,7 @@ const insertEmployee = async({name, lastName, motherLastName, IsAMan, age, usern
   try {
     const resultOperation = await connection.query(
       'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'employee\', \'unlocked\');',
-      [name, lastName, motherLastName, IsAMan ? 'M' : 'W', age, username, password]
+      [name, lastName, motherLastName, isAMan ? 'M' : 'W', age, username, password]
     );
     closeConnection({connection, pool});
     return resultOperation;
