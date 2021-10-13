@@ -2,6 +2,7 @@ const {ipcMain} = require('electron');
 
 const {getEmployees} = require('../db/consults');
 const {insertEmployee} = require('../db/inserts');
+const {updateUsernamePasswordAgeEmployee} = require('../db/updates');
 
 const triggerEventsEmployee = ({windowToSend}) => {
   ipcMain.on('main:get-employees', async(_, { value, limit }) => {
@@ -13,6 +14,13 @@ const triggerEventsEmployee = ({windowToSend}) => {
     const resultOperation = await insertEmployee({name, lastName, motherLastName, age, isAMan, username, password});
     
     windowToSend.webContents.send('render:insert-employee', resultOperation);
+  });
+  ipcMain.on('main:update-employee', async(_, { id, age, username, password }) => {
+    const resultOperation = await updateUsernamePasswordAgeEmployee({
+      id, age, username, password
+    });
+    
+    windowToSend.webContents.send('render:update-employee', resultOperation);
   });
 };
 
