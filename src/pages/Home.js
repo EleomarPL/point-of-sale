@@ -2,16 +2,19 @@ import { useState } from 'react';
 
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import InputPersonalized from '../components/common/InputPersonalized';
+import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
 import useLogin from '../hooks/useLogin';
 
 const Home = () => {
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const {login} = useLogin();
 
   const handleLogin = () => {
+    setIsLoading(true);
     login({userName, password});
   };
 
@@ -54,8 +57,12 @@ const Home = () => {
             className="button-personalized is-button-personalized w-100"
             onClick={ handleLogin }
             style={ {borderRadius: '10px'} }
+            disabled={ isLoading }
           >
             <ButtonPersonalized classNameIcon="bi bi-box-arrow-right">
+              { isLoading &&
+                <SpinnerButtonLoading />
+              }
               Iniciar Sesión
             </ButtonPersonalized>
           </button>
