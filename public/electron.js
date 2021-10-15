@@ -10,6 +10,7 @@ const {triggerEventsEmployee} = require('./electron/evtContextBridge/employee');
 const {triggerEventsSales} = require('./electron/evtContextBridge/sales');
 const {triggerEventsAdmin} = require('./electron/evtContextBridge/admin');
 const {triggerEventsDebts} = require('./electron/evtContextBridge/debts');
+const {triggerEventsLogin} = require('./electron/evtContextBridge/login');
 
 if (process.env.NODE_ENV !== 'production') {
   require('electron-reload')(__dirname, {
@@ -39,6 +40,7 @@ function createWindow() {
   triggerEventsSales({windowToSend: createMainWindow});
   triggerEventsAdmin({windowToSend: createMainWindow});
   triggerEventsDebts({windowToSend: createMainWindow});
+  triggerEventsLogin({windowToSend: createMainWindow});
   // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
 }
 
