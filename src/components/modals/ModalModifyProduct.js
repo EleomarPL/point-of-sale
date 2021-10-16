@@ -86,7 +86,7 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
               </ButtonPersonalized>
             </button>
             <button type="submit" className="button-btn-modals"
-              form="form-employee"
+              form="form-employee" disabled={ isLoading }
             >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
                 <span>

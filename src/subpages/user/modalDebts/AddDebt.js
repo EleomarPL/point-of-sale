@@ -26,7 +26,7 @@ const AddDebt = () => {
       >
         <button type="button" className="button-btn-modals"
           style={ {marginRight: '2rem'} }
-          onClick={ handleAddDebt }
+          onClick={ handleAddDebt } disabled={ isLoading }
         >
           <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
             <span>
