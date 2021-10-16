@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {inputProduct} from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import {isInteger} from '../../services/validations/generalValidations';
+import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 
 export const openmodalModifyProduct = () => {
   let myModal = new Modal(
@@ -20,6 +21,7 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
   const [valueProduct, setValueProduct] = useState({
     code: '', product: '', purchasePrice: '', salesPrice: '', stock: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setValueProduct({...dataProduct});
@@ -28,7 +30,7 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
   const handleSubmitProduct = (evt) => {
     evt.preventDefault();
     if (isInteger({ name: 'Precio Venta', value: evt.target[2].value })) {
-      console.log('passed the test');
+      setIsLoading(true);
     }
   };
 
@@ -87,7 +89,12 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
               form="form-employee"
             >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                Modificar Producto
+                <span>
+                  { isLoading &&
+                    <SpinnerButtonLoading />
+                  }
+                  Modificar Producto
+                </span>
               </ButtonPersonalized>
             </button>
           </div>
