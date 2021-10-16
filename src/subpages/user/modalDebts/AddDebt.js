@@ -1,6 +1,15 @@
+import { useState } from 'react';
+
 import ButtonPersonalized from '../../../components/common/ButtonPersonalized';
+import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
 
 const AddDebt = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddDebt = () => {
+    setIsLoading(true);
+  };
+
   return (
     <div className="w-100">
       <div className="w-100 text-center my-2" style={ {fontSize: '1.8rem'} }>
@@ -15,11 +24,17 @@ const AddDebt = () => {
       <div className="w-100 d-flex justify-content-center"
         style={ {position: 'absolute', bottom: '1rem'} }
       >
-        <button type="submit" className="button-btn-modals"
+        <button type="button" className="button-btn-modals"
           style={ {marginRight: '2rem'} }
+          onClick={ handleAddDebt }
         >
           <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-            Aceptar
+            <span>
+              { isLoading &&
+                <SpinnerButtonLoading />
+              }
+              Aceptar
+            </span>
           </ButtonPersonalized>
         </button>
         <button type="button" className="button-btn-modals"
