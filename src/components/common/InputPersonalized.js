@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
 
 const InputPersonalized = ({
-  type, classNameIcon, id, placeholder, ariaLabel, value, setValue, autofocus = false
+  type, classNameIcon, id, placeholder, ariaLabel, value, setValue, autofocus = false, event
 }) => {
+  const handleSubmitEnter = (evt) => {
+    if (evt.keyCode === 13 && event)
+      event();
+  };
   return (
     <div className="input-group">
       <span className="input-group-text" id={ id }>
@@ -13,6 +17,7 @@ const InputPersonalized = ({
         aria-describedby={ id } value={ value }
         onChange={ (evt) => setValue(evt.target.value) }
         autoFocus={ autofocus }
+        onKeyDown={ handleSubmitEnter }
       />
     </div>
   );
@@ -26,7 +31,8 @@ InputPersonalized.propTypes = {
   placeholder: PropTypes.string,
   value: PropTypes.string,
   setValue: PropTypes.func,
-  autofocus: PropTypes.bool
+  autofocus: PropTypes.bool,
+  event: PropTypes.func
 };
 
 export default InputPersonalized;

@@ -49,6 +49,7 @@ const Home = () => {
             type="password" placeholder="Contraseña"
             classNameIcon="bi bi-lock-fill"
             value={ password } setValue={ setPassword }
+            event={ handleLogin }
           />
         </div>
         <div className="col-md-auto">
