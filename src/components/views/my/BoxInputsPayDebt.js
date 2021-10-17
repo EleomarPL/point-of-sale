@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 
 import { isNumberValue } from '../../../services/validations/generalValidations';
 import ButtonPersonalized from '../../common/ButtonPersonalized';
+import SpinnerButtonLoading from '../../common/SpinnerButtonLoading';
 
 const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
   const [total, setTotal] = useState(0);
   const [payment, setPayment] = useState(0);
   const [change, setChange] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setTotal (
@@ -18,6 +20,10 @@ const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
       }, 0)
     );
   }, [listDebts]);
+
+  const handlePayDebt = () => {
+    setIsLoading(true);
+  };
 
   const handlePayment = (evt) => {
     if (isNumberValue({ value: evt.target.value, name: 'Pago' })) {
@@ -66,9 +72,15 @@ const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
       <div className="d-flex justify-content-evenly mt-4">
         <button type="button" className="button-btn-modals"
           disabled={ payment < total }
+          onClick={ handlePayDebt }
         >
           <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-            Aceptar
+            <span>
+              { isLoading &&
+                <SpinnerButtonLoading />
+              }
+              Aceptar
+            </span>
           </ButtonPersonalized>
         </button>
         <button type="button" className="button-btn-modals"

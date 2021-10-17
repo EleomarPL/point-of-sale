@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {inputEmployees} from '../../data/admin/modalEmployee';
 import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
+import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 
 export const openmodalCreateEditEmployee = () => {
   let myModal = new Modal(
@@ -22,6 +23,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
     code: '', name: '', lastName: '', motherLastName: '',
     user: '', password: '', gender: 'M', age: 18
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isCreateEmployee) {
@@ -72,7 +74,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
       }
     };
     if ( !isObjectValuesNull(dataEmployee) && validateLength(dataEmployee) ) {
-      console.log('passed the test');
+      setIsLoading(true);
     }
     console.log({
       radio1: evt.target[5].checked,
@@ -177,10 +179,15 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
               </ButtonPersonalized>
             </button>
             <button type="submit" className="button-btn-modals"
-              form="form-employee"
+              form="form-employee" disabled={ isLoading }
             >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                { isCreateEmployee ? 'Agregar Empleado' : 'Editar Empleado' }
+                <span>
+                  { isLoading &&
+                    <SpinnerButtonLoading />
+                  }
+                  { isCreateEmployee ? 'Agregar Empleado' : 'Editar Empleado' }
+                </span>
               </ButtonPersonalized>
             </button>
           </div>

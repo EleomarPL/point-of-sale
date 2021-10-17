@@ -2,10 +2,13 @@ import { useState } from 'react';
 import ButtonPersonalized from '../../../components/common/ButtonPersonalized';
 import TablePersonalized from '../../../components/common/TablePersonalized';
 import BoxInputsDebtors from '../../../components/views/my/BoxInputsDebtor';
+import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
 
 const AddDebtor = () => {
   const [listDebtors, setListDebtors] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false);
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false);
 
   let header = [
     'Codigo', 'Nombre', 'Apellido Paterno',
@@ -19,7 +22,10 @@ const AddDebtor = () => {
   const handleAddDebtor = (evt) => {
     evt.preventDefault();
     
-    console.log('add debtor');
+    setIsLoadingAdd(true);
+  };
+  const handleEditDebtor = () => {
+    setIsLoadingEdit(true);
   };
 
   return (
@@ -42,16 +48,28 @@ const AddDebtor = () => {
             />
             <div className="d-flex justify-content-evenly mt-4">
               <button type="submit" className="button-btn-modals"
+                disabled={ isLoadingAdd }
               >
                 <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                  Agregar
+                  <span>
+                    { isLoadingAdd &&
+                      <SpinnerButtonLoading />
+                    }
+                    Agregar
+                  </span>
                 </ButtonPersonalized>
               </button>
               <button type="button" className="button-btn-modals"
                 disabled={ dataSelected.code === undefined }
+                onClick={ handleEditDebtor }
               >
                 <ButtonPersonalized classNameIcon="bi bi-pencil-fill" isColumn={ true }>
-                  Editar
+                  <span>
+                    { isLoadingEdit &&
+                      <SpinnerButtonLoading />
+                    }
+                    Editar
+                  </span>
                 </ButtonPersonalized>
               </button>
             </div>

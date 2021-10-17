@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {inputProvider} from '../../data/admin/modalProvider';
 import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
+import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 
 export const openmodalCreateEditProvider = () => {
   let myModal = new Modal(
@@ -20,6 +21,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
   const [valueProvider, setValueProvider] = useState({
     code: '', company: '', name: '', lastName: '', motherLastName: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isCreateProvider) {
@@ -62,7 +64,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
       }
     };
     if ( !isObjectValuesNull(dataProvider) && validateLength(dataProvider) ) {
-      console.log('passed the test');
+      setIsLoading(true);
     }
   };
 
@@ -118,9 +120,15 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
             </button>
             <button type="submit" className="button-btn-modals"
               form="form-employee"
+              disabled={ isLoading }
             >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                { isCreateProvider ? 'Agregar Proveedor' : 'Editar Proveedor' }
+                <span>
+                  { isLoading &&
+                    <SpinnerButtonLoading />
+                  }
+                  { isCreateProvider ? 'Agregar Proveedor' : 'Editar Proveedor' }
+                </span>
               </ButtonPersonalized>
             </button>
           </div>

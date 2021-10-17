@@ -5,6 +5,7 @@ import TablePersonalized from '../common/TablePersonalized';
 import BoxInputsShoppingModal from '../views/admin/BoxInputsShoppingModal';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import {isInteger, isObjectValuesNull, isNumberValue, validateLength} from '../../services/validations/generalValidations';
+import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 
 export const openmodalShopping = () => {
   let myModal = new Modal(
@@ -21,6 +22,7 @@ const ModalShopping = () => {
   const [dataSelected, setDataSelected] = useState({});
   const [dataProductTemp, setDataProductTemp] = useState([]);
   const [dataSelected2, setDataSelected2] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   let header = [
     'Codigo', 'Articulo', 'Empresa',
@@ -88,6 +90,9 @@ const ModalShopping = () => {
       }
     }
   };
+  const handleAddPurchase = () => {
+    setIsLoading(true);
+  };
 
   return (
     <div className="modal fade" id="modalShopping"
@@ -153,9 +158,16 @@ const ModalShopping = () => {
                 </button>
               </div>
               <div className="col-md-7 d-flex justify-content-evenly">
-                <button type="button" className="button-btn-modals">
+                <button type="button" className="button-btn-modals"
+                  onClick={ handleAddPurchase } disabled={ isLoading }
+                >
                   <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                    Confirmar Compra
+                    <span>
+                      { isLoading &&
+                        <SpinnerButtonLoading />
+                      }
+                      Confirmar Compra
+                    </span>
                   </ButtonPersonalized>
                 </button>
                 <button type="button" className="button-btn-modals"
