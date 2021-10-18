@@ -5,6 +5,7 @@ import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import {openmodalCreateEditProvider} from '../../components/modals/ModalCreateEditProvider';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+import useProvider from '../../hooks/useProvider';
 
 const ModalCreateEditProvider = lazy(() => import('../../components/modals/ModalCreateEditProvider'));
 
@@ -13,12 +14,26 @@ const Provider = () => {
   const [dataProvider, setDataProvider] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isCreateProvider, setIsCreateProvider] = useState(true);
+  const {getProviders} = useProvider();
 
   useEffect(() => {
-    setDataProvider([
-      {code: 1, company: 'Company', name: 'Name', lastName: 'LastName', motherLastName: 'MotherLastName'},
-      {code: 2, company: 'Company2', name: 'Name2', lastName: 'LastName2', motherLastName: 'MotherLastName2'}
-    ]);
+    getProviders({keyword: searcher, limit: 50});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-provider', (err, data) => {
+      if (!err) {
+        console.log('error get providers');
+        return null;
+      }
+      if (data)
+        setDataProvider(data.map(provider => {
+          return {...provider, code: provider.id};
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-provider');
+    };
   }, []);
 
   let header = [
