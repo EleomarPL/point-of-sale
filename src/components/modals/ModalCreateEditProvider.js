@@ -112,6 +112,9 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
           id: valueProvider.code, name: dataProvider.name.value,
           lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
         });
+      
+      window.electron.send('main:get-provider', {keyword: '', limit: 50});
+      setDataSelected({});
       myModal.hide();
     }
   };
