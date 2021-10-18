@@ -24,7 +24,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
     code: '', company: '', name: '', lastName: '', motherLastName: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const {createEmployee} = useProvider();
+  const {createEmployee, editProvider} = useProvider();
 
   useEffect(() => {
     if (!isCreateProvider) {
@@ -50,7 +50,24 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
         else
           notifyError('No ha sido posible agregar proveedor');
       });
+    } else {
+      window.electron.on('render:update-provider', (err, data) => {
+        setIsLoading(false);
+        if (!err) {
+          console.log('error provider');
+          return null;
+        }
+        if (data)
+          notifySuccess('Proveedor actualizado correctamente');
+        else
+          notifyError('No ha sido posible actualizar proveedor');
+      });
     }
+
+    return () => {
+      window.electron.removeAllListeners('render:insert-provider');
+      window.electron.removeAllListeners('render:update-provider');
+    };
   }, [isCreateProvider]);
 
   const handleSubmitProvider = (evt) => {
@@ -83,10 +100,16 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
     };
     if ( !isObjectValuesNull(dataProvider) && validateLength(dataProvider) ) {
       setIsLoading(true);
-      createEmployee({
-        company: dataProvider.company.value, name: dataProvider.name.value,
-        lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
-      });
+      if (isCreateProvider)
+        createEmployee({
+          company: dataProvider.company.value, name: dataProvider.name.value,
+          lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
+        });
+      else
+        editProvider({
+          id: valueProvider.code, name: dataProvider.name.value,
+          lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
+        });
     }
   };
 

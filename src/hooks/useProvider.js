@@ -5,8 +5,11 @@ const useProvider = () => {
   const getProviders = ({keyword, limit}) => {
     window.electron.send('main:get-provider', {keyword, limit});
   };
+  const editProvider = ({id, name, lastName, motherLastName}) => {
+    window.electron.send('main:update-provider', {id, name, lastName, motherLastName});
+  };
   return {
-    createEmployee, getProviders
+    createEmployee, getProviders, editProvider
   };
 };
 
