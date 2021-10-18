@@ -6,6 +6,8 @@ import {inputProvider} from '../../data/admin/modalProvider';
 import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
+import useProvider from '../../hooks/useProvider';
+import {notifySuccess, notifyError} from '../../consts/notifications';
 
 export const openmodalCreateEditProvider = () => {
   let myModal = new Modal(
@@ -22,6 +24,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
     code: '', company: '', name: '', lastName: '', motherLastName: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const {createEmployee} = useProvider();
 
   useEffect(() => {
     if (!isCreateProvider) {
@@ -34,6 +37,21 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
         lastName: '', motherLastName: ''
       });
   }, [isCreateProvider, dataProvider]);
+  useEffect(() => {
+    if (isCreateProvider) {
+      window.electron.on('render:insert-provider', (err, data) => {
+        setIsLoading(false);
+        if (!err) {
+          console.log('error provider');
+          return null;
+        }
+        if (data)
+          notifySuccess('Proveedor agregado correctamente');
+        else
+          notifyError('No ha sido posible agregar proveedor');
+      });
+    }
+  }, [isCreateProvider]);
 
   const handleSubmitProvider = (evt) => {
     evt.preventDefault();
@@ -65,6 +83,10 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
     };
     if ( !isObjectValuesNull(dataProvider) && validateLength(dataProvider) ) {
       setIsLoading(true);
+      createEmployee({
+        company: dataProvider.company.value, name: dataProvider.name.value,
+        lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
+      });
     }
   };
 
