@@ -1,5 +1,5 @@
 const useProvider = () => {
-  const createEmployee = ({company, name, lastName, motherLastName}) => {
+  const createProvider = ({company, name, lastName, motherLastName}) => {
     window.electron.send('main:insert-provider', {name, lastName, motherLastName, company});
   };
   const getProviders = ({keyword, limit}) => {
@@ -9,7 +9,7 @@ const useProvider = () => {
     window.electron.send('main:update-provider', {id, name, lastName, motherLastName});
   };
   return {
-    createEmployee, getProviders, editProvider
+    createProvider, getProviders, editProvider
   };
 };
 

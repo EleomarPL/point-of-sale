@@ -24,7 +24,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
     code: '', company: '', name: '', lastName: '', motherLastName: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const {createEmployee, editProvider} = useProvider();
+  const {createProvider, editProvider} = useProvider();
 
   useEffect(() => {
     if (!isCreateProvider) {
@@ -101,7 +101,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
     if ( !isObjectValuesNull(dataProvider) && validateLength(dataProvider) ) {
       setIsLoading(true);
       if (isCreateProvider)
-        createEmployee({
+        createProvider({
           company: dataProvider.company.value, name: dataProvider.name.value,
           lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
         });
