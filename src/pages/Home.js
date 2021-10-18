@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import InputPersonalized from '../components/common/InputPersonalized';
@@ -11,7 +11,29 @@ const Home = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const {login} = useLogin();
+  const {login, setNewUserData} = useLogin();
+
+  useEffect(() => {
+    window.electron.on('render:login', (err, data) => {
+      if (!err) {
+        console.log('err');
+        return null;
+      }
+      setIsLoading(false);
+      if (data) {
+        if (data.statusUser === 'unlocked') {
+          setNewUserData({
+            ...data,
+            type: data.type === 'employee' ? 1 : 0
+          });
+        }
+      }
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:login');
+    };
+  }, []);
 
   const handleLogin = () => {
     setIsLoading(true);
