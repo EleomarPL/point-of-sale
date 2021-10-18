@@ -11,7 +11,7 @@ import {notifySuccess, notifyError} from '../../consts/notifications';
 
 export const openmodalCreateEditProvider = () => {
   let myModal = new Modal(
-    document.getElementById('modalCreateEditEmployee'), {
+    document.getElementById('modalEditCreateProvider'), {
       keyboard: true,
       focus: true
     }
@@ -72,6 +72,8 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
 
   const handleSubmitProvider = (evt) => {
     evt.preventDefault();
+    let myModal = Modal.getInstance( document.getElementById('modalEditCreateProvider') );
+    setIsLoading(true);
     let dataProvider = {
       company: {
         name: 'Empresa',
@@ -110,19 +112,20 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
           id: valueProvider.code, name: dataProvider.name.value,
           lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
         });
+      myModal.hide();
     }
   };
 
   return (
-    <div className="modal fade" id="modalCreateEditEmployee"
+    <div className="modal fade" id="modalEditCreateProvider"
       data-bs-backdrop="static" data-bs-keyboard="false"
-      tabIndex="-1" aria-labelledby="modalCreateEditEmployeeLabel"
+      tabIndex="-1" aria-labelledby="modalEditCreateProviderLabel"
       aria-hidden="true"
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content" style={ {backgroundColor: '#bed7aa'} }>
           <div className="modal-header">
-            <h5 className="modal-title m-auto" id="modalCreateEditEmployeeLabel">
+            <h5 className="modal-title m-auto" id="modalEditCreateProviderLabel">
               { isCreateProvider ? 'Agregar Proveedor' : 'Editar Proveedor' }
             </h5>
           </div>
