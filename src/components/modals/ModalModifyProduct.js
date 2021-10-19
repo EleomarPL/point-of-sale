@@ -6,6 +6,8 @@ import {inputProduct} from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import {isInteger} from '../../services/validations/generalValidations';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
+import {notifySuccess, notifyError} from '../../consts/notifications';
+import useArticle from '../../hooks/useArticles';
 
 export const openmodalModifyProduct = () => {
   let myModal = new Modal(
@@ -22,15 +24,40 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
     code: '', product: '', purchasePrice: '', salesPrice: '', stock: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const {updateSalesPriceArticle} = useArticle();
 
   useEffect(() => {
     setValueProduct({...dataProduct});
   }, [dataProduct]);
+  useEffect(() => {
+    window.electron.on('render:update-salesprice-article', (err, data) => {
+      setIsLoading(false);
+      if (!err) {
+        console.log('error update article');
+        return null;
+      }
+      if (data)
+        notifySuccess('Articulo actualizado correctamente');
+      else
+        notifyError('Error, articulo no actualizado');
+      
+      window.electron.send('main:get-article-by-keyword', {value: '', limit: 50});
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:update-salesprice-article');
+    };
+  }, []);
 
   const handleSubmitProduct = (evt) => {
     evt.preventDefault();
+
+    let myModal = Modal.getInstance( document.getElementById('modalModifyProduct') );
     if (isInteger({ name: 'Precio Venta', value: evt.target[2].value })) {
       setIsLoading(true);
+      updateSalesPriceArticle({id: valueProduct.code, salesPrice: evt.target[2].value});
+      setDataSelected({});
+      myModal.hide();
     }
   };
 
