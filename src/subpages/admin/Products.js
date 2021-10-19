@@ -5,6 +5,7 @@ import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import {openmodalModifyProduct} from '../../components/modals/ModalModifyProduct';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+import useArticle from '../../hooks/useArticles';
 
 const ModalModifyProduct = lazy(() => import('../../components/modals/ModalModifyProduct'));
 
@@ -12,12 +13,29 @@ const Products = () => {
   const [searcher, setSearcher] = useState('');
   const [dataProducts, setDataProducts] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const {getArticles} = useArticle();
 
   useEffect(() => {
-    setDataProducts([
-      {code: 1, product: 'Product', purchasePrice: 12, salesPrice: 23, stock: 2},
-      {code: 2, product: 'Product2', purchasePrice: 32, salesPrice: 33, stock: 2}
-    ]);
+    getArticles({value: searcher, limit: 50});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-article-by-keyword', (err, data) => {
+      if (!err) {
+        console.log('error get articles');
+        return null;
+      }
+      if (data)
+        setDataProducts(data.map(article => {
+          return {
+            ...article, code: article.id,
+            statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
+          };
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-article-by-keyword');
+    };
   }, []);
 
   let header = [
@@ -25,8 +43,8 @@ const Products = () => {
     'Precio venta', 'Existencia', 'Estado'
   ];
   let properties = [
-    'code', 'product', 'purchasePrice',
-    'salesPrice', 'stock', 'status'
+    'code', 'article', 'purchasePrice',
+    'salesPrice', 'amount', 'statusArticle'
   ];
 
   let listProviders = [
