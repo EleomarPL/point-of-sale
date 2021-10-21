@@ -9,6 +9,9 @@ import useArticle from '../../../hooks/useArticles';
 const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSelected2, setDataSelected2}) => {
   const [code, setCode] = useState('');
   const [article, setArticle] = useState('');
+  const [dataArticle, setDataArticle] = useState({
+    purchasePrice: '', salesPrice: '', stock: '', amount: ''
+  });
   const {getArticleById, getArticleForAuxTable} = useArticle();
 
   const [isProductExist, setIsProductExist] = useState(false);
@@ -19,7 +22,7 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
   }, [code]);
 
   useEffect(() => {
-    if (article)
+    if (article && !code)
       getArticleForAuxTable({value: article});
   }, [article]);
 
@@ -29,12 +32,21 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
         console.log('error get article by id');
         return null;
       }
-      if (data)
-        setDataProductTemp(data.map(article => {
-          return {
-            ...article, code: article.id
-          };
-        }));
+      if (data[0] !== undefined) {
+        setIsProductExist(true);
+        setDataArticle({
+          purchasePrice: data[0].purchasePrice, salesPrice: data[0].salesPrice,
+          stock: data[0].amount, amount: ''
+        });
+        setArticle(data[0].article);
+      } else {
+        setIsProductExist(false);
+        setDataArticle({
+          purchasePrice: '', salesPrice: '',
+          stock: '', amount: ''
+        });
+        setArticle('');
+      }
     });
     window.electron.on('render:get-article-for-auxtable', (err, data) => {
       if (!err) {
@@ -54,6 +66,13 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
       window.electron.removeAllListeners('render:get-article-for-auxtable');
     };
   }, []);
+
+  const setNewValue = ({property, value}) => {
+    setDataArticle({
+      ...dataArticle,
+      [property]: value
+    });
+  };
 
   return (
     <div className="w-100">
@@ -89,6 +108,8 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
                     aria-describedby={ data.id }
                     disabled={ isProductExist && (data.id === 'purchasePrice' || data.id === 'stock') }
                     style={ {backgroundColor: '#f6eded'} }
+                    value={ dataArticle[data.id] }
+                    onChange={ (evt) => setNewValue({property: data.id, value: evt.target.value}) }
                   />
                 </td>
               </tr>
