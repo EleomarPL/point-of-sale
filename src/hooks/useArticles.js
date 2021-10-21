@@ -5,9 +5,12 @@ const useArticle = () => {
   const updateSalesPriceArticle = ({id, salesPrice}) => {
     window.electron.send('main:update-salesprice-article', {id, salesPrice});
   };
+  const updateStatusArticle = ({id, willItLocked}) => {
+    window.electron.send('main:update-status-article', {id, willItLocked});
+  };
 
   return {
-    getArticles, updateSalesPriceArticle
+    getArticles, updateSalesPriceArticle, updateStatusArticle
   };
 };
 

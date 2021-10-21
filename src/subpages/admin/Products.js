@@ -6,6 +6,7 @@ import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import {openmodalModifyProduct} from '../../components/modals/ModalModifyProduct';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
 import useArticle from '../../hooks/useArticles';
+import {notifySuccess, notifyError} from '../../consts/notifications';
 
 const ModalModifyProduct = lazy(() => import('../../components/modals/ModalModifyProduct'));
 
@@ -13,7 +14,7 @@ const Products = () => {
   const [searcher, setSearcher] = useState('');
   const [dataProducts, setDataProducts] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
-  const {getArticles} = useArticle();
+  const {getArticles, updateStatusArticle} = useArticle();
 
   useEffect(() => {
     getArticles({value: searcher, limit: 50});
@@ -32,9 +33,23 @@ const Products = () => {
           };
         }));
     });
+    window.electron.on('render:update-status-article', (err, data) => {
+      if (!err) {
+        console.log('error update status article');
+        return null;
+      }
+      if (data) {
+        notifySuccess('Estado del articulo actualizado correctamente');
+        window.electron.send('main:get-article-by-keyword', {value: '', limit: 50});
+      } else
+        notifyError('Estado del articulo no actualizado');
+      
+      setDataSelected({});
+    });
 
     return () => {
       window.electron.removeAllListeners('render:get-article-by-keyword');
+      window.electron.removeAllListeners('render:update-status-article');
     };
   }, []);
 
@@ -61,14 +76,16 @@ const Products = () => {
       classNameIcon: 'bi bi-stop-circle-fill',
       text: 'Congelar',
       onClick: () => {
-        console.log('Open modal freeze');
+        if (dataSelected.code)
+          updateStatusArticle({id: dataSelected.code, willItLocked: true});
       }
     },
     {
       classNameIcon: 'bi bi-patch-check-fill',
       text: 'Descongelar',
       onClick: () => {
-        console.log('Open modal thaw');
+        if (dataSelected.code)
+          updateStatusArticle({id: dataSelected.code, willItLocked: false});
       }
     }
   ];
