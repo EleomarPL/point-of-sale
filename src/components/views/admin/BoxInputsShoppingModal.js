@@ -17,13 +17,18 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
   const [isProductExist, setIsProductExist] = useState(false);
 
   useEffect(() => {
-    if (code)
+    if (code) {
       getArticleById({id: code});
+      setDataProductTemp([]);
+      setDataSelected2({});
+    }
   }, [code]);
 
   useEffect(() => {
-    if (article && !code)
+    if (article && !code) {
       getArticleForAuxTable({value: article});
+      setDataSelected2({});
+    }
   }, [article]);
 
   useEffect(() => {
@@ -66,6 +71,23 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
       window.electron.removeAllListeners('render:get-article-for-auxtable');
     };
   }, []);
+  useEffect(() => {
+    if (dataSelected2.id) {
+      setIsProductExist(true);
+      setDataArticle({
+        purchasePrice: dataSelected2.purchasePrice, salesPrice: dataSelected2.salesPrice,
+        stock: dataSelected2.amount, amount: ''
+      });
+      setArticle(dataSelected2.article);
+      setCode(dataSelected2.id.toString());
+    } else {
+      setIsProductExist(false);
+      setDataArticle({
+        purchasePrice: '', salesPrice: '',
+        stock: '', amount: ''
+      });
+    }
+  }, [dataSelected2]);
 
   const setNewValue = ({property, value}) => {
     setDataArticle({
