@@ -53,17 +53,17 @@ const addPurchases = async({listPurchases}) => {
   let idArticle = 0;
   
   listPurchases.forEach(async(purchase) => {
-    if (!(purchase.article && purchase.purchasePrice && purchase.salesPrice
+    if (!(purchase.id && purchase.article && purchase.purchasePrice && purchase.salesPrice
       && purchase.amount && purchase.idProvider, purchase.amountShopping
     )) {
       return false;
     } else {
       if (!purchase.isAdded) {
         const result = await connection.query(
-          'INSERT INTO article VALUES(null, ?, ?, ?, ?, ?, ?, \'unlocked\');',
+          'INSERT INTO article VALUES(?, ?, ?, ?, ?, ?, ?, \'unlocked\');',
           [
-            purchase.idProvider, purchase.article, purchase.purchasePrice, purchase.salesPrice,
-            purchase.amount, purchase.dateofExpiry || null
+            purchase.id, purchase.idProvider, purchase.article, purchase.purchasePrice,
+            purchase.salesPrice, purchase.amount, purchase.dateofExpiry || null
           ]
         );
         idArticle = result.insertId;
