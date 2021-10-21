@@ -11,9 +11,13 @@ const useArticle = () => {
   const getArticleById = ({id}) => {
     window.electron.send('main:get-article-by-id', {id});
   };
+  const getArticleForAuxTable = ({value}) => {
+    window.electron.send('main:get-article-for-auxtable', {value});
+  };
 
   return {
-    getArticles, updateSalesPriceArticle, updateStatusArticle, getArticleById
+    getArticles, updateSalesPriceArticle, updateStatusArticle, getArticleById,
+    getArticleForAuxTable
   };
 };
 

@@ -9,16 +9,18 @@ import useArticle from '../../../hooks/useArticles';
 const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSelected2, setDataSelected2}) => {
   const [code, setCode] = useState('');
   const [article, setArticle] = useState('');
-  const {getArticleById} = useArticle();
+  const {getArticleById, getArticleForAuxTable} = useArticle();
 
   const [isProductExist, setIsProductExist] = useState(false);
 
   useEffect(() => {
-    getArticleById({id: code});
+    if (code)
+      getArticleById({id: code});
   }, [code]);
 
   useEffect(() => {
-    console.log('get article by keyword');
+    if (article)
+      getArticleForAuxTable({value: article});
   }, [article]);
 
   useEffect(() => {
@@ -34,9 +36,22 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
           };
         }));
     });
+    window.electron.on('render:get-article-for-auxtable', (err, data) => {
+      if (!err) {
+        console.log('error get article for auxtable');
+        return null;
+      }
+      if (data)
+        setDataProductTemp(data.map(dataArticle => {
+          return {
+            ...dataArticle, code: dataArticle.id
+          };
+        }));
+    });
 
     return () => {
       window.electron.removeAllListeners('render:get-article-by-id');
+      window.electron.removeAllListeners('render:get-article-for-auxtable');
     };
   }, []);
 
