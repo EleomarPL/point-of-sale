@@ -7,6 +7,7 @@ import GroupRadioOptions from '../../components/views/GroupRadioOptions';
 import TablePersonalized from '../../components/common/TablePersonalized';
 import {openmodalShopping} from '../../components/modals/ModalShopping';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+import useShopping from '../../hooks/useShopping';
 
 const ModalShopping = lazy(() => import('../../components/modals/ModalShopping'));
 
@@ -16,16 +17,29 @@ const Shopping = () => {
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
   const [dataShopping, setDataShopping] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const {getPurchases} = useShopping();
 
   useEffect(() => {
-    setDataShopping([
-      {
-        code: 1, article: 'Article', company: 'Company', quantity: 11, price: 11, total: 11
-      },
-      {
-        code: 2, article: 'Article2', company: 'Company2', quantity: 22, price: 22, total: 22
+    if (valueFirstRadio)
+      getPurchases({value: searcher, limit: 50});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-purchases', (err, data) => {
+      if (!err) {
+        console.log('error get purchases');
+        return null;
       }
-    ]);
+      if (data)
+        setDataShopping(data.map(purchase => {
+          return {
+            ...purchase, code: purchase.folio
+          };
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-purchases');
+    };
   }, []);
 
   let listShopping = [
@@ -44,7 +58,7 @@ const Shopping = () => {
   ];
   let properties = [
     'code', 'article', 'company',
-    'quantity', 'price', 'total'
+    'amountShopping', 'purchasePrice', 'shopping.amountShopping*article.purchasePrice'
   ];
 
   return (
