@@ -168,6 +168,9 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
       <div className="d-flex align-items-center justify-content-between">
         <SelectProvider widthSelect="58%" keyProvider={ providerSelect } />
       </div>
+      <input type="checkbox" className="visually-hidden"
+        checked={ isProductExist }
+      />
     </div>
   );
 };
