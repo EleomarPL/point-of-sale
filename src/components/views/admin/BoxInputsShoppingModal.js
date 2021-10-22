@@ -5,6 +5,7 @@ import {inputShopping} from '../../../data/admin/modalShopping';
 import SelectProvider from '../../common/SelectProvider';
 import DebounceInput from '../../common/DebounceInput';
 import useArticle from '../../../hooks/useArticles';
+import {convertDateYYYYMMDD} from '../../../utils/convertDateYMD';
 
 const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSelected2, setDataSelected2}) => {
   const [code, setCode] = useState('');
@@ -13,6 +14,7 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
     purchasePrice: '', salesPrice: '', stock: '', amount: ''
   });
   const [providerSelect, setProviderSelect] = useState('');
+  const [dateofExpiry, setDateofExpiry] = useState('');
   const {getArticleById, getArticleForAuxTable} = useArticle();
 
   const [isProductExist, setIsProductExist] = useState(false);
@@ -46,6 +48,13 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
         });
         setArticle(data[0].article);
         setProviderSelect(data[0].id_provider.toString());
+        
+        if (data[0].dateofExpiry) {
+          let splitDate = new Date(data[0].dateofExpiry).toLocaleDateString().split('/');
+          setDateofExpiry(convertDateYYYYMMDD({day: splitDate[0], month: splitDate[1], year: splitDate[2]}));
+        } else
+          setDateofExpiry('');
+        
       } else {
         setIsProductExist(false);
         setDataArticle({
@@ -142,17 +151,22 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
           <tr>
             <td>Fecha de Caducidad</td>
             <td>
-              <input type="datetime-local" className="form-control"
+              <input type="date" className="form-control"
                 aria-label="DateofExpiry"
                 aria-describedby="ate-of-expiry"
                 style={ {backgroundColor: '#f6eded'} }
+                value={ dateofExpiry }
+                onChange={ (evt) => {
+                  console.log(evt.target.value);
+                  setDateofExpiry(evt.target.value);
+                } }
               />
             </td>
           </tr>
         </tbody>
       </table>
       <div className="d-flex align-items-center justify-content-between">
-        <SelectProvider widthSelect="65%" keyProvider={ providerSelect } />
+        <SelectProvider widthSelect="58%" keyProvider={ providerSelect } />
       </div>
     </div>
   );
