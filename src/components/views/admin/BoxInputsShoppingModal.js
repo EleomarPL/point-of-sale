@@ -12,6 +12,7 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
   const [dataArticle, setDataArticle] = useState({
     purchasePrice: '', salesPrice: '', stock: '', amount: ''
   });
+  const [providerSelect, setProviderSelect] = useState('');
   const {getArticleById, getArticleForAuxTable} = useArticle();
 
   const [isProductExist, setIsProductExist] = useState(false);
@@ -44,6 +45,7 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
           stock: data[0].amount, amount: ''
         });
         setArticle(data[0].article);
+        setProviderSelect(data[0].id_provider.toString());
       } else {
         setIsProductExist(false);
         setDataArticle({
@@ -150,7 +152,7 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
         </tbody>
       </table>
       <div className="d-flex align-items-center justify-content-between">
-        <SelectProvider widthSelect="65%" />
+        <SelectProvider widthSelect="65%" keyProvider={ providerSelect } />
       </div>
     </div>
   );

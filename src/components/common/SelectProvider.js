@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import useProvider from '../../hooks/useProvider';
 
-const SelectProvider = ({ widthSelect = '10%'}) => {
+const SelectProvider = ({ widthSelect = '10%', keyProvider = ''}) => {
   const [providers, setProviders] = useState([]);
   const [providerSelect, setProviderSelect] = useState('');
   const {getProviderForSelect} = useProvider();
@@ -25,6 +25,10 @@ const SelectProvider = ({ widthSelect = '10%'}) => {
       window.electron.removeAllListeners('render:get-provider-forselect');
     };
   }, []);
+  useEffect(() => {
+    if (keyProvider)
+      setProviderSelect(keyProvider);
+  }, [keyProvider]);
 
   return (
     <>
@@ -47,7 +51,8 @@ const SelectProvider = ({ widthSelect = '10%'}) => {
 };
 
 SelectProvider.propTypes = {
-  widthSelect: PropTypes.string
+  widthSelect: PropTypes.string,
+  keyProvider: PropTypes.string
 };
 
 export default SelectProvider;
