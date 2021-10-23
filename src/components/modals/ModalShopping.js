@@ -85,7 +85,32 @@ const ModalShopping = () => {
         if (isNumberValue({name: 'Precio Compra', value: dataPurchase.purchasePrice.value}) &&
           isNumberValue({name: 'Precio Venta', value: dataPurchase.salesPrice.value})
         ) {
-          console.log('passed the test');
+          let searchArticle = dataNewShopping.findIndex(purchase => purchase.code === dataPurchase.code.value);
+          if (searchArticle !== -1) {
+            let newDataToDataNewShopping = dataNewShopping.map((purchase, index) => {
+              if (searchArticle === index) {
+                return {
+                  ...purchase, company: evt.target[7].value,
+                  quantity: Number(purchase.quantity) + Number(dataPurchase.amount.value),
+                  total: Number(dataPurchase.purchasePrice.value) * (Number(purchase.quantity) + Number(dataPurchase.amount.value))
+                };
+              } else
+                return purchase;
+            });
+
+            setDataNewShopping(newDataToDataNewShopping);
+          } else {
+            setDataNewShopping([
+              ...dataNewShopping,
+              {
+                code: dataPurchase.code.value, article: dataPurchase.article.value,
+                company: evt.target[7].value, purchasePrice: dataPurchase.purchasePrice.value,
+                salesPrice: dataPurchase.salesPrice.value,
+                quantity: dataPurchase.amount.value, isAdded: evt.target[8].value,
+                total: dataPurchase.purchasePrice.value * dataPurchase.amount.value
+              }
+            ]);
+          }
         }
       }
     }
@@ -116,7 +141,6 @@ const ModalShopping = () => {
               <div className="col-md-5">
                 <form onSubmit={ handleAddNewPurchase } id="form-add-shopping">
                   <BoxInputsShoppingModal
-                    setDataNewShopping={ setDataNewShopping }
                     setDataProductTemp={ setDataProductTemp }
                     dataSelected2={ dataSelected2 }
                     setDataSelected2={ setDataSelected2 }

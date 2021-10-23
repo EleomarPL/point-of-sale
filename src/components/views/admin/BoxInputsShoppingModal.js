@@ -7,7 +7,7 @@ import DebounceInput from '../../common/DebounceInput';
 import useArticle from '../../../hooks/useArticles';
 import {convertDateYYYYMMDD} from '../../../utils/convertDateYMD';
 
-const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSelected2, setDataSelected2}) => {
+const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelected2}) => {
   const [code, setCode] = useState('');
   const [article, setArticle] = useState('');
   const [dataArticle, setDataArticle] = useState({
@@ -169,7 +169,8 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
         <SelectProvider widthSelect="58%" keyProvider={ providerSelect } />
       </div>
       <input type="checkbox" className="visually-hidden"
-        checked={ isProductExist }
+        checked={ isProductExist } onChange={ () => {} }
+        value={ isProductExist }
       />
     </div>
   );
@@ -177,7 +178,6 @@ const BoxInputsShoppingModal = ({setDataProductTemp, setDataNewShopping, dataSel
 
 BoxInputsShoppingModal.propTypes = {
   setDataProductTemp: PropTypes.func.isRequired,
-  setDataNewShopping: PropTypes.func.isRequired,
   dataSelected2: PropTypes.object.isRequired,
   setDataSelected2: PropTypes.func.isRequired
 };
