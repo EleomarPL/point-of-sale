@@ -90,9 +90,12 @@ const ModalShopping = () => {
             let newDataToDataNewShopping = dataNewShopping.map((purchase, index) => {
               if (searchArticle === index) {
                 return {
-                  ...purchase, company: evt.target[7].value,
+                  ...purchase, company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
                   quantity: Number(purchase.quantity) + Number(dataPurchase.amount.value),
-                  total: Number(dataPurchase.purchasePrice.value) * (Number(purchase.quantity) + Number(dataPurchase.amount.value))
+                  total: Number(dataPurchase.purchasePrice.value) * (Number(purchase.quantity) + Number(dataPurchase.amount.value)),
+                  idProvider: evt.target[7].value, amount: Number(purchase.quantity) + Number(dataPurchase.amount.value),
+                  amountShopping: Number(dataPurchase.purchasePrice.value) * (Number(purchase.quantity) + Number(dataPurchase.amount.value))
+
                 };
               } else
                 return purchase;
@@ -104,10 +107,14 @@ const ModalShopping = () => {
               ...dataNewShopping,
               {
                 code: dataPurchase.code.value, article: dataPurchase.article.value,
-                company: evt.target[7].value, purchasePrice: dataPurchase.purchasePrice.value,
+                company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
+                purchasePrice: dataPurchase.purchasePrice.value,
                 salesPrice: dataPurchase.salesPrice.value,
                 quantity: dataPurchase.amount.value, isAdded: evt.target[8].value,
-                total: dataPurchase.purchasePrice.value * dataPurchase.amount.value
+                total: dataPurchase.purchasePrice.value * dataPurchase.amount.value,
+                id: dataPurchase.code.value, amount: dataPurchase.amount.value,
+                idProvider: evt.target[7].value,
+                amountShopping: dataPurchase.purchasePrice.value * dataPurchase.amount.value
               }
             ]);
           }

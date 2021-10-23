@@ -40,6 +40,7 @@ const SelectProvider = ({ widthSelect = '10%', keyProvider = ''}) => {
           providers.map(provider =>
             <option value={ provider.id }
               key={ provider.id }
+              name={ provider.company }
             >
               { provider.company }
             </option>
