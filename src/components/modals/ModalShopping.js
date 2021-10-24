@@ -150,6 +150,10 @@ const ModalShopping = () => {
     insertPurchases({listPurchases});
     myModal.hide();
   };
+  const handleDeleteArticle = () => {
+    setDataNewShopping(dataNewShopping.filter(purchase => purchase.code !== dataSelected.code));
+    setDataSelected({});
+  };
 
   return (
     <div className="modal fade" id="modalShopping"
@@ -227,7 +231,8 @@ const ModalShopping = () => {
                   </ButtonPersonalized>
                 </button>
                 <button type="button" className="button-btn-modals"
-                  disabled
+                  disabled={ dataSelected.code === undefined }
+                  onClick={ handleDeleteArticle }
                 >
                   <ButtonPersonalized classNameIcon="bi bi-trash-fill" isColumn={ true }>
                     Eliminar Compra
