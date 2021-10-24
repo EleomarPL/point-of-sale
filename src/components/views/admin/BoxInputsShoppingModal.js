@@ -83,21 +83,22 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
     };
   }, []);
   useEffect(() => {
-    if (dataSelected2.id) {
-      setIsProductExist(true);
-      setDataArticle({
-        purchasePrice: dataSelected2.purchasePrice, salesPrice: dataSelected2.salesPrice,
-        stock: dataSelected2.amount, amount: ''
-      });
-      setArticle(dataSelected2.article);
-      setCode(dataSelected2.id.toString());
-    } else {
-      setIsProductExist(false);
-      setDataArticle({
-        purchasePrice: '', salesPrice: '',
-        stock: '', amount: ''
-      });
-    }
+    if (!code)
+      if (dataSelected2.id) {
+        setIsProductExist(true);
+        setDataArticle({
+          purchasePrice: dataSelected2.purchasePrice, salesPrice: dataSelected2.salesPrice,
+          stock: dataSelected2.amount, amount: ''
+        });
+        setArticle(dataSelected2.article);
+        setCode(dataSelected2.id.toString());
+      } else {
+        setIsProductExist(false);
+        setDataArticle({
+          purchasePrice: '', salesPrice: '',
+          stock: '', amount: ''
+        });
+      }
   }, [dataSelected2]);
 
   const setNewValue = ({property, value}) => {
@@ -168,8 +169,7 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
       <div className="d-flex align-items-center justify-content-between">
         <SelectProvider widthSelect="58%" keyProvider={ providerSelect } />
       </div>
-      <input type="checkbox" className="visually-hidden"
-        checked={ isProductExist } onChange={ () => {} }
+      <input type="radio" className="visually-hidden"
         value={ isProductExist }
       />
     </div>
