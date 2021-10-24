@@ -52,7 +52,7 @@ const getPurchases = async({value, limit, startDate, endDate}) => {
   const getDataPurchases = await connection.query(
     `SELECT shopping.folio,article.article,provider.company,
     shopping.amountShopping,article.purchasePrice,
-    shopping.amountShopping*article.purchasePrice FROM
+    CAST(shopping.amountShopping*article.purchasePrice AS UNSIGNED) AS total FROM
     shopping INNER JOIN article INNER JOIN provider ON
     article.id_provider = provider.id and shopping.id_article = article.id
     WHERE ${query} ORDER BY shopping.folio DESC

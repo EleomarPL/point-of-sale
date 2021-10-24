@@ -58,7 +58,7 @@ const Shopping = () => {
   ];
   let properties = [
     'code', 'article', 'company',
-    'amountShopping', 'purchasePrice', 'shopping.amountShopping*article.purchasePrice'
+    'amountShopping', 'purchasePrice', 'total'
   ];
 
   return (

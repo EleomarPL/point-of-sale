@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 
 import TablePersonalized from '../common/TablePersonalized';
@@ -6,6 +6,8 @@ import BoxInputsShoppingModal from '../views/admin/BoxInputsShoppingModal';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import {isInteger, isObjectValuesNull, isNumberValue, validateLength} from '../../services/validations/generalValidations';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
+import useShopping from '../../hooks/useShopping';
+import { notifySuccess } from '../../consts/notifications';
 
 export const openmodalShopping = () => {
   let myModal = new Modal(
@@ -23,6 +25,24 @@ const ModalShopping = () => {
   const [dataProductTemp, setDataProductTemp] = useState([]);
   const [dataSelected2, setDataSelected2] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const {insertPurchases} = useShopping();
+
+  useEffect(() => {
+    window.electron.on('render:insert-purchases', (err, data) => {
+      setIsLoading(false);
+      if (!err) {
+        console.log('error insert purchases');
+        return null;
+      }
+      if (data)
+        notifySuccess('Compra realizada correctamente');
+      window.electron.send('main:get-purchases', {value: '', limit: 50});
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:insert-purchases');
+    };
+  }, []);
 
   let header = [
     'Codigo', 'Articulo', 'Empresa',
@@ -93,9 +113,7 @@ const ModalShopping = () => {
                   ...purchase, company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
                   quantity: Number(purchase.quantity) + Number(dataPurchase.amount.value),
                   total: Number(dataPurchase.purchasePrice.value) * (Number(purchase.quantity) + Number(dataPurchase.amount.value)),
-                  idProvider: evt.target[7].value, amount: Number(purchase.quantity) + Number(dataPurchase.amount.value),
-                  amountShopping: Number(dataPurchase.purchasePrice.value) * (Number(purchase.quantity) + Number(dataPurchase.amount.value))
-
+                  idProvider: evt.target[7].value, amount: Number(purchase.quantity) + Number(dataPurchase.amount.value)
                 };
               } else
                 return purchase;
@@ -113,8 +131,7 @@ const ModalShopping = () => {
                 quantity: dataPurchase.amount.value, isAdded: evt.target[8].value,
                 total: dataPurchase.purchasePrice.value * dataPurchase.amount.value,
                 id: dataPurchase.code.value, amount: dataPurchase.amount.value,
-                idProvider: evt.target[7].value,
-                amountShopping: dataPurchase.purchasePrice.value * dataPurchase.amount.value
+                idProvider: evt.target[7].value, dateofExpiry: evt.target[6].value || null
               }
             ]);
           }
@@ -123,7 +140,15 @@ const ModalShopping = () => {
     }
   };
   const handleAddPurchase = () => {
+    let myModal = Modal.getInstance( document.getElementById('modalShopping') );
     setIsLoading(true);
+    let listPurchases = dataNewShopping.map(purchase => {
+      return {
+        ...purchase, isAdded: purchase.isAdded === 'true' ? true : false
+      };
+    });
+    insertPurchases({listPurchases});
+    myModal.hide();
   };
 
   return (

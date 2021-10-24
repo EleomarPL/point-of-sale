@@ -49,41 +49,38 @@ const addPurchases = async({listPurchases}) => {
     return false;
   }
   const {connection, pool} = await getConnection();
-
-  let idArticle = 0;
   
   listPurchases.forEach(async(purchase) => {
     if (!(purchase.id && purchase.article && purchase.purchasePrice && purchase.salesPrice
-      && purchase.amount && purchase.idProvider, purchase.amountShopping
+      && purchase.amount && purchase.idProvider
     )) {
       return false;
     } else {
       if (!purchase.isAdded) {
-        const result = await connection.query(
+        await connection.query(
           'INSERT INTO article VALUES(?, ?, ?, ?, ?, ?, ?, \'unlocked\');',
           [
             purchase.id, purchase.idProvider, purchase.article, purchase.purchasePrice,
             purchase.salesPrice, purchase.amount, purchase.dateofExpiry || null
           ]
         );
-        idArticle = result.insertId;
       } else {
         await updateArticleByPurchase({
           connection, idProvider: purchase.idProvider, id: purchase.id, purchasePrice: purchase.purchasePrice,
-          amount: purchase.amount, dateofExpiry: purchase.dateofExpiry
+          amount: Number(purchase.amount), dateofExpiry: purchase.dateofExpiry
         });
-        idArticle = purchase.id;
       }
-      if (idArticle !== 0) {
+      if (purchase.id !== 0) {
         await connection.query(
           'INSERT INTO shopping VALUES(null, ?, default, ?);',
-          [idArticle, purchase.amountShopping]
+          [purchase.id, purchase.amount]
         );
       }
     }
   });
 
   closeConnection({connection, pool});
+  return true;
 };
 const insertEmployee = async({name, lastName, motherLastName, isAMan, age, username, password}) => {
   if (!(name, lastName, motherLastName, age, username, password)) {
