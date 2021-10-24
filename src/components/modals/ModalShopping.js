@@ -202,7 +202,11 @@ const ModalShopping = () => {
                   setDataSelected={ setDataSelected }
                   dataSelected={ dataSelected }
                 />
-                <p className="fw-bold" style={ {fontSize: '1.3rem'} }>Total: </p>
+                <p className="fw-bold" style={ {fontSize: '1.3rem'} }>Total:
+                  {
+                    ' ' + dataNewShopping.reduce((acc, currentValue) => Number(currentValue.total) + acc, 0)
+                  }
+                </p>
               </div>
             </div>
           </div>
