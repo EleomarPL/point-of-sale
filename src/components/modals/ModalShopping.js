@@ -219,7 +219,8 @@ const ModalShopping = () => {
               </div>
               <div className="col-md-7 d-flex justify-content-evenly">
                 <button type="button" className="button-btn-modals"
-                  onClick={ handleAddPurchase } disabled={ isLoading }
+                  onClick={ handleAddPurchase }
+                  disabled={ (isLoading || dataNewShopping.length === 0) }
                 >
                   <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
                     <span>
