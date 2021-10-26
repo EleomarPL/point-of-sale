@@ -105,15 +105,22 @@ const updateStatusArticle = async({id, willItLocked}) => {
   }
 };
 const updateUsernamePasswordAgeEmployee = async({id, username, password, age}) => {
-  if (!(id, username, password, age)) {
+  if (!(id, username, age)) {
+    console.log({id, username, password, age});
+    console.log('no paso 1');
     return false;
   }
+  const personalizedQuery = password
+    ? 'UPDATE user SET username=?, password=?, age=? WHERE id=? ;'
+    : 'UPDATE user SET username=?, age=? WHERE id=? ;';
+  const personalizedDataQuery = password
+    ? [username, password, age, id]
+    : [username, age, id];
   const {connection, pool} = await getConnection();
   
   try {
     const resultOperation = await connection.query(
-      'UPDATE user SET username=?, password=?, age=? WHERE id=? ;',
-      [username, password, age, id]
+      personalizedQuery, personalizedDataQuery
     );
     closeConnection({connection, pool});
 

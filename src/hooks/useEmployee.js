@@ -10,9 +10,12 @@ const useEmployee = () => {
   const updateStatusEmployee = ({id, willIsLocked}) => {
     window.electron.send('main:update-status-employee', {id, willIsLocked});
   };
+  const updateEmployee = ({id, age, username, password}) => {
+    window.electron.send('main:update-employee', {id, age, username, password});
+  };
   
   return {
-    getEmployees, updateStatusEmployee, insertEmployee
+    getEmployees, updateStatusEmployee, insertEmployee, updateEmployee
   };
 };
 

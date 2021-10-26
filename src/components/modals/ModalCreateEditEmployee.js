@@ -26,16 +26,16 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
     user: '', password: '', gender: 'M', age: 18
   });
   const [isLoading, setIsLoading] = useState(false);
-  const {insertEmployee} = useEmployee();
+  const {insertEmployee, updateEmployee} = useEmployee();
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (!isCreateEmployee) {
       setValueUser({
         ...dataEmployee,
-        user: 'user123', password: 'password'
+        user: dataEmployee.username, password: ''
       });
-      setRadio1(false);
+      setRadio1(dataEmployee.gender === 'M');
     } else
       setValueUser({
         code: '', name: '', lastName: '', motherLastName: '',
@@ -54,16 +54,28 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         window.electron.send('main:get-employees', {value: '', limit: 50});
       }
     });
+    window.electron.on('render:update-employee', (err, data) => {
+      setIsLoading(false);
+      if (!err) {
+        console.log('error update employee');
+        return null;
+      }
+      if (data) {
+        notifySuccess('Empleado actualizado correctamente');
+        window.electron.send('main:get-employees', {value: '', limit: 50});
+      }
+    });
 
     return () => {
       window.electron.removeAllListeners('render:insert-employee');
+      window.electron.removeAllListeners('render:update-employee');
     };
   }, []);
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
     let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
-    let dataEmployee = {
+    let dataEmployeeForm = {
       name: {
         name: 'Nombre',
         minLength: 2,
@@ -96,7 +108,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
       }
     };
     if (!isCreateEmployee) {
-      dataEmployee = {
+      dataEmployeeForm = {
         name: {
           name: 'Nombre',
           minLength: 2,
@@ -123,8 +135,8 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         }
       };
       if (evt.target[0].checked) {
-        dataEmployee = {
-          ...dataEmployee,
+        dataEmployeeForm = {
+          ...dataEmployeeForm,
           password: {
             name: 'Contraseña',
             minLength: 6,
@@ -134,23 +146,25 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         };
       }
     }
-    if ( !isObjectValuesNull(dataEmployee) && validateLength(dataEmployee) ) {
+    if ( !isObjectValuesNull(dataEmployeeForm) && validateLength(dataEmployeeForm) ) {
       setIsLoading(true);
       if (isCreateEmployee)
         insertEmployee({
-          name: dataEmployee.name.value, lastName: dataEmployee.lastName.value,
-          motherLastName: dataEmployee.motherLastName.value, age: evt.target[7].value,
-          username: dataEmployee.userName.value, password: dataEmployee.password.value,
+          name: dataEmployeeForm.name.value, lastName: dataEmployeeForm.lastName.value,
+          motherLastName: dataEmployeeForm.motherLastName.value, age: evt.target[7].value,
+          username: dataEmployeeForm.userName.value, password: dataEmployeeForm.password.value,
           isAMan: evt.target[5].checked
         });
+      else
+        updateEmployee({
+          id: dataEmployee.code, age: showPassword ? evt.target[8].value : evt.target[7].value,
+          username: dataEmployeeForm.userName.value,
+          password: dataEmployeeForm.password ? dataEmployeeForm.password.value : ''
+        });
       
+      setDataSelected({});
       myModal.hide();
     }
-    console.log({
-      radio1: evt.target[5].checked,
-      radio2: evt.target[6].checked,
-      age: evt.target[7].value
-    });
   };
 
   return (
