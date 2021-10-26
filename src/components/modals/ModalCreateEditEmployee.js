@@ -95,6 +95,45 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         value: evt.target[4].value
       }
     };
+    if (!isCreateEmployee) {
+      dataEmployee = {
+        name: {
+          name: 'Nombre',
+          minLength: 2,
+          maxLength: 50,
+          value: evt.target[1].value
+        },
+        lastName: {
+          name: 'Apellido paterno',
+          minLength: 2,
+          maxLength: 50,
+          value: evt.target[2].value
+        },
+        motherLastName: {
+          name: 'Apellido materno',
+          minLength: 2,
+          maxLength: 50,
+          value: evt.target[3].value
+        },
+        userName: {
+          name: 'Usuario',
+          minLength: 6,
+          maxLength: 50,
+          value: evt.target[4].value
+        }
+      };
+      if (evt.target[0].checked) {
+        dataEmployee = {
+          ...dataEmployee,
+          password: {
+            name: 'Contraseña',
+            minLength: 6,
+            maxLength: 50,
+            value: evt.target[5].value
+          }
+        };
+      }
+    }
     if ( !isObjectValuesNull(dataEmployee) && validateLength(dataEmployee) ) {
       setIsLoading(true);
       if (isCreateEmployee)
