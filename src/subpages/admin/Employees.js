@@ -6,6 +6,7 @@ import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
 import useEmployee from '../../hooks/useEmployee';
+import { notifySuccess } from '../../consts/notifications';
 
 const ModalCreateEditEmployee = lazy(() => import('../../components/modals/ModalCreateEditEmployee'));
 
@@ -14,7 +15,7 @@ const Employees = () => {
   const [dataEmployees, setDataEmployees] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isCreateEmployee, setIsCreateEmployee] = useState(true);
-  const {getEmployees} = useEmployee();
+  const {getEmployees, updateStatusEmployee} = useEmployee();
 
   useEffect(() => {
     getEmployees({value: searcher, limit: 50});
@@ -33,9 +34,20 @@ const Employees = () => {
           };
         }));
     });
+    window.electron.on('render:update-status-employee', (err, data) => {
+      if (!err) {
+        console.log('error update status employee');
+        return null;
+      }
+      if (data) {
+        notifySuccess('Estado del empleado actualizado correctamente');
+        window.electron.send('main:get-employees', {value: '', limit: 50});
+      }
+    });
 
     return () => {
       window.electron.removeAllListeners('render:get-employees');
+      window.electron.removeAllListeners('render:update-status-employee');
     };
   }, []);
 
@@ -69,15 +81,19 @@ const Employees = () => {
     {
       classNameIcon: 'bi bi-person-x-fill',
       text: 'Congelar',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
-        console.log('Open modal freeze');
+        if (dataSelected.code)
+          updateStatusEmployee({id: dataSelected.code, willIsLocked: true});
       }
     },
     {
       classNameIcon: 'bi bi-person-check-fill',
       text: 'Descongelar',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
-        console.log('Open modal thaw');
+        if (dataSelected.code)
+          updateStatusEmployee({id: dataSelected.code, willIsLocked: false});
       }
     }
   ];
