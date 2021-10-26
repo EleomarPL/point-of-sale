@@ -27,6 +27,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
   });
   const [isLoading, setIsLoading] = useState(false);
   const {insertEmployee} = useEmployee();
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (!isCreateEmployee) {
@@ -128,25 +129,57 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
           </div>
           <div className="modal-body">
             <form onSubmit={ handleSubmitEmployee } id="form-employee">
+              { !isCreateEmployee &&
+                <div className="d-flex justify-content-center align-items-center mb-2">
+                  <input className="form-check-input" type="checkbox"
+                    value={ showPassword } id="showChangePassword"
+                    style={ {marginRight: '0.5rem'} }
+                    onClick={ () => setShowPassword(!showPassword) }
+                  />
+                  <label htmlFor="showChangePassword">Cambiar contraseña</label>
+                </div>
+              }
               <table className="w-100">
                 <tbody>
                   { inputEmployees &&
-                    inputEmployees.map(employee =>
-                      <tr key={ employee.id } >
-                        <td>{ employee.placeholder }</td>
-                        <td>
-                          <input type={ employee.type } className="form-control mb-2"
-                            placeholder={ employee.placeholder } aria-label={ employee.id.toUpperCase() }
-                            aria-describedby={ employee.id }
-                            style={ {backgroundColor: '#f6eded'} }
-                            value={ valueUser[employee.id] || '' }
-                            onChange={ (evt) => setValueUser({
-                              ...valueUser,
-                              [employee.id]: evt.target.value
-                            }) }
-                          />
-                        </td>
-                      </tr>
+                    inputEmployees.map(employee => {
+                      if (employee.id !== 'password' || isCreateEmployee)
+                        return <tr key={ employee.id } >
+                          <td>{ employee.placeholder }</td>
+                          <td>
+                            <input type={ employee.type } className="form-control mb-2"
+                              placeholder={ employee.placeholder } aria-label={ employee.id.toUpperCase() }
+                              aria-describedby={ employee.id }
+                              style={ {backgroundColor: '#f6eded'} }
+                              value={ valueUser[employee.id] || '' }
+                              onChange={ (evt) => setValueUser({
+                                ...valueUser,
+                                [employee.id]: evt.target.value
+                              }) }
+                            />
+                          </td>
+                        </tr>;
+                      else
+                        return <tr key={ employee.id }>
+                          { showPassword &&
+                            <>
+                              <td>{ employee.placeholder }</td>
+                              <td>
+                                <input type={ employee.type } className="form-control mb-2"
+                                  placeholder={ employee.placeholder } aria-label={ employee.id.toUpperCase() }
+                                  aria-describedby={ employee.id }
+                                  style={ {backgroundColor: '#f6eded'} }
+                                  value={ valueUser[employee.id] || '' }
+                                  onChange={ (evt) => setValueUser({
+                                    ...valueUser,
+                                    [employee.id]: evt.target.value
+                                  }) }
+                                />
+                              </td>
+                            </>
+                          }
+                        </tr>;
+                    }
                     )
                   }
                   <tr>
