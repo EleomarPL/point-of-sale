@@ -6,6 +6,8 @@ import {inputEmployees} from '../../data/admin/modalEmployee';
 import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
+import useEmployee from '../../hooks/useEmployee';
+import { notifySuccess } from '../../consts/notifications';
 
 export const openmodalCreateEditEmployee = () => {
   let myModal = new Modal(
@@ -24,6 +26,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
     user: '', password: '', gender: 'M', age: 18
   });
   const [isLoading, setIsLoading] = useState(false);
+  const {insertEmployee} = useEmployee();
 
   useEffect(() => {
     if (!isCreateEmployee) {
@@ -38,9 +41,27 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         user: '', password: '', gender: 'M', age: 18
       });
   }, [isCreateEmployee, dataEmployee]);
+  useEffect(() => {
+    window.electron.on('render:insert-employee', (err, data) => {
+      setIsLoading(false);
+      if (!err) {
+        console.log('error update status employee');
+        return null;
+      }
+      if (data) {
+        notifySuccess('Empleado agregado correctamente');
+        window.electron.send('main:get-employees', {value: '', limit: 50});
+      }
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:insert-employee');
+    };
+  }, []);
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
+    let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
     let dataEmployee = {
       name: {
         name: 'Nombre',
@@ -75,6 +96,15 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
     };
     if ( !isObjectValuesNull(dataEmployee) && validateLength(dataEmployee) ) {
       setIsLoading(true);
+      if (isCreateEmployee)
+        insertEmployee({
+          name: dataEmployee.name.value, lastName: dataEmployee.lastName.value,
+          motherLastName: dataEmployee.motherLastName.value, age: evt.target[7].value,
+          username: dataEmployee.userName.value, password: dataEmployee.password.value,
+          isAMan: evt.target[5].checked
+        });
+      
+      myModal.hide();
     }
     console.log({
       radio1: evt.target[5].checked,
