@@ -5,14 +5,14 @@ import ButtonPersonalized from '../common/ButtonPersonalized';
 
 const NavigationAdmin = ({navigation}) => {
   return (
-    <nav className="col-md-12 d-flex flex-wrap justify-content-evenly">
+    <nav className="col-md-12 d-flex justify-content-evenly">
       { navigation &&
         navigation.map((option, index) =>
           <NavLink
             key={ option.classNameIcon } exact={ index === 0 }
             to={ '/admin' + option.path }
             className="button-personalized is-menu text-black text-decoration-none"
-            style={ {width: '19%'} }
+            style={ {minWidth: '19vw'} }
             activeClassName="active-admin"
           >
             <ButtonPersonalized
