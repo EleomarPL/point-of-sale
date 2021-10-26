@@ -75,6 +75,7 @@ const Products = () => {
     {
       classNameIcon: 'bi bi-stop-circle-fill',
       text: 'Congelar',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
         if (dataSelected.code)
           updateStatusArticle({id: dataSelected.code, willItLocked: true});
@@ -83,6 +84,7 @@ const Products = () => {
     {
       classNameIcon: 'bi bi-patch-check-fill',
       text: 'Descongelar',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
         if (dataSelected.code)
           updateStatusArticle({id: dataSelected.code, willItLocked: false});
