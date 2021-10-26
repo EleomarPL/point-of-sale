@@ -5,6 +5,7 @@ import SearcherPersonalized from '../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
+import useEmployee from '../../hooks/useEmployee';
 
 const ModalCreateEditEmployee = lazy(() => import('../../components/modals/ModalCreateEditEmployee'));
 
@@ -13,18 +14,29 @@ const Employees = () => {
   const [dataEmployees, setDataEmployees] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isCreateEmployee, setIsCreateEmployee] = useState(true);
+  const {getEmployees} = useEmployee();
 
   useEffect(() => {
-    setDataEmployees([
-      {
-        code: 1234, name: 'Name', lastName: 'LastName',
-        motherLastName: 'MotherLastName', gender: 'F', age: '20', state: 0
-      },
-      {
-        code: 1235, name: 'Name2', lastName: 'LastName2',
-        motherLastName: 'MotherLastName2', gender: 'F', age: '20', state: 0
+    getEmployees({value: searcher, limit: 50});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-employees', (err, data) => {
+      if (!err) {
+        console.log('error insert purchases');
+        return null;
       }
-    ]);
+      if (data)
+        setDataEmployees(data.map(employee => {
+          return {
+            ...employee, code: employee.id,
+            status: employee.statusUser === 'locked' ? 'Bloqueado' : 'Activo'
+          };
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-employees');
+    };
   }, []);
 
   let header = [
@@ -33,7 +45,7 @@ const Employees = () => {
   ];
   let properties = [
     'code', 'name', 'lastName',
-    'motherLastName', 'gender', 'age', 'state'
+    'motherLastName', 'gender', 'age', 'status'
   ];
 
   let listProviders = [
