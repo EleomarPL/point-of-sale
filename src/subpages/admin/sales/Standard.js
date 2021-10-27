@@ -58,7 +58,7 @@ const Standard = () => {
           />
         }
         component2={
-          <SearcherDatePersonalized />
+          <SearcherDatePersonalized setValue={ setSearcher } />
         }
         className="d-flex justify-content-center"
       />

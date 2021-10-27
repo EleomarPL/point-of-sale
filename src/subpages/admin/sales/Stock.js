@@ -45,7 +45,7 @@ const Stock = () => {
           </SearcherSelectPersonalized>
         }
         component2={
-          <SearcherDatePersonalized>
+          <SearcherDatePersonalized setValue={ setSearcher }>
             <SelectProvider />
           </SearcherDatePersonalized>
         }
