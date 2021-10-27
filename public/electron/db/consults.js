@@ -115,7 +115,7 @@ const getStandardSales = async({value, startDate, endDate, limit}) => {
     if (!(startDate && endDate)) {
       return [];
     }
-    query = `ticketf.Fecha>='${startDate}' AND ticketf.Fecha<='${endDate}'`;
+    query = `ticketf.date>='${startDate}' AND ticketf.date<='${endDate}'`;
   }
 
   const getSales = await connection.query(

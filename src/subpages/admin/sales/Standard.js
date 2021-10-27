@@ -14,8 +14,20 @@ const Standard = () => {
   const {getStandardSales} = useSales();
 
   useEffect(() => {
-    getStandardSales({value: searcher, limit: 50});
+    if (valueFirstRadio)
+      getStandardSales({value: searcher, limit: 50});
+    else if (searcher) {
+      const dateSplit = searcher.split(' ');
+      const startDate = dateSplit[0];
+      const endDate = dateSplit[1];
+      getStandardSales({startDate, endDate, limit: 50});
+    }
   }, [searcher]);
+  useEffect(() => {
+    setSearcher('');
+    if (!valueFirstRadio)
+      getStandardSales({value: '', limit: 50});
+  }, [valueFirstRadio]);
   useEffect(() => {
     window.electron.on('render:get-standard-sales', (err, data) => {
       if (!err) {

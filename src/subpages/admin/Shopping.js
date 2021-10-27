@@ -22,7 +22,18 @@ const Shopping = () => {
   useEffect(() => {
     if (valueFirstRadio)
       getPurchases({value: searcher, limit: 50});
+    else if (searcher) {
+      const dateSplit = searcher.split(' ');
+      const startDate = dateSplit[0];
+      const endDate = dateSplit[1];
+      getPurchases({limit: 50, startDate, endDate});
+    }
   }, [searcher]);
+  useEffect(() => {
+    setSearcher('');
+    if (!valueFirstRadio)
+      getPurchases({value: '', limit: 50});
+  }, [valueFirstRadio]);
   useEffect(() => {
     window.electron.on('render:get-purchases', (err, data) => {
       if (!err) {
