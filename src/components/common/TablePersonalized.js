@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const TablePersonalized = ({
-  header, listData, listProperties, setDataSelected, dataSelected, maxHeight = '50vh'
+  header, listData, listProperties, setDataSelected, dataSelected, maxHeight = '50vh', keyByIndex = false
 }) => {
 
   const handleDataSelected = (object) => {
@@ -24,9 +24,9 @@ const TablePersonalized = ({
         </thead>
         <tbody>
           { listData &&
-            listData.map(object =>
+            listData.map((object, index) =>
               <tr
-                key={ object[listProperties[0]] }
+                key={ keyByIndex ? index : object[listProperties[0]] }
                 style={ {
                   backgroundColor: dataSelected[listProperties[0]] === object[listProperties[0]] && '#0070ba',
                   color: dataSelected[listProperties[0]] === object[listProperties[0]] && 'white',
@@ -54,7 +54,8 @@ TablePersonalized.propTypes = {
   listProperties: PropTypes.array.isRequired,
   dataSelected: PropTypes.object.isRequired,
   setDataSelected: PropTypes.func.isRequired,
-  maxHeight: PropTypes.string
+  maxHeight: PropTypes.string,
+  keyByIndex: PropTypes.bool
 };
 
 export default TablePersonalized;

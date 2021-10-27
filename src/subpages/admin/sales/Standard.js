@@ -4,24 +4,33 @@ import SearcherDatePersonalized from '../../../components/common/SearcherDatePer
 import SearcherPersonalized from '../../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../../components/common/TablePersonalized';
 import GroupRadioOptions from '../../../components/views/GroupRadioOptions';
+import useSales from '../../../hooks/useSales';
 
 const Standard = () => {
   const [dataSales, setDataSales] = useState([]);
   const [searcher, setSearcher] = useState('');
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
   const [dataSelected, setDataSelected] = useState({});
+  const {getStandardSales} = useSales();
 
   useEffect(() => {
-    setDataSales([
-      {
-        folio: 1, box: 1, product: 'Product',
-        sold: 11, price: 11, totalPurchase: 11, date: new Date().toISOString()
-      },
-      {
-        folio: 2, box: 2, product: 'Product2',
-        sold: 22, price: 22, totalPurchase: 22, date: new Date().toISOString()
+    getStandardSales({value: searcher, limit: 50});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-standard-sales', (err, data) => {
+      if (!err) {
+        console.log('error get standard sales');
+        return null;
       }
-    ]);
+      if (data)
+        setDataSales(data.map(sales => {
+          return {...sales, date: sales.date.toLocaleString()};
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-standard-sales');
+    };
   }, []);
 
   let header = [
@@ -29,8 +38,8 @@ const Standard = () => {
     'Vendidos', 'Precio', 'Total Compra', 'Fecha'
   ];
   let properties = [
-    'folio', 'box', 'product',
-    'sold', 'price', 'totalPurchase', 'date'
+    'folio', 'id_user', 'article',
+    'amount', 'salesPrice', 'total', 'date'
   ];
 
   return (
@@ -61,6 +70,7 @@ const Standard = () => {
           listProperties={ properties }
           setDataSelected={ setDataSelected }
           dataSelected={ dataSelected }
+          keyByIndex={ true }
         />
       </div>
     </div>
