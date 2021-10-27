@@ -14,7 +14,7 @@ const ButtonSearch = ({ onClick, isTypeSubmit = false }) => {
 };
 
 ButtonSearch.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   isTypeSubmit: PropTypes.bool
 };
 

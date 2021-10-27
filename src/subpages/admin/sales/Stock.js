@@ -43,7 +43,7 @@ const Stock = () => {
           />
         }
         component2={
-          <SearcherDatePersonalized>
+          <SearcherDatePersonalized setValue={ setSearcher }>
             <SelectProvider />
           </SearcherDatePersonalized>
         }
