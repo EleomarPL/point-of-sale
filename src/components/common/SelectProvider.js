@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import useProvider from '../../hooks/useProvider';
 
-const SelectProvider = ({ widthSelect = '10%', keyProvider = ''}) => {
+const SelectProvider = ({ widthSelect = '10%', keyProvider = '', children}) => {
   const [providers, setProviders] = useState([]);
   const [providerSelect, setProviderSelect] = useState('');
   const {getProviderForSelect} = useProvider();
@@ -36,6 +36,7 @@ const SelectProvider = ({ widthSelect = '10%', keyProvider = ''}) => {
       <select className="form-select mx-1" style={ {width: widthSelect} }
         value={ providerSelect } onChange={ (evt) => setProviderSelect(evt.target.value) }
       >
+        { children }
         { providers &&
           providers.map(provider =>
             <option value={ provider.id }
@@ -53,7 +54,8 @@ const SelectProvider = ({ widthSelect = '10%', keyProvider = ''}) => {
 
 SelectProvider.propTypes = {
   widthSelect: PropTypes.string,
-  keyProvider: PropTypes.string
+  keyProvider: PropTypes.string,
+  children: PropTypes.node
 };
 
 export default SelectProvider;

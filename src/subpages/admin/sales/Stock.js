@@ -40,7 +40,9 @@ const Stock = () => {
         component1={
           <SearcherSelectPersonalized
             setValue={ setSearcher }
-          />
+          >
+            <option value="all">Todos</option>
+          </SearcherSelectPersonalized>
         }
         component2={
           <SearcherDatePersonalized>

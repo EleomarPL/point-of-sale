@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import SelectProvider from './SelectProvider';
 
-const SearcherSelectPersonalized = ({setValue}) => {
+const SearcherSelectPersonalized = ({setValue, children}) => {
   return (
     <div className="w-100 d-flex flex-wrap justify-content-center align-items-center">
       <span className="mx-2">Buscar: </span>
@@ -16,13 +16,16 @@ const SearcherSelectPersonalized = ({setValue}) => {
         <option value="semester">Semestre</option>
         <option value="year">Año</option>
       </select>
-      <SelectProvider />
+      <SelectProvider>
+        { children }
+      </SelectProvider>
     </div>
   );
 };
 
 SearcherSelectPersonalized.propTypes = {
-  setValue: PropTypes.func
+  setValue: PropTypes.func,
+  children: PropTypes.node
 };
 
 export default SearcherSelectPersonalized;
