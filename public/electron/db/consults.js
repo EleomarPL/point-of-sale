@@ -139,7 +139,7 @@ const getStockSales = async({value = '', startDate, endDate}) => {
 
   const getSales = await connection.query(
     `SELECT ticketf.id_user,provider.company,article.article,article.amount,
-    SUM(salesrecord.amount),SUM(salesrecord.total) FROM (((article 
+    SUM(salesrecord.amount) as sold,SUM(salesrecord.total) as totalPurchases FROM (((article 
     RIGHT JOIN salesrecord ON salesrecord.id_article=article.id ) 
     RIGHT JOIN ticketf ON salesrecord.folio=ticketf.folio) 
     RIGHT JOIN provider ON article.id_provider=provider.id) WHERE 

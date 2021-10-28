@@ -5,20 +5,39 @@ import SearcherSelectPersonalized from '../../../components/common/SearcherSelec
 import SelectProvider from '../../../components/common/SelectProvider';
 import TablePersonalized from '../../../components/common/TablePersonalized';
 import GroupRadioOptions from '../../../components/views/GroupRadioOptions';
+import useSales from '../../../hooks/useSales';
 
 const Stock = () => {
   const [dataSales, setDataSales] = useState([]);
   const [searcher, setSearcher] = useState('');
   const [valueFirstRadio, setValueFirstRadio] = useState(true);
   const [dataSelected, setDataSelected] = useState({});
+  const {getStockSales} = useSales();
 
   useEffect(() => {
-    setDataSales([
-      {
-        box: 1, company: 'Company', product: 'Product',
-        existence: 10, 'sold': 10, totalPurchase: 10
+    if (valueFirstRadio) {
+      let splitSearcher = searcher.split(' ');
+      const startDate = splitSearcher[0];
+      const endDate = splitSearcher[1];
+      const provider = splitSearcher[2] === 'all' ? '' : splitSearcher[2];
+
+      getStockSales({startDate, endDate, value: provider});
+    }
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-stock-sales', (err, data) => {
+      if (!err) {
+        console.log('error update employee');
+        return null;
       }
-    ]);
+      if (data)
+        setDataSales(data);
+      
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-stock-sales');
+    };
   }, []);
 
   let header = [
@@ -26,8 +45,8 @@ const Stock = () => {
     'Existencia', 'Vendidos', 'Total Compra'
   ];
   let properties = [
-    'box', 'company', 'product',
-    'existence', 'sold', 'totalPurchase'
+    'id_user', 'company', 'article',
+    'amount', 'sold', 'totalPurchases'
   ];
 
   return (
@@ -39,7 +58,7 @@ const Stock = () => {
         setValueRadio1={ setValueFirstRadio }
         component1={
           <SearcherSelectPersonalized
-            setValue={ setSearcher }
+            setValue={ setSearcher } keyProvider="all"
           >
             <option value="all">Todos</option>
           </SearcherSelectPersonalized>
@@ -59,6 +78,7 @@ const Stock = () => {
           listProperties={ properties }
           setDataSelected={ setDataSelected }
           dataSelected={ dataSelected }
+          keyByIndex={ true }
         />
       </div>
     </div>
