@@ -3,7 +3,7 @@ import { notifyWarning } from '../../consts/notifications';
 
 import ButtonSearch from '../buttons/ButtonSearch';
 
-const SearcherDatePersonalized = ({children, setValue}) => {
+const SearcherDatePersonalized = ({children, setValue, isAddedSelectProvider = false}) => {
   const handleSubmitSearch = (evt) => {
     evt.preventDefault();
     const dateStart = evt.target[0].value;
@@ -11,7 +11,10 @@ const SearcherDatePersonalized = ({children, setValue}) => {
     
     if (!(dateStart && dateEnd))
       notifyWarning('Rellene los campos');
-    else
+    else if (isAddedSelectProvider) {
+      const provider = evt.target[2].value === 'all' ? '' : evt.target[2].value;
+      setValue(`${dateStart} ${dateEnd} ${provider}`);
+    } else
       setValue(`${dateStart} ${dateEnd}`);
     
   };
@@ -46,7 +49,8 @@ const SearcherDatePersonalized = ({children, setValue}) => {
 
 SearcherDatePersonalized.propTypes = {
   children: PropTypes.node,
-  setValue: PropTypes.func
+  setValue: PropTypes.func,
+  isAddedSelectProvider: PropTypes.bool
 };
 
 export default SearcherDatePersonalized;

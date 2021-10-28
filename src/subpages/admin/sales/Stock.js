@@ -15,14 +15,12 @@ const Stock = () => {
   const {getStockSales} = useSales();
 
   useEffect(() => {
-    if (valueFirstRadio) {
-      let splitSearcher = searcher.split(' ');
-      const startDate = splitSearcher[0];
-      const endDate = splitSearcher[1];
-      const provider = splitSearcher[2] === 'all' ? '' : splitSearcher[2];
+    let splitSearcher = searcher.split(' ');
+    const startDate = splitSearcher[0];
+    const endDate = splitSearcher[1];
+    const provider = splitSearcher[2] === 'all' ? '' : splitSearcher[2];
 
-      getStockSales({startDate, endDate, value: provider});
-    }
+    getStockSales({startDate, endDate, value: provider});
   }, [searcher]);
   useEffect(() => {
     window.electron.on('render:get-stock-sales', (err, data) => {
@@ -57,15 +55,15 @@ const Stock = () => {
         valueRadio1={ valueFirstRadio }
         setValueRadio1={ setValueFirstRadio }
         component1={
-          <SearcherSelectPersonalized
-            setValue={ setSearcher } keyProvider="all"
-          >
+          <SearcherSelectPersonalized setValue={ setSearcher }>
             <option value="all">Todos</option>
           </SearcherSelectPersonalized>
         }
         component2={
-          <SearcherDatePersonalized setValue={ setSearcher }>
-            <SelectProvider />
+          <SearcherDatePersonalized setValue={ setSearcher } isAddedSelectProvider={ true }>
+            <SelectProvider>
+              <option value="all">Todos</option>
+            </SelectProvider>
           </SearcherDatePersonalized>
         }
         className="d-flex justify-content-center"

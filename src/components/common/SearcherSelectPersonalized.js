@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { handleConvertDate } from '../../utils/convertDate';
 import SelectProvider from './SelectProvider';
 
-const SearcherSelectPersonalized = ({setValue, children, keyProvider = ''}) => {
+const SearcherSelectPersonalized = ({setValue, children}) => {
   const [optionSelected, setOptionSelected] = useState('day');
   const [optionProvider, setOptionProvider] = useState('all');
 
@@ -28,9 +28,7 @@ const SearcherSelectPersonalized = ({setValue, children, keyProvider = ''}) => {
         <option value="semester">Semestre</option>
         <option value="year">Año</option>
       </select>
-      <SelectProvider widthSelect="30%" setSelect={ setOptionProvider }
-        keyProvider={ keyProvider }
-      >
+      <SelectProvider widthSelect="30%" setSelect={ setOptionProvider }>
         { children }
       </SelectProvider>
     </div>
@@ -39,8 +37,7 @@ const SearcherSelectPersonalized = ({setValue, children, keyProvider = ''}) => {
 
 SearcherSelectPersonalized.propTypes = {
   setValue: PropTypes.func,
-  children: PropTypes.node,
-  keyProvider: PropTypes.string
+  children: PropTypes.node
 };
 
 export default SearcherSelectPersonalized;

@@ -18,6 +18,8 @@ const SelectProvider = ({ widthSelect = '10%', keyProvider = '', children, setSe
       if (data[0] !== undefined) {
         setProviders(data);
         setProviderSelect(data[0].id);
+        if (setSelect)
+          setSelect(data[0].id);
       }
     });
 
