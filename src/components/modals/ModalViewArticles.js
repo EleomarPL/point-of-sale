@@ -19,6 +19,11 @@ const ModalViewsArticles = () => {
   const [searcher, setSearcher] = useState('');
   const [dataSelected, setDataSelected] = useState({});
 
+  const handleCleanModal = () => {
+    setDataSelected({});
+    setSearcher('');
+  };
+
   return (
     <div className="modal fade" id="modalViewsArticles"
       data-bs-backdrop="static" data-bs-keyboard="false"
@@ -34,7 +39,11 @@ const ModalViewsArticles = () => {
               Ver Productos
             </h5>
             <button type="button" className="btn-close"
-              data-bs-dismiss="modal" aria-label="Close"></button>
+              data-bs-dismiss="modal" aria-label="Close"
+              onClick={ handleCleanModal }
+            >
+              
+            </button>
           </div>
           <div className="modal-body p-0 m-0" style={ {overflow: 'auto'} }>
             <ContainerShowProducts
@@ -45,7 +54,7 @@ const ModalViewsArticles = () => {
           </div>
           <div className="modal-footer m-0 p-0 d-flex justify-content-center">
             <button type="button" className="button-btn-modals"
-              data-bs-dismiss="modal"
+              data-bs-dismiss="modal" onClick={ handleCleanModal }
             >
               <ButtonPersonalized classNameIcon="bi bi-x-circle-fill" isColumn={ true }>
                 Cerrar

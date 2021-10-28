@@ -20,6 +20,11 @@ const ModalAddArticle = () => {
   const [searcher, setSearcher] = useState('');
   const [dataSelected, setDataSelected] = useState({});
 
+  const handleCleanModal = () => {
+    setDataSelected({});
+    setSearcher('');
+  };
+
   return (
     <div className="modal fade" id="modalAddArticle"
       data-bs-backdrop="static" data-bs-keyboard="false"
@@ -35,7 +40,10 @@ const ModalAddArticle = () => {
               Agregar Producto
             </h5>
             <button type="button" className="btn-close"
-              data-bs-dismiss="modal" aria-label="Close"></button>
+              data-bs-dismiss="modal" aria-label="Close"
+              onClick={ handleCleanModal }
+            >
+            </button>
           </div>
           <div className="modal-body p-0 m-0" style={ {overflow: 'auto'} }>
             <ContainerShowProducts
@@ -88,6 +96,7 @@ const ModalAddArticle = () => {
             </button>
             <button type="button" className="button-btn-modals"
               data-bs-dismiss="modal" style={ {marginLeft: '4rem'} }
+              onClick={ handleCleanModal }
             >
               <ButtonPersonalized classNameIcon="bi bi-x-circle-fill" isColumn={ true }>
                 Salir
