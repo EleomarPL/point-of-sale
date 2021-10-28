@@ -40,7 +40,7 @@ const Debts = () => {
     <div className="w-100">
       <div className="d-flex justify-content-center mt-1">
         <SearcherPersonalized
-          placeholder="Empresa"
+          placeholder="Nombre"
           title="Buscar"
           value={ searcher }
           setValue={ setSearcher }
