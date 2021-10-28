@@ -2,19 +2,30 @@ import { useEffect, useState } from 'react';
 
 import SearcherPersonalized from '../../../components/common/SearcherPersonalized';
 import TablePersonalized from '../../../components/common/TablePersonalized';
+import useDebts from '../../../hooks/useDebts';
 
 const Debts = () => {
   const [searcher, setSearcher] = useState('');
   const [dataDebts, setDataDebts] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const {getDebtsByKeyword} = useDebts();
 
   useEffect(() => {
-    setDataDebts([
-      {
-        code: 1, name: 'Name', lastName: 'LastName',
-        motherLastName: 'MotherLastName', debt: 200
+    getDebtsByKeyword({value: searcher});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-debts', (err, data) => {
+      if (!err) {
+        console.log('error get debts');
+        return null;
       }
-    ]);
+      if (data)
+        setDataDebts(data);
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-debts');
+    };
   }, []);
 
   let header = [
@@ -22,8 +33,8 @@ const Debts = () => {
     'Apellido Materno', 'Deuda'
   ];
   let properties = [
-    'code', 'name', 'lastName',
-    'motherLastName', 'debt'
+    'id', 'name', 'lastName',
+    'motherLastName', 'totalDebts'
   ];
   return (
     <div className="w-100">

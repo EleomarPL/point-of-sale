@@ -156,7 +156,7 @@ const getDebts = async({value = '', isGroupByDebtor}) => {
   
   const getDataDebts = await connection.query(
     `SELECT debtor.id,debtor.name,debtor.lastName,debtor.motherLastName,
-    ${isGroupByDebtor ? 'SUM(debts.total)' : 'debts.total'} FROM debts INNER JOIN debtor ON 
+    ${isGroupByDebtor ? 'SUM(debts.total) as totalDebts' : 'debts.total'} FROM debts INNER JOIN debtor ON 
     debts.id_debtor=debtor.id AND CONCAT(debtor.id,debtor.name,
     debtor.lastName) LIKE '%${value}%' ${isGroupByDebtor ? 'GROUP BY debtor.id' : ''} ;`
   );
