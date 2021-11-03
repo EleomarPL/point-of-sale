@@ -5,9 +5,12 @@ const useSales = () => {
   const getStockSales = ({value, startDate, endDate}) => {
     window.electron.send('main:get-stock-sales', {value, startDate, endDate});
   };
+  const getArticleById = ({id}) => {
+    window.electron.send('main:get-article-by-id', {id});
+  };
 
   return {
-    getStandardSales, getStockSales
+    getStandardSales, getStockSales, getArticleById
   };
 };
 
