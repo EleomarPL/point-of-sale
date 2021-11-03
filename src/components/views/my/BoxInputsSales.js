@@ -23,7 +23,7 @@ const BoxInputsSales = ({setDataSelected}) => {
         console.log('error get article by id');
         return null;
       }
-
+      setDataSelected({});
       if (data[0]) {
         if (data[0].statusArticle.toString() === 'locked') {
           notifyInfo('Este producto se encuentra bloqueado');
