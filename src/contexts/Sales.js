@@ -37,6 +37,7 @@ export const SalesProvider = ({ children }) => {
       }
     } else {
       if (Number(amount) > Number(stock)) {
+        newListSales = [...listSales];
         notifyError('Movimiento no valido: Futura venta ha excedido la existencia');
       } else {
         resultOperation = true;
