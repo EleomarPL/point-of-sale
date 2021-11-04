@@ -36,7 +36,8 @@ const ModalAddArticle = () => {
     if (dataSelected.code) {
       const resultOperation = handleAddedArticleInTable({
         code: dataSelected.code, stock: dataSelected.amount,
-        amount: evt.target[3].value, price: dataSelected.salesPrice
+        amount: evt.target[3].value, price: dataSelected.salesPrice,
+        name: dataSelected.article
       });
       if (resultOperation) {
         handleCleanModal();

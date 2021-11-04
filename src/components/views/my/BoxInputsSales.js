@@ -63,7 +63,7 @@ const BoxInputsSales = ({setDataSelected}) => {
   const handleSetFutureSales = () => {
     if (isInteger({name: 'Cantidad', value: amount})) {
       if (code && stock && amount && price) {
-        const resultOperation = handleAddedArticleInTable({code, stock, amount, price});
+        const resultOperation = handleAddedArticleInTable({code, stock, amount, price, name});
         if (resultOperation) {
           setCode('');
           setName('');

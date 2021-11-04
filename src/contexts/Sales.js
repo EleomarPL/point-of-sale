@@ -8,7 +8,7 @@ const SalesContext = createContext({});
 export const SalesProvider = ({ children }) => {
   const [listSales, setListSales] = useState([]);
 
-  const handleAddedArticleInTable = ({code, stock, amount, price}) => {
+  const handleAddedArticleInTable = ({code, stock, amount, price, name}) => {
     const findArticle = listSales.findIndex(sales => sales.idArticle === Number(code));
     let newListSales = [];
 
