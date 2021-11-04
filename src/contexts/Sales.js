@@ -12,11 +12,15 @@ export const SalesProvider = ({ children }) => {
     const findArticle = listSales.findIndex(sales => sales.idArticle === Number(code));
     let newListSales = [];
 
+    let resultOperation = false;
+
     if (findArticle !== -1) {
 
       const isValid = !(listSales[findArticle].amount + Number(amount) > listSales[findArticle].stock);
           
       if (isValid) {
+        resultOperation = true;
+
         newListSales = listSales.map((sales, index) => {
           if (index === findArticle) {
             return {
@@ -35,6 +39,7 @@ export const SalesProvider = ({ children }) => {
       if (Number(amount) > Number(stock)) {
         notifyError('Movimiento no valido: Futura venta ha excedido la existencia');
       } else {
+        resultOperation = true;
         newListSales = [
           ...listSales,
           {
@@ -45,6 +50,8 @@ export const SalesProvider = ({ children }) => {
       }
     }
     setListSales(newListSales);
+
+    return resultOperation;
   };
 
 

@@ -63,7 +63,14 @@ const BoxInputsSales = ({setDataSelected}) => {
   const handleSetFutureSales = () => {
     if (isInteger({name: 'Cantidad', value: amount})) {
       if (code && stock && amount && price) {
-        handleAddedArticleInTable({code, stock, amount, price});
+        const resultOperation = handleAddedArticleInTable({code, stock, amount, price});
+        if (resultOperation) {
+          setCode('');
+          setName('');
+          setPrice('');
+          setAmount('');
+          setStock('');
+        }
       } else {
         notifyInfo('Sin producto seleccionado');
       }
