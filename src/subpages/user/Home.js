@@ -50,6 +50,7 @@ const Home = () => {
     {
       text: 'Cancelar Venta',
       classNameIcon: 'bi bi-x-circle-fill',
+      disabled: listSales.length === 0,
       onClick: () => {
         handleCancelSale();
       }
