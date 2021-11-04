@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Modal } from 'bootstrap';
 
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import ContainerShowProducts from '../views/ContainerShowProducts';
 import { inputAddAticle } from '../../data/my/inputAddArticle';
+import SalesContext from '../../contexts/Sales';
+import { notifyWarning } from '../../consts/notifications';
 
 export const openmodalAddArticle = () => {
   let myModal = new Modal(
@@ -19,10 +21,32 @@ const ModalAddArticle = () => {
   
   const [searcher, setSearcher] = useState('');
   const [dataSelected, setDataSelected] = useState({});
+  const {handleAddedArticleInTable} = useContext(SalesContext);
 
   const handleCleanModal = () => {
     setDataSelected({});
     setSearcher('');
+  };
+
+  const handleAddedArticle = (evt) => {
+    evt.preventDefault();
+
+    let myModal = Modal.getInstance( document.getElementById('modalAddArticle') );
+
+    if (dataSelected.code) {
+      const resultOperation = handleAddedArticleInTable({
+        code: dataSelected.code, stock: dataSelected.amount,
+        amount: evt.target[3].value, price: dataSelected.salesPrice
+      });
+      if (resultOperation) {
+        handleCleanModal();
+        evt.target[3].value = '';
+
+        myModal.hide();
+      }
+    } else {
+      notifyWarning('Articulo no seleccionado');
+    }
   };
 
   return (
@@ -52,7 +76,7 @@ const ModalAddArticle = () => {
               classNameTable="col-md-9"
             >
               <div className="col-md-3 overflow-auto d-flex flex-column justify-content-center">
-                <form id="form-add-article">
+                <form id="form-add-article" onSubmit={ handleAddedArticle }>
                   <table>
                     <tbody>
                       { inputAddAticle &&
@@ -64,7 +88,7 @@ const ModalAddArticle = () => {
                         <td style={ {paddingBottom: '3rem'} }>
                           <input type="text" className="form-control"
                             placeholder={ inputA.placeholder } aria-label={ inputA.placeholder.toUpperCase() }
-                            aria-describedby={ inputA.id } disabled={ inputA.id !== 'amount' }
+                            aria-describedby={ inputA.id } disabled
                             value={ dataSelected[inputA.id] || '' }
                           />
                         </td>
@@ -73,12 +97,12 @@ const ModalAddArticle = () => {
                       }
                       <tr>
                         <td style={ {paddingBottom: '3rem', verticalAlign: 'middle'} }>
-                          <span id="amount">Cantidad: </span>
+                          <span id="amount-sales">Cantidad: </span>
                         </td>
                         <td style={ {paddingBottom: '3rem'} }>
                           <input type="text" className="form-control"
                             placeholder="Cantidad" aria-label="Amount"
-                            aria-describedby="amount"
+                            aria-describedby="amount-sales"
                           />
                         </td>
                       </tr>
@@ -89,7 +113,9 @@ const ModalAddArticle = () => {
             </ContainerShowProducts>
           </div>
           <div className="modal-footer m-0 p-0 d-flex justify-content-center">
-            <button type="button" className="button-btn-modals">
+            <button type="submit" className="button-btn-modals"
+              form="form-add-article"
+            >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
                 Agregar Producto
               </ButtonPersonalized>
