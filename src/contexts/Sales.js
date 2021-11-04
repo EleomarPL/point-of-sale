@@ -56,10 +56,15 @@ export const SalesProvider = ({ children }) => {
   const handleCancelSale = () => {
     setListSales([]);
   };
+  const handleDeleteSale = ({idArticle}) => {
+    setListSales(listSales.filter(sales => sales.idArticle !== idArticle));
+  };
 
 
   return (
-    <SalesContext.Provider value={ { listSales, setListSales, handleAddedArticleInTable, handleCancelSale } }>
+    <SalesContext.Provider
+      value={ { listSales, setListSales, handleAddedArticleInTable, handleCancelSale, handleDeleteSale } }
+    >
       { children }
     </SalesContext.Provider>
   );

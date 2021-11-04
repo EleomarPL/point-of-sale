@@ -12,7 +12,7 @@ import SalesContext from '../../contexts/Sales';
 const Home = () => {
 
   const [dataSelected, setDataSelected] = useState({});
-  const {listSales, handleCancelSale} = useContext(SalesContext);
+  const {listSales, handleCancelSale, handleDeleteSale} = useContext(SalesContext);
 
   let header = [
     'Codigo', 'Articulo', 'Precio',
@@ -41,15 +41,15 @@ const Home = () => {
     {
       text: 'Eliminar Producto',
       classNameIcon: 'bi bi-trash-fill',
-      disabled: dataSelected.code === undefined,
+      disabled: dataSelected.idArticle === undefined,
       onClick: () => {
-        console.log('delete article');
+        if (dataSelected.idArticle)
+          handleDeleteSale({idArticle: dataSelected.idArticle});
       }
     },
     {
       text: 'Cancelar Venta',
       classNameIcon: 'bi bi-x-circle-fill',
-      disabled: dataSelected.code === undefined,
       onClick: () => {
         handleCancelSale();
       }
