@@ -19,7 +19,7 @@ const Home = () => {
     'Existencia', 'Cantidad'
   ];
   let properties = [
-    'code', 'article', 'price',
+    'idArticle', 'article', 'salesPrice',
     'stock', 'amount'
   ];
 

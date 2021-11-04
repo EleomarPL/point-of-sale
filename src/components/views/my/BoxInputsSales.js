@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import DebounceInput from '../../common/DebounceInput';
 import useSales from '../../../hooks/useSales';
-import { notifyInfo } from '../../../consts/notifications';
+import { notifyError, notifyInfo } from '../../../consts/notifications';
+import SalesContext from '../../../contexts/Sales';
+import { isInteger } from '../../../services/validations/generalValidations';
 
 const BoxInputsSales = ({setDataSelected}) => {
 
@@ -13,6 +15,7 @@ const BoxInputsSales = ({setDataSelected}) => {
   const [amount, setAmount] = useState('');
   const [price, setPrice] = useState('');
   const {getArticleById} = useSales();
+  const {listSales, setListSales} = useContext(SalesContext);
 
   useEffect(() => {
     getArticleById({id: code});
@@ -56,6 +59,51 @@ const BoxInputsSales = ({setDataSelected}) => {
       window.electron.removeAllListeners('render:get-article-by-id');
     };
   }, []);
+
+  const handleSetFutureSales = () => {
+    if (isInteger({name: 'Cantidad', value: amount})) {
+      if (code && stock && amount && price) {
+        const findArticle = listSales.findIndex(sales => sales.idArticle === Number(code));
+        let newListSales = [];
+
+        if (findArticle !== -1) {
+
+          const isValid = !(listSales[findArticle].amount + Number(amount) > listSales[findArticle].stock);
+          
+          if (isValid) {
+            newListSales = listSales.map((sales, index) => {
+              if (index === findArticle) {
+                return {
+                  ...sales,
+                  amount: sales.amount + Number(amount),
+                  total: sales.total + Number(amount) * Number(price)
+                };
+              }
+              return { ...sales };
+            });
+          } else {
+            newListSales = [...listSales];
+            notifyError('Movimiento no valido: Futura venta ha excedido la existencia');
+          }
+        } else {
+          newListSales = [
+            ...listSales,
+            {
+              idArticle: Number(code), salesPrice: Number(price), amount: Number(amount),
+              total: Number(price) * Number(amount), article: name, stock: Number(stock)
+            }
+          ];
+        }
+        if (Number(amount) > Number(stock)) {
+          notifyError('Movimiento no valido: Futura venta ha excedido la existencia');
+        } else {
+          setListSales(newListSales);
+        }
+      } else {
+        notifyInfo('Sin producto seleccionado');
+      }
+    }
+  };
 
   const handleChangeState = ({set, value}) => {
     set(value);
@@ -110,7 +158,7 @@ const BoxInputsSales = ({setDataSelected}) => {
         </div>
         <button
           type="button" style={ {fontSize: '1.6rem', borderRadius: '10px', marginLeft: '5px'} }
-          className="border-0"
+          className="border-0" onClick={ handleSetFutureSales }
         >
           <i className="bi bi-plus-circle-fill"></i>
         </button>
