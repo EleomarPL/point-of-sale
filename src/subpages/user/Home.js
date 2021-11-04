@@ -12,7 +12,7 @@ import SalesContext from '../../contexts/Sales';
 const Home = () => {
 
   const [dataSelected, setDataSelected] = useState({});
-  const {listSales} = useContext(SalesContext);
+  const {listSales, handleCancelSale} = useContext(SalesContext);
 
   let header = [
     'Codigo', 'Articulo', 'Precio',
@@ -49,8 +49,9 @@ const Home = () => {
     {
       text: 'Cancelar Venta',
       classNameIcon: 'bi bi-x-circle-fill',
+      disabled: dataSelected.code === undefined,
       onClick: () => {
-        console.log('cancel sale');
+        handleCancelSale();
       }
     }
   ];

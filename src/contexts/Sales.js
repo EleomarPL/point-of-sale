@@ -53,10 +53,13 @@ export const SalesProvider = ({ children }) => {
 
     return resultOperation;
   };
+  const handleCancelSale = () => {
+    setListSales([]);
+  };
 
 
   return (
-    <SalesContext.Provider value={ { listSales, setListSales, handleAddedArticleInTable } }>
+    <SalesContext.Provider value={ { listSales, setListSales, handleAddedArticleInTable, handleCancelSale } }>
       { children }
     </SalesContext.Provider>
   );
