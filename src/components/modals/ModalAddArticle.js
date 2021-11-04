@@ -115,6 +115,7 @@ const ModalAddArticle = () => {
           <div className="modal-footer m-0 p-0 d-flex justify-content-center">
             <button type="submit" className="button-btn-modals"
               form="form-add-article"
+              disabled={ dataSelected.code === undefined }
             >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
                 Agregar Producto
