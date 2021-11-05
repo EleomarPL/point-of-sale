@@ -13,14 +13,14 @@ const AddDebtor = () => {
   const [dataSelected, setDataSelected] = useState({});
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
-  const {getDebtsByKeyword, insertDebtor} = useDebts();
+  const {getDebtors, insertDebtor} = useDebts();
 
   useEffect(() => {
-    getDebtsByKeyword({value: ''});
+    getDebtors({value: ''});
 
-    window.electron.on('render:get-debts', (err, data) => {
+    window.electron.on('render:get-debtors', (err, data) => {
       if (!err) {
-        console.log('error get debts');
+        console.log('error get debtors');
         return null;
       }
       
@@ -40,13 +40,13 @@ const AddDebtor = () => {
       if (data) {
         setIsLoadingAdd(false);
         notifySuccess('Deudor agregado exitosamente');
-        window.electron.send('main:get-debts', {value: '', isGroupByDebtor: true});
+        window.electron.send('main:get-debtors', {value: ''});
       }
     });
   
 
     return () => {
-      window.electron.removeAllListeners('render:get-debts');
+      window.electron.removeAllListeners('render:get-debtors');
       window.electron.removeAllListeners('render:insert-debtor');
     };
   }, []);

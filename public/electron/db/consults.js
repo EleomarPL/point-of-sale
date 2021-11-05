@@ -156,7 +156,6 @@ const getDebts = async({value = '', isGroupByDebtor}) => {
   
   const getDataDebts = await connection.query(
     `SELECT debtor.id,debtor.name,debtor.lastName,debtor.motherLastName,
-    debtor.address, debtor.gender, 
     ${isGroupByDebtor ? 'SUM(debts.total) as totalDebts' : 'debts.total'} FROM debts INNER JOIN debtor ON 
     debts.id_debtor=debtor.id AND CONCAT(debtor.id,debtor.name,
     debtor.lastName) LIKE '%${value}%' ${isGroupByDebtor ? 'GROUP BY debtor.id' : ''} ;`
@@ -164,6 +163,16 @@ const getDebts = async({value = '', isGroupByDebtor}) => {
   closeConnection({connection, pool});
 
   return getDataDebts;
+};
+const getDebtors = async({value}) => {
+  const {connection, pool} = await getConnection();
+  
+  const getDataDebtors = await connection.query(
+    `SELECT * FROM debtor WHERE CONCAT(id, name, lastName) LIKE '%${value}%';`
+  );
+  closeConnection({connection, pool});
+
+  return getDataDebtors;
 };
 const getDebtsFromADebtor = async({idDebtor}) => {
   const {connection, pool} = await getConnection();
@@ -183,5 +192,5 @@ module.exports = {
   login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
   getProviderIdCompany, getArticleForAuxTable, getArticlesByIdArticle,
   getStandardSales, getStockSales, getDebts, getDebtsFromADebtor,
-  getEmployees
+  getEmployees, getDebtors
 };

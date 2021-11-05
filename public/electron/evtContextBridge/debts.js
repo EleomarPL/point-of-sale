@@ -1,6 +1,6 @@
 const {ipcMain} = require('electron');
 
-const {getDebts, getDebtsFromADebtor} = require('../db/consults');
+const {getDebts, getDebtsFromADebtor, getDebtors} = require('../db/consults');
 const {insertDebtor, insertDebt} = require('../db/inserts');
 const {payDebt} = require('../db/delete');
 
@@ -19,6 +19,11 @@ const triggerEventsDebts = ({windowToSend}) => {
     const resultOperation = await insertDebtor({name, lastName, motherLastName, isAMan, address});
     
     windowToSend.webContents.send('render:insert-debtor', resultOperation);
+  });
+  ipcMain.on('main:get-debtors', async(_, { value }) => {
+    const dataDebtors = await getDebtors({value});
+    
+    windowToSend.webContents.send('render:get-debtors', dataDebtors);
   });
   ipcMain.on('main:insert-debt', async(_, { idDebtor, idArticle, idUser, amount, price, total }) => {
     const resultOperation = await insertDebt({idDebtor, idArticle, idUser, amount, price, total});
