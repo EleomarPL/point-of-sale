@@ -123,7 +123,7 @@ const AddDebtor = () => {
             />
             <div className="d-flex justify-content-evenly mt-4">
               <button type="submit" className="button-btn-modals"
-                disabled={ isLoadingAdd }
+                disabled={ isLoadingAdd || dataSelected.code !== undefined }
               >
                 <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
                   <span>
