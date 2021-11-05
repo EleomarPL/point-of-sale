@@ -64,7 +64,7 @@ const updateArticleByPurchase = async({connection, idProvider, purchasePrice, da
   );
 };
 const updateAmountArticle = async({connection, id, amountToSubtract}) => {
-  await connection.query(
+  return await connection.query(
     'UPDATE article SET amount=amount-? WHERE id=? AND amount-?>=0 AND statusArticle=\'unlocked\';',
     [amountToSubtract, id, amountToSubtract]
   );

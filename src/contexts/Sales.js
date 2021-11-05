@@ -1,12 +1,17 @@
 
-import { useState, createContext } from 'react';
+import { useState, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
+
 import { notifyError } from '../consts/notifications';
+import useSales from '../hooks/useSales';
+import Auth from './Auth';
 
 const SalesContext = createContext({});
 
 export const SalesProvider = ({ children }) => {
   const [listSales, setListSales] = useState([]);
+  const {executeSales} = useSales();
+  const {userData} = useContext(Auth);
 
   const handleAddedArticleInTable = ({code, stock, amount, price, name}) => {
     const findArticle = listSales.findIndex(sales => sales.idArticle === Number(code));
@@ -60,11 +65,19 @@ export const SalesProvider = ({ children }) => {
   const handleDeleteSale = ({idArticle}) => {
     setListSales(listSales.filter(sales => sales.idArticle !== idArticle));
   };
+  const handleExecuteSales = () => {
+    const total = listSales.reduce((acc, current) => acc + Number(current.total), 0);
+    const idUser = userData.id;
 
+    executeSales({idUser, total, salesRecords: listSales});
+  };
 
   return (
     <SalesContext.Provider
-      value={ { listSales, setListSales, handleAddedArticleInTable, handleCancelSale, handleDeleteSale } }
+      value={ {
+        listSales, setListSales, handleAddedArticleInTable,
+        handleCancelSale, handleDeleteSale, handleExecuteSales
+      } }
     >
       { children }
     </SalesContext.Provider>

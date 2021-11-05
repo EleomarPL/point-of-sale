@@ -8,9 +8,12 @@ const useSales = () => {
   const getArticleById = ({id}) => {
     window.electron.send('main:get-article-by-id', {id});
   };
+  const executeSales = ({idUser, total, salesRecords}) => {
+    window.electron.send('main:insert-sales', {idUser, total, salesRecords});
+  };
 
   return {
-    getStandardSales, getStockSales, getArticleById
+    getStandardSales, getStockSales, getArticleById, executeSales
   };
 };
 
