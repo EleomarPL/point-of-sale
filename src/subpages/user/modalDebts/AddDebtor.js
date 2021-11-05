@@ -5,13 +5,15 @@ import TablePersonalized from '../../../components/common/TablePersonalized';
 import BoxInputsDebtors from '../../../components/views/my/BoxInputsDebtor';
 import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
 import useDebts from '../../../hooks/useDebts';
+import { isObjectValuesNull, validateLength } from '../../../services/validations/generalValidations';
+import { notifySuccess } from '../../../consts/notifications';
 
 const AddDebtor = () => {
   const [listDebtors, setListDebtors] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
-  const {getDebtsByKeyword} = useDebts();
+  const {getDebtsByKeyword, insertDebtor} = useDebts();
 
   useEffect(() => {
     getDebtsByKeyword({value: ''});
@@ -30,9 +32,22 @@ const AddDebtor = () => {
           };
         }));
     });
+    window.electron.on('render:insert-debtor', (err, data) => {
+      if (!err) {
+        console.log('error get debts');
+        return null;
+      }
+      if (data) {
+        setIsLoadingAdd(false);
+        notifySuccess('Deudor agregado exitosamente');
+        window.electron.send('main:get-debts', {value: '', isGroupByDebtor: true});
+      }
+    });
+  
 
     return () => {
       window.electron.removeAllListeners('render:get-debts');
+      window.electron.removeAllListeners('render:insert-debtor');
     };
   }, []);
 
@@ -47,8 +62,42 @@ const AddDebtor = () => {
 
   const handleAddDebtor = (evt) => {
     evt.preventDefault();
-    
-    setIsLoadingAdd(true);
+
+    let dataDebtorForm = {
+      name: {
+        name: 'Nombre',
+        minLength: 2,
+        maxLength: 50,
+        value: evt.target[0].value
+      },
+      lastName: {
+        name: 'Apellido paterno',
+        minLength: 2,
+        maxLength: 50,
+        value: evt.target[1].value
+      },
+      motherLastName: {
+        name: 'Apellido materno',
+        minLength: 2,
+        maxLength: 50,
+        value: evt.target[2].value
+      },
+      address: {
+        name: 'Dirección',
+        minLength: 6,
+        maxLength: 80,
+        value: evt.target[3].value
+      }
+    };
+    if ( !isObjectValuesNull(dataDebtorForm) && validateLength(dataDebtorForm) ) {
+      setIsLoadingAdd(true);
+      insertDebtor({
+        name: dataDebtorForm.name.value, lastName: dataDebtorForm.lastName.value,
+        motherLastName: dataDebtorForm.motherLastName.value,
+        address: dataDebtorForm.address.value,
+        isAMan: evt.target[4].checked
+      });
+    }
   };
   const handleEditDebtor = () => {
     setIsLoadingEdit(true);
