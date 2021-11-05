@@ -1,14 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 import ButtonPersonalized from '../../../components/common/ButtonPersonalized';
 import TablePersonalized from '../../../components/common/TablePersonalized';
 import BoxInputsDebtors from '../../../components/views/my/BoxInputsDebtor';
 import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
+import useDebts from '../../../hooks/useDebts';
 
 const AddDebtor = () => {
   const [listDebtors, setListDebtors] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
+  const {getDebtsByKeyword} = useDebts();
+
+  useEffect(() => {
+    getDebtsByKeyword({value: ''});
+
+    window.electron.on('render:get-debts', (err, data) => {
+      if (!err) {
+        console.log('error get debts');
+        return null;
+      }
+      
+      if (data)
+        setListDebtors(data.map(debtor => {
+          return {
+            ...debtor, code: debtor.id,
+            genderUpdated: debtor.gender === 'M' ? 'Masculino' : 'Femenino'
+          };
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-debts');
+    };
+  }, []);
 
   let header = [
     'Codigo', 'Nombre', 'Apellido Paterno',
@@ -16,7 +42,7 @@ const AddDebtor = () => {
   ];
   let properties = [
     'code', 'name', 'lastName',
-    'motherLastName', 'address', 'gender'
+    'motherLastName', 'address', 'genderUpdated'
   ];
 
   const handleAddDebtor = (evt) => {
