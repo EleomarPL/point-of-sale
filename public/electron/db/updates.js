@@ -146,9 +146,25 @@ const updateStatusEmployee = async({id, willIsLocked}) => {
     return false;
   }
 };
+const updateDebtor = async({idDebtor, address}) => {
+  const {connection, pool} = await getConnection();
+  
+  try {
+    const resultOperation = await connection.query(
+      'UPDATE debtor SET address=? WHERE id=? ;',
+      [address, idDebtor]
+    );
+    closeConnection({connection, pool});
+
+    return resultOperation;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return false;
+  }
+};
 
 module.exports = {
   updateProvider, updateArticleByPurchase, updateSalesPriceArticle, updateStatusArticle,
   updateUsernamePasswordAgeEmployee, updateStatusEmployee, updateUsernameAdmin, updatePasswordAdmin,
-  updateAmountArticle
+  updateAmountArticle, updateDebtor
 };
