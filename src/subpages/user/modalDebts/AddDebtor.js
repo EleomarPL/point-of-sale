@@ -99,8 +99,40 @@ const AddDebtor = () => {
       });
     }
   };
-  const handleEditDebtor = () => {
-    setIsLoadingEdit(true);
+  const handleEditDebtor = (evt) => {
+    const valuesInputs =
+      evt.target.form || evt.target.parentNode.form || evt.target.parentNode.parentNode.form;
+
+    let dataDebtorForm = {
+      name: {
+        name: 'Nombre',
+        minLength: 2,
+        maxLength: 50,
+        value: valuesInputs[0].value
+      },
+      lastName: {
+        name: 'Apellido paterno',
+        minLength: 2,
+        maxLength: 50,
+        value: valuesInputs[1].value
+      },
+      motherLastName: {
+        name: 'Apellido materno',
+        minLength: 2,
+        maxLength: 50,
+        value: valuesInputs[2].value
+      },
+      address: {
+        name: 'Dirección',
+        minLength: 6,
+        maxLength: 80,
+        value: valuesInputs[3].value
+      }
+    };
+
+    if ( !isObjectValuesNull(dataDebtorForm) && validateLength(dataDebtorForm) ) {
+      setIsLoadingEdit(true);
+    }
   };
 
   return (
@@ -135,8 +167,8 @@ const AddDebtor = () => {
                 </ButtonPersonalized>
               </button>
               <button type="button" className="button-btn-modals"
-                disabled={ dataSelected.code === undefined }
-                onClick={ handleEditDebtor }
+                disabled={ isLoadingEdit || dataSelected.code === undefined }
+                onClick={ (evt) => handleEditDebtor(evt) }
               >
                 <ButtonPersonalized classNameIcon="bi bi-pencil-fill" isColumn={ true }>
                   <span>
