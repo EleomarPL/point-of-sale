@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { inputAddDebtor } from '../../../data/my/inputAddDebtor';
 
 
-const BoxInputsDebtors = ({dataSelected, setDataSelected}) => {
+const BoxInputsDebtors = ({dataSelected, isEdit = false}) => {
   const [values, setValues] = useState({
     code: '', name: '', lastName: '',
     motherLastName: '', address: '', gender: 'M'
@@ -40,6 +40,7 @@ const BoxInputsDebtors = ({dataSelected, setDataSelected}) => {
                   aria-describedby={ inputDebtor.id } value={ values[inputDebtor.id] || '' }
                   onChange={ (evt) => handleChangeValue({property: inputDebtor.id, value: evt.target.value}) }
                   style={ {backgroundColor: '#f6eded'} }
+                  disabled={ isEdit && inputDebtor.id !== 'address' }
                 />
               </td>
             </tr>
@@ -51,7 +52,7 @@ const BoxInputsDebtors = ({dataSelected, setDataSelected}) => {
             <div>
               <input className="form-check-input" type="radio"
                 id="radio1"
-                checked={ gender }
+                checked={ gender } disabled={ isEdit }
                 onChange={ () => setGender(!gender) }
               />
               <label className="form-check-label" htmlFor="radio1">
@@ -61,7 +62,7 @@ const BoxInputsDebtors = ({dataSelected, setDataSelected}) => {
             <div>
               <input className="form-check-input" type="radio"
                 id="radio2"
-                checked={ !gender }
+                checked={ !gender } disabled={ isEdit }
                 onChange={ () => setGender(!gender) }
               />
               <label className="form-check-label" htmlFor="radio2">
@@ -77,7 +78,7 @@ const BoxInputsDebtors = ({dataSelected, setDataSelected}) => {
 
 BoxInputsDebtors.propTypes = {
   dataSelected: PropTypes.object.isRequired,
-  setDataSelected: PropTypes.func.isRequired
+  isEdit: PropTypes.bool
 };
 
 export default BoxInputsDebtors;

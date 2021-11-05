@@ -151,7 +151,7 @@ const AddDebtor = () => {
           <form className="d-flex flex-column justify-content-center" onSubmit={ handleAddDebtor }>
             <BoxInputsDebtors
               dataSelected={ dataSelected }
-              setDataSelected={ setDataSelected }
+              isEdit={ dataSelected.code !== undefined }
             />
             <div className="d-flex justify-content-evenly mt-4">
               <button type="submit" className="button-btn-modals"
