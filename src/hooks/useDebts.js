@@ -8,9 +8,12 @@ const useDebts = () => {
   const insertDebtor = ({name, lastName, motherLastName, isAMan, address}) => {
     window.electron.send('main:insert-debtor', {name, lastName, motherLastName, isAMan, address});
   };
+  const updateDebtor = ({idDebtor, address}) => {
+    window.electron.send('main:update-debtor', {idDebtor, address});
+  };
 
   return {
-    getDebtsByKeyword, insertDebtor, getDebtors
+    getDebtsByKeyword, insertDebtor, getDebtors, updateDebtor
   };
 };
 

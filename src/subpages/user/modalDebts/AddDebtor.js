@@ -13,7 +13,7 @@ const AddDebtor = () => {
   const [dataSelected, setDataSelected] = useState({});
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
-  const {getDebtors, insertDebtor} = useDebts();
+  const {getDebtors, insertDebtor, updateDebtor} = useDebts();
 
   useEffect(() => {
     getDebtors({value: ''});
@@ -43,11 +43,24 @@ const AddDebtor = () => {
         window.electron.send('main:get-debtors', {value: ''});
       }
     });
+    window.electron.on('render:update-debtor', (err, data) => {
+      if (!err) {
+        console.log('error update debtor');
+        return null;
+      }
+      if (data) {
+        setIsLoadingEdit(false);
+        setDataSelected({});
+        notifySuccess('Deudor actualizado exitosamente');
+        window.electron.send('main:get-debtors', {value: ''});
+      }
+    });
   
 
     return () => {
       window.electron.removeAllListeners('render:get-debtors');
       window.electron.removeAllListeners('render:insert-debtor');
+      window.electron.removeAllListeners('render:update-debtor');
     };
   }, []);
 
@@ -104,24 +117,6 @@ const AddDebtor = () => {
       evt.target.form || evt.target.parentNode.form || evt.target.parentNode.parentNode.form;
 
     let dataDebtorForm = {
-      name: {
-        name: 'Nombre',
-        minLength: 2,
-        maxLength: 50,
-        value: valuesInputs[0].value
-      },
-      lastName: {
-        name: 'Apellido paterno',
-        minLength: 2,
-        maxLength: 50,
-        value: valuesInputs[1].value
-      },
-      motherLastName: {
-        name: 'Apellido materno',
-        minLength: 2,
-        maxLength: 50,
-        value: valuesInputs[2].value
-      },
       address: {
         name: 'Dirección',
         minLength: 6,
@@ -132,6 +127,7 @@ const AddDebtor = () => {
 
     if ( !isObjectValuesNull(dataDebtorForm) && validateLength(dataDebtorForm) ) {
       setIsLoadingEdit(true);
+      updateDebtor({idDebtor: dataSelected.code, address: dataDebtorForm.address.value});
     }
   };
 
