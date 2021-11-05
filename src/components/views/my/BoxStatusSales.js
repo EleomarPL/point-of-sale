@@ -1,16 +1,26 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 import ButtonPersonalized from '../../common/ButtonPersonalized';
 import { openmodalDebts } from '../../modals/ModalDebts';
+import SalesContext from '../../../contexts/Sales';
 
 const BoxStatusSales = ({dataSelected, setDataSelected}) => {
+  const {listSales} = useContext(SalesContext);
+
   return (
     <>
       <div className="d-flex flex-column" style={ {fontSize: '1.6rem'} }>
         <span>Articulo:</span>
-        <span>0000.00</span>
+        <span>
+          { dataSelected.idArticle ? Number(dataSelected.total).toFixed(2) : '0.00' }
+        </span>
         <span className="fw-bold">Total:</span>
-        <span className="fw-bold">0000.00</span>
+        <span className="fw-bold">
+          { listSales &&
+            Number(listSales.reduce((acc, current) => acc + current.total, 0)).toFixed(2)
+          }
+        </span>
       </div>
       <div className="d-flex flex-column align-items-center">
         <button

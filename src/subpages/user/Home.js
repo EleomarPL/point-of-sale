@@ -43,8 +43,10 @@ const Home = () => {
       classNameIcon: 'bi bi-trash-fill',
       disabled: dataSelected.idArticle === undefined,
       onClick: () => {
-        if (dataSelected.idArticle)
+        if (dataSelected.idArticle) {
           handleDeleteSale({idArticle: dataSelected.idArticle});
+          setDataSelected({});
+        }
       }
     },
     {
@@ -53,6 +55,7 @@ const Home = () => {
       disabled: listSales.length === 0,
       onClick: () => {
         handleCancelSale();
+        setDataSelected({});
       }
     }
   ];
