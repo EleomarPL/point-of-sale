@@ -164,6 +164,7 @@ const insertDebt = async({idDebtor, idArticle, idUser, amount, price, total}) =>
       'INSERT INTO debts VALUES(null, ?, ?, ?, ?, ?, ?, default);',
       [idDebtor, idArticle, idUser, amount, price, total]
     );
+    await updateAmountArticle({connection, id: idArticle, amountToSubtract: amount});
     closeConnection({connection, pool});
     return resultOperation;
   } catch (err) {

@@ -1,22 +1,52 @@
 import { useContext, useEffect, useState } from 'react';
+import { Modal } from 'bootstrap';
 
 import ButtonPersonalized from '../../../components/common/ButtonPersonalized';
 import SelectDebtor from '../../../components/common/SelectDebtor';
 import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
+import { notifySuccess } from '../../../consts/notifications';
 import SalesContext from '../../../contexts/Sales';
+import useDebts from '../../../hooks/useDebts';
+import Auth from '../../../contexts/Auth';
 
 const AddDebt = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [debtorSelect, setDebtorSelect] = useState('none');
   const [total, setTotal] = useState(0);
-  const {listSales} = useContext(SalesContext);
+  const {addDebt} = useDebts();
+  const {listSales, setListSales} = useContext(SalesContext);
+  const {userData} = useContext(Auth);
 
   useEffect(() => {
     setTotal(listSales.reduce((acc, current) => current.total + acc, 0));
   }, [listSales]);
+  useEffect(() => {
+    window.electron.on('render:insert-debt', (err, data) => {
+      if (!err) {
+        console.log('error insert debt');
+        return null;
+      }
+      
+      setIsLoading(false);
+      setListSales([]);
+      notifySuccess('Deuda agregada exitosamente');
+
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:insert-debt');
+    };
+  }, []);
 
   const handleAddDebt = () => {
-    setIsLoading(true);
+    let myModal = Modal.getInstance( document.getElementById('modalDebts') );
+
+    if (debtorSelect !== 'none') {
+      setIsLoading(true);
+      
+      addDebt({idDebtor: debtorSelect, idUser: userData.id, listArticles: listSales});
+      myModal.hide();
+    }
   };
 
   return (

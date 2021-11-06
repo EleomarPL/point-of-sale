@@ -11,9 +11,12 @@ const useDebts = () => {
   const updateDebtor = ({idDebtor, address}) => {
     window.electron.send('main:update-debtor', {idDebtor, address});
   };
+  const addDebt = ({idDebtor, idUser, listArticles}) => {
+    window.electron.send('main:insert-debt', {idDebtor, idUser, listArticles});
+  };
 
   return {
-    getDebtsByKeyword, insertDebtor, getDebtors, updateDebtor
+    getDebtsByKeyword, insertDebtor, getDebtors, updateDebtor, addDebt
   };
 };
 
