@@ -1,21 +1,20 @@
 const {getConnection, closeConnection} = require('../connection');
 const {insertSales} = require('./inserts');
 
-const payDebt = async({idDebt, idUser, total, salesRecords}) => {
-  if (!(idDebt, idUser, total, salesRecords)) {
+const payDebt = async({idUser, total, salesRecords}) => {
+  if (!(idUser, total, salesRecords)) {
     return false;
   }
   const {connection, pool} = await getConnection();
   
   try {
-    const resultOperation = await connection.query(
-      'DELETE FROM debts WHERE id=? ;', [idDebt]
-    );
-    if (resultOperation.affectedRows)
-      await insertSales({idUser, total, salesRecords});
+    await salesRecords.forEach(async article => {
+      return await connection.query('DELETE FROM debts WHERE id=? ;', [article.idDebt]);
+    });
+    await insertSales({idUser, total, salesRecords});
 
     closeConnection({connection, pool});
-    return resultOperation;
+    return true;
   } catch (err) {
     closeConnection({connection, pool});
     return false;
