@@ -5,6 +5,9 @@ const useDebts = () => {
   const getDebtors = ({value}) => {
     window.electron.send('main:get-debtors', {value});
   };
+  const getDebtsFromDebtor = ({idDebtor = 0}) => {
+    window.electron.send('main:get-debts-from-debtor', {idDebtor});
+  };
   const insertDebtor = ({name, lastName, motherLastName, isAMan, address}) => {
     window.electron.send('main:insert-debtor', {name, lastName, motherLastName, isAMan, address});
   };
@@ -16,7 +19,8 @@ const useDebts = () => {
   };
 
   return {
-    getDebtsByKeyword, insertDebtor, getDebtors, updateDebtor, addDebt
+    getDebtsByKeyword, insertDebtor, getDebtors, updateDebtor, addDebt,
+    getDebtsFromDebtor
   };
 };
 

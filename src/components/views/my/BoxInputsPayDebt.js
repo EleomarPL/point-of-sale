@@ -6,12 +6,11 @@ import ButtonPersonalized from '../../common/ButtonPersonalized';
 import SelectDebtor from '../../common/SelectDebtor';
 import SpinnerButtonLoading from '../../common/SpinnerButtonLoading';
 
-const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
+const BoxInputsPayDebt = ({listDebts, setListDebts, debtorSelect, setDebtorSelect}) => {
   const [total, setTotal] = useState(0);
   const [payment, setPayment] = useState(0);
   const [change, setChange] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [debtorSelect, setDebtorSelect] = useState('none');
 
   useEffect(() => {
     setTotal (
@@ -100,7 +99,9 @@ const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
 
 BoxInputsPayDebt.propTypes = {
   listDebts: PropTypes.array.isRequired,
-  setListDebts: PropTypes.func.isRequired
+  setListDebts: PropTypes.func.isRequired,
+  debtorSelect: PropTypes.string,
+  setDebtorSelect: PropTypes.func
 };
 
 export default BoxInputsPayDebt;

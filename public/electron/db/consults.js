@@ -178,7 +178,7 @@ const getDebtsFromADebtor = async({idDebtor}) => {
   const {connection, pool} = await getConnection();
 
   const getDebts = await connection.query(
-    `SELECT debts.id,article.id,article.article,debts.amount,
+    `SELECT debts.id as debtId,article.id as articleId,article.article,debts.amount,
     debts.price,debts.total FROM debts INNER JOIN article ON 
     debts.id_article=article.id AND debts.id_debtor=${idDebtor} ORDER 
     BY debts.id DESC;`

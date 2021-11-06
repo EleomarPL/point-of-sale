@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 const TablePayDebt = ({ header, listDebts, setListDebts }) => {
-  const handleChangeValueRadio = ({debtCode}) => {
-    let indexValue = listDebts.findIndex( debt => debt.debtCode === debtCode );
+  const handleChangeValueRadio = ({debtId}) => {
+    let indexValue = listDebts.findIndex( debt => debt.debtId === debtId );
     
     if (indexValue !== -1) {
       setListDebts( listDebts.map((value, index) => {
@@ -31,15 +31,16 @@ const TablePayDebt = ({ header, listDebts, setListDebts }) => {
         <tbody>
           { listDebts &&
                   listDebts.map(inputData =>
-                    <tr key={ inputData.debtCode }>
+                    <tr key={ inputData.debtId }>
                       <td><input type="radio"
                         className="form-check-input"
                         checked={ inputData.box }
                         onChange={ () => {} }
-                        onClick={ () => handleChangeValueRadio({debtCode: inputData.debtCode}) }
+                        onClick={ () => handleChangeValueRadio({debtId: inputData.debtId}) }
                       /></td>
-                      <td>{ inputData.debtCode }</td>
-                      <td>{ inputData.itemCode }</td>
+                      <td>{ inputData.debtId }</td>
+                      <td>{ inputData.articleId }</td>
+                      <td>{ inputData.article }</td>
                       <td>{ inputData.amount }</td>
                       <td>{ inputData.price }</td>
                       <td>{ inputData.total }</td>
