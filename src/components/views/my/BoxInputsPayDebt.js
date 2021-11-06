@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { isNumberValue } from '../../../services/validations/generalValidations';
 import ButtonPersonalized from '../../common/ButtonPersonalized';
+import SelectDebtor from '../../common/SelectDebtor';
 import SpinnerButtonLoading from '../../common/SpinnerButtonLoading';
 
 const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
@@ -10,6 +11,7 @@ const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
   const [payment, setPayment] = useState(0);
   const [change, setChange] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [debtorSelect, setDebtorSelect] = useState('none');
 
   useEffect(() => {
     setTotal (
@@ -46,9 +48,10 @@ const BoxInputsPayDebt = ({listDebts, setListDebts}) => {
           <tr>
             <td style={ {paddingBottom: '2rem', verticalAlign: 'middle'} }><label htmlFor="select-debt" className="px-2">Seleccionar Deudor:</label></td>
             <td style={ {paddingBottom: '2rem'} }>
-              <select className="form-select" id="select-debt">
-                <option value="" hidden>Seleccionar aquí</option>
-              </select>
+              <SelectDebtor
+                id="select-debt" widthSelect="auto"
+                debtorSelect={ debtorSelect } setDebtorSelect={ setDebtorSelect }
+              />
             </td>
           </tr>
           <tr className="fw-bold" style={ {fontSize: '1.3rem'} }>

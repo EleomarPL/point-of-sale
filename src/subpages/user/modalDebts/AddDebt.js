@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
 import ButtonPersonalized from '../../../components/common/ButtonPersonalized';
+import SelectDebtor from '../../../components/common/SelectDebtor';
 import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
 
 const AddDebt = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [debtorSelect, setDebtorSelect] = useState('none');
 
   const handleAddDebt = () => {
     setIsLoading(true);
@@ -17,16 +19,16 @@ const AddDebt = () => {
       </div>
       <div className="d-flex justify-content-center align-items-center my-2">
         <label htmlFor="select-debt" className="px-2">Seleccionar Deudor:</label>
-        <select className="form-select w-50" id="select-debt">
-          <option value="" hidden>Seleccionar aquí</option>
-        </select>
+        <SelectDebtor debtorSelect={ debtorSelect } setDebtorSelect={ setDebtorSelect }
+          id="select-debt"
+        />
       </div>
       <div className="w-100 d-flex justify-content-center"
         style={ {position: 'absolute', bottom: '1rem'} }
       >
         <button type="button" className="button-btn-modals"
           style={ {marginRight: '2rem'} }
-          onClick={ handleAddDebt } disabled={ isLoading }
+          onClick={ handleAddDebt } disabled={ isLoading || debtorSelect === 'none' }
         >
           <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
             <span>
