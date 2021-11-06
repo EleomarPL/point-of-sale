@@ -35,7 +35,7 @@ const AddDebt = () => {
       >
         <button type="button" className="button-btn-modals"
           style={ {marginRight: '2rem'} }
-          onClick={ handleAddDebt } disabled={ isLoading || debtorSelect === 'none' }
+          onClick={ handleAddDebt } disabled={ isLoading || debtorSelect === 'none' || total === 0 }
         >
           <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
             <span>
