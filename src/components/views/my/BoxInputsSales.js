@@ -88,6 +88,11 @@ const BoxInputsSales = ({setDataSelected}) => {
   const handleChangeState = ({set, value}) => {
     set(value);
   };
+  const handleChangeAmount = (evt) => {
+    if (evt.keyCode === 13) {
+      handleSetFutureSales();
+    }
+  };
 
   return (
     <div className="w-100">
@@ -125,6 +130,7 @@ const BoxInputsSales = ({setDataSelected}) => {
             aria-describedby="amount" value={ amount }
             style={ {backgroundColor: '#f6eded'} }
             onChange={ (evt) => handleChangeState({set: setAmount, value: evt.target.value}) }
+            onKeyDown={ handleChangeAmount }
           />
         </div>
         <div className="input-group align-items-center">
