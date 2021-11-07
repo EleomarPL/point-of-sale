@@ -41,8 +41,8 @@ const triggerEventsDebts = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:insert-debt', resultOperation);
   });
-  ipcMain.on('main:pay-debt', async(_, { idDebt, idUser, total, salesRecords }) => {
-    const resultOperation = await payDebt({idDebt, idUser, total, salesRecords});
+  ipcMain.on('main:pay-debt', async(_, { idUser, total, salesRecords }) => {
+    const resultOperation = await payDebt({idUser, total, salesRecords});
     
     windowToSend.webContents.send('render:pay-debt', resultOperation);
   });

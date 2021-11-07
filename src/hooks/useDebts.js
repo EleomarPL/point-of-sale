@@ -17,10 +17,13 @@ const useDebts = () => {
   const addDebt = ({idDebtor, idUser, listArticles}) => {
     window.electron.send('main:insert-debt', {idDebtor, idUser, listArticles});
   };
+  const payDebt = ({idUser, total, salesRecords}) => {
+    window.electron.send('main:pay-debt', {idUser, total, salesRecords});
+  };
 
   return {
     getDebtsByKeyword, insertDebtor, getDebtors, updateDebtor, addDebt,
-    getDebtsFromDebtor
+    getDebtsFromDebtor, payDebt
   };
 };
 
