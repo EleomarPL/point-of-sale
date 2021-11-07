@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import InputPersonalized from '../components/common/InputPersonalized';
 import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
+import { notifyInfo, notifyWarning } from '../consts/notifications';
 import useLogin from '../hooks/useLogin';
 
 const Home = () => {
@@ -26,7 +27,11 @@ const Home = () => {
             ...data,
             type: data.type === 'employee' ? 1 : 0
           });
+        } else {
+          notifyWarning('Usuario bloqueado');
         }
+      } else {
+        notifyInfo('Usuario y/o contraseña invalidos');
       }
     });
 
