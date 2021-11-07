@@ -1,5 +1,6 @@
 import { HashRouter, Switch } from 'react-router-dom';
 import {lazy, Suspense} from 'react';
+import Helmet from 'react-helmet';
 
 import NavigationAdmin from '../../components/views/NavigationAdmin';
 import {routesAdminSales} from '../../data/routesAdminSales';
@@ -23,16 +24,25 @@ const Sales = () => {
         <Switch>
           <AdminRouter exact path="/admin/sales">
             <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Helmet>
+                <title>Ventas Estandar | Administrador | Punto de venta</title>
+              </Helmet>
               <Standard />
             </Suspense>
           </AdminRouter>
           <AdminRouter exact path="/admin/sales/stock">
             <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Helmet>
+                <title>Ventas Stock | Administrador | Punto de venta</title>
+              </Helmet>
               <Stock />
             </Suspense>
           </AdminRouter>
           <AdminRouter exact path="/admin/sales/debts">
             <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Helmet>
+                <title>Deudas | Administrador | Punto de venta</title>
+              </Helmet>
               <Debts />
             </Suspense>
           </AdminRouter>

@@ -1,6 +1,7 @@
 import {lazy, Suspense} from 'react';
 import {HashRouter, Switch} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import Helmet from 'react-helmet';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,11 +26,17 @@ const App = () => {
         <Switch>
           <PublicRoute exact path="/">
             <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Helmet>
+                <title>Inicio | Punto de venta</title>
+              </Helmet>
               <Home />
             </Suspense>
           </PublicRoute>
           <MyRouter path="/my">
             <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Helmet>
+                <title>Cajero | Punto de venta</title>
+              </Helmet>
               <My />
             </Suspense>
           </MyRouter>
