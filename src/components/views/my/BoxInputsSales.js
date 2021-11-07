@@ -18,7 +18,15 @@ const BoxInputsSales = ({setDataSelected}) => {
   const {handleAddedArticleInTable} = useContext(SalesContext);
 
   useEffect(() => {
-    getArticleById({id: code});
+    if (code)
+      getArticleById({id: code});
+    else {
+      setDataSelected({});
+      setName('');
+      setStock('');
+      setAmount('');
+      setPrice('');
+    }
   }, [code]);
   useEffect(() => {
     window.electron.on('render:get-article-by-id', (err, data) => {
