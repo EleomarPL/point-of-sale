@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import {inputProduct} from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
-import {isInteger} from '../../services/validations/generalValidations';
+import {isNumberValue} from '../../services/validations/generalValidations';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import {notifySuccess, notifyError} from '../../consts/notifications';
 import useArticle from '../../hooks/useArticles';
@@ -53,7 +53,7 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
     evt.preventDefault();
 
     let myModal = Modal.getInstance( document.getElementById('modalModifyProduct') );
-    if (isInteger({ name: 'Precio Venta', value: evt.target[2].value })) {
+    if (isNumberValue({ name: 'Precio Venta', value: evt.target[2].value })) {
       setIsLoading(true);
       updateSalesPriceArticle({id: valueProduct.code, salesPrice: evt.target[2].value});
       setDataSelected({});

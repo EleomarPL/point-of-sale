@@ -51,6 +51,7 @@ const Provider = () => {
       text: 'Agregar',
       onClick: () => {
         setIsCreateProvider(true);
+        setSearcher('');
         openmodalCreateEditProvider();
       }
     },
@@ -60,6 +61,7 @@ const Provider = () => {
       disabled: dataSelected.code === undefined,
       onClick: () => {
         setIsCreateProvider(false);
+        setSearcher('');
         openmodalCreateEditProvider();
       }
     }

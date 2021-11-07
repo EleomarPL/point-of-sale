@@ -44,6 +44,7 @@ const Products = () => {
       } else
         notifyError('Estado del articulo no actualizado');
       
+      setSearcher('');
       setDataSelected({});
     });
 
@@ -68,8 +69,8 @@ const Products = () => {
       text: 'Modificar',
       disabled: dataSelected.code === undefined,
       onClick: () => {
+        setSearcher('');
         openmodalModifyProduct();
-        console.log('Open modal modify');
       }
     },
     {

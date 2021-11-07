@@ -66,6 +66,7 @@ const Employees = () => {
       text: 'Agregar',
       onClick: () => {
         setIsCreateEmployee(true);
+        setSearcher('');
         openmodalCreateEditEmployee();
       }
     },
@@ -75,6 +76,7 @@ const Employees = () => {
       disabled: dataSelected.code === undefined,
       onClick: () => {
         setIsCreateEmployee(false);
+        setSearcher('');
         openmodalCreateEditEmployee();
       }
     },

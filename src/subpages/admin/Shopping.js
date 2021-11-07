@@ -58,6 +58,8 @@ const Shopping = () => {
       classNameIcon: 'bi bi-cart-plus-fill',
       text: 'Agregar Compra',
       onClick: () => {
+        setSearcher('');
+        setValueFirstRadio(true);
         openmodalShopping();
       }
     }
