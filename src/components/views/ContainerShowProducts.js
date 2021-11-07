@@ -21,13 +21,18 @@ const ContainerShowProducts = ({
         console.log('error get articles');
         return null;
       }
-      if (data)
-        setDataArticle(data.map(article => {
+      if (data) {
+        let filterData = data;
+        if (!isQuery) {
+          filterData = data.filter(article => article.statusArticle !== 'locked');
+        }
+        setDataArticle(filterData.map(article => {
           return {
             ...article, code: article.id,
             statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
           };
         }));
+      }
     });
 
     return () => {
