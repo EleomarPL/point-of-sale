@@ -1,7 +1,7 @@
 import { DebounceInput as Input } from 'react-debounce-input';
 import PropTypes from 'prop-types';
 
-const DebounceInput = ({value, setValue, placeholder}) => {
+const DebounceInput = ({value, setValue, placeholder, inputRef}) => {
 
   const handleChangeInput = (evt) => {
     setValue(evt.target.value);
@@ -11,6 +11,7 @@ const DebounceInput = ({value, setValue, placeholder}) => {
     <Input
       minLength={ 2 }
       type="text"
+      { ...(inputRef && {inputRef: inputRef}) }
       aria-label="Buscar"
       aria-describedby="search"
       className="form-control"
@@ -26,7 +27,11 @@ const DebounceInput = ({value, setValue, placeholder}) => {
 DebounceInput.propTypes = {
   value: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  inputRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ])
 };
 
 export default DebounceInput;

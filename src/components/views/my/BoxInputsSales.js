@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import DebounceInput from '../../common/DebounceInput';
@@ -16,6 +16,9 @@ const BoxInputsSales = ({setDataSelected}) => {
   const [price, setPrice] = useState('');
   const {getArticleById} = useSales();
   const {handleAddedArticleInTable} = useContext(SalesContext);
+
+  const inputCodeRef = useRef(null);
+  const inputAmountRef = useRef(null);
 
   useEffect(() => {
     if (code)
@@ -54,6 +57,7 @@ const BoxInputsSales = ({setDataSelected}) => {
           setName(data[0].article);
           setStock(data[0].amount);
           setPrice(data[0].salesPrice);
+          inputAmountRef.current.focus();
         }
       } else {
         setName('');
@@ -78,6 +82,7 @@ const BoxInputsSales = ({setDataSelected}) => {
           setPrice('');
           setAmount('');
           setStock('');
+          inputCodeRef.current.focus();
         }
       } else {
         notifyInfo('Sin producto seleccionado');
@@ -101,6 +106,7 @@ const BoxInputsSales = ({setDataSelected}) => {
           <label className="px-2 fw-bold">Producto: </label>
           <DebounceInput placeholder="Producto"
             value={ code } setValue={ setCode }
+            inputRef={ inputCodeRef }
           />
         </div>
       </div>
@@ -129,6 +135,7 @@ const BoxInputsSales = ({setDataSelected}) => {
             placeholder="Cantidad" aria-label="Amount"
             aria-describedby="amount" value={ amount }
             style={ {backgroundColor: '#f6eded'} }
+            ref={ inputAmountRef }
             onChange={ (evt) => handleChangeState({set: setAmount, value: evt.target.value}) }
             onKeyDown={ handleChangeAmount }
           />
