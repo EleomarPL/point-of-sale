@@ -27,7 +27,7 @@ const updatePasswordAdmin = async({id, password}) => {
   
   try {
     const resultOperation = await connection.query(
-      'UPDATE user SET password=? WHERE id=? ;',
+      'UPDATE user SET password=? WHERE id=? AND type=\'admin\' ;',
       [password, id]
     );
     closeConnection({connection, pool});
@@ -46,7 +46,7 @@ const updateUsernameAdmin = async({id, username}) => {
   
   try {
     const resultOperation = await connection.query(
-      'UPDATE user SET username=? WHERE id=? ;',
+      'UPDATE user SET username=? WHERE id=? AND type=\'admin\' ;',
       [username, id]
     );
     closeConnection({connection, pool});
@@ -111,8 +111,8 @@ const updateUsernamePasswordAgeEmployee = async({id, username, password, age}) =
     return false;
   }
   const personalizedQuery = password
-    ? 'UPDATE user SET username=?, password=?, age=? WHERE id=? ;'
-    : 'UPDATE user SET username=?, age=? WHERE id=? ;';
+    ? 'UPDATE user SET username=?, password=?, age=? WHERE id=? AND type=\'employee\' ;'
+    : 'UPDATE user SET username=?, age=? WHERE id=? AND type=\'employee\' ;';
   const personalizedDataQuery = password
     ? [username, password, age, id]
     : [username, age, id];
@@ -135,7 +135,7 @@ const updateStatusEmployee = async({id, willIsLocked}) => {
   
   try {
     const resultOperation = await connection.query(
-      'UPDATE user SET statusUser=? WHERE id=? ;',
+      'UPDATE user SET statusUser=? WHERE id=? AND type=\'employee\' ;',
       [willIsLocked ? 'locked' : 'unlocked', id]
     );
     closeConnection({connection, pool});
