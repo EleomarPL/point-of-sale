@@ -43,7 +43,8 @@ const Shopping = () => {
       if (data)
         setDataShopping(data.map(purchase => {
           return {
-            ...purchase, code: purchase.folio
+            ...purchase, code: purchase.folio,
+            date: purchase.date.toLocaleString()
           };
         }));
     });
@@ -67,11 +68,11 @@ const Shopping = () => {
 
   let header = [
     'Codigo', 'Articulo', 'Empresa',
-    'Cantidad', 'Precio', 'Total'
+    'Cantidad', 'Precio', 'Total', 'Fecha'
   ];
   let properties = [
     'code', 'article', 'company',
-    'amountShopping', 'purchasePrice', 'total'
+    'amountShopping', 'purchasePrice', 'total', 'date'
   ];
 
   return (
