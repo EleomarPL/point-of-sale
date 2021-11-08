@@ -32,8 +32,8 @@ const getEmployees = async({value, limit}) => {
   const {connection, pool} = await getConnection();
   const getDataEmployee = await connection.query(
     `SELECT id, name, lastName, motherLastName, gender, age, username, type, 
-    statusUser FROM user WHERE CONCAT(id, name, lastName) LIKE '%${value}%' ORDER BY Id DESC
-    ${limit ? 'LIMIT 0,' + limit : ''};`
+    statusUser FROM user WHERE CONCAT(id, name, lastName) LIKE '%${value}%' 
+    AND type='employee' ORDER BY Id DESC ${limit ? 'LIMIT 0,' + limit : ''};`
   );
   closeConnection({connection, pool});
 
