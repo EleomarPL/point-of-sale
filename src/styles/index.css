@@ -5,6 +5,12 @@
   --button-personalized: #F6EDED;
   --active: #0291B0
 }
+.option-bar-admin{
+  transition: all .2s ease-in-out;
+}
+.option-bar-admin:hover {
+  color: #00728b;
+}
 .button-personalized:disabled{
   opacity: 0.5;
   color: #2e2e2e;
