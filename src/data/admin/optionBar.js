@@ -1,3 +1,4 @@
+import { openmodalUpdatePasswordAdmin } from '../../components/modals/ModalUpdatePasswordAdmin';
 import { openmodalUpdateUsernameAdmin } from '../../components/modals/ModalUpdateUsernameAdmin';
 
 export const optionBarAdmin = {
@@ -6,7 +7,7 @@ export const optionBarAdmin = {
       openmodalUpdateUsernameAdmin();
     },
     'Modificar Contraseña': () => {
-      console.log('update password');
+      openmodalUpdatePasswordAdmin();
     }
   },
   'Mostrar Entidades Completas': {

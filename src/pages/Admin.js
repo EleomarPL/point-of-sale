@@ -9,6 +9,7 @@ import LogoutBox from '../components/views/LogoutBox';
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
 import OptionBarAdmin from '../components/views/OptionBarAdmin';
 import ModalUpdateUsernameAdmin from '../components/modals/ModalUpdateUsernameAdmin';
+import ModalUpdatePasswordAdmin from '../components/modals/ModalUpdatePasswordAdmin';
 
 const Provider = lazy(() => import('../subpages/admin/Provider'));
 const Shopping = lazy(() => import('../subpages/admin/Shopping'));
@@ -83,6 +84,7 @@ const Admin = () => {
         <LogoutBox />
       </section>
       <ModalUpdateUsernameAdmin />
+      <ModalUpdatePasswordAdmin />
     </HashRouter>
   );
 };
