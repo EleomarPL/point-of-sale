@@ -1,7 +1,9 @@
+import { openmodalUpdateUsernameAdmin } from '../../components/modals/ModalUpdateUsernameAdmin';
+
 export const optionBarAdmin = {
   'Modificar Administrador': {
     'Modificar Usuario': () => {
-      console.log('Update username');
+      openmodalUpdateUsernameAdmin();
     },
     'Modificar Contraseña': () => {
       console.log('update password');
