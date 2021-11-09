@@ -10,6 +10,7 @@ import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
 import OptionBarAdmin from '../components/views/OptionBarAdmin';
 import ModalUpdateUsernameAdmin from '../components/modals/ModalUpdateUsernameAdmin';
 import ModalUpdatePasswordAdmin from '../components/modals/ModalUpdatePasswordAdmin';
+import ModalShowAllPurchases from '../components/modals/ModalShowAllPurchases';
 
 const Provider = lazy(() => import('../subpages/admin/Provider'));
 const Shopping = lazy(() => import('../subpages/admin/Shopping'));
@@ -85,6 +86,7 @@ const Admin = () => {
       </section>
       <ModalUpdateUsernameAdmin />
       <ModalUpdatePasswordAdmin />
+      <ModalShowAllPurchases />
     </HashRouter>
   );
 };

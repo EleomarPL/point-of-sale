@@ -1,3 +1,4 @@
+import { openmodalShowAllPurchases } from '../../components/modals/ModalShowAllPurchases';
 import { openmodalUpdatePasswordAdmin } from '../../components/modals/ModalUpdatePasswordAdmin';
 import { openmodalUpdateUsernameAdmin } from '../../components/modals/ModalUpdateUsernameAdmin';
 
@@ -12,7 +13,7 @@ export const optionBarAdmin = {
   },
   'Mostrar Entidades Completas': {
     'Cargar Compras': () => {
-      console.log('show all purchases');
+      openmodalShowAllPurchases();
     },
     'Cargar Productos': () => {
       console.log('show all articles');
