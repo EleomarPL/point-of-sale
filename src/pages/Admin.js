@@ -12,6 +12,7 @@ import ModalUpdateUsernameAdmin from '../components/modals/ModalUpdateUsernameAd
 import ModalUpdatePasswordAdmin from '../components/modals/ModalUpdatePasswordAdmin';
 import ModalShowAllPurchases from '../components/modals/ModalShowAllPurchases';
 import ModalShowAllArticles from '../components/modals/ModalShowAllArticles';
+import ModalShowAllSales from '../components/modals/ModalShowAllSales';
 
 const Provider = lazy(() => import('../subpages/admin/Provider'));
 const Shopping = lazy(() => import('../subpages/admin/Shopping'));
@@ -89,6 +90,7 @@ const Admin = () => {
       <ModalUpdatePasswordAdmin />
       <ModalShowAllPurchases />
       <ModalShowAllArticles />
+      <ModalShowAllSales />
     </HashRouter>
   );
 };
