@@ -19,17 +19,28 @@ const updateProvider = async({id, name, lastName, motherLastName}) => {
     return false;
   }
 };
-const updatePasswordAdmin = async({id, password}) => {
-  if (!(password && id)) {
+const updatePasswordAdmin = async({id, oldPassword, newPassword}) => {
+  if (!(oldPassword && newPassword && id)) {
     return false;
   }
   const {connection, pool} = await getConnection();
   
   try {
-    const resultOperation = await connection.query(
-      'UPDATE user SET password=? WHERE id=? AND type=\'admin\' ;',
-      [password, id]
+    let resultOperation;
+    const getDataAdmin = await connection.query(
+      'SELECT * FROM user WHERE id=? AND type=\'admin\' ;',
+      [id]
     );
+    if (getDataAdmin[0]) {
+      resultOperation = null;
+
+      if (oldPassword === getDataAdmin[0].password) {
+        resultOperation = await connection.query(
+          'UPDATE user SET password=? WHERE id=? AND type=\'admin\' ;',
+          [newPassword, id]
+        );
+      }
+    }
     closeConnection({connection, pool});
 
     return resultOperation;
