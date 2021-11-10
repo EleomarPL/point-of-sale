@@ -11,8 +11,8 @@ const triggerEventsAdmin = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:insert-admin', resultOperation);
   });
-  ipcMain.on('main:update-username-admin', async(_, { id, username }) => {
-    const resultOperation = await updateUsernameAdmin({id, username});
+  ipcMain.on('main:update-username-admin', async(_, { id, username, password }) => {
+    const resultOperation = await updateUsernameAdmin({id, username, password});
     
     windowToSend.webContents.send('render:update-username-admin', resultOperation);
   });

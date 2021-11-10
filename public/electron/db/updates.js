@@ -38,19 +38,30 @@ const updatePasswordAdmin = async({id, password}) => {
     return false;
   }
 };
-const updateUsernameAdmin = async({id, username}) => {
+const updateUsernameAdmin = async({id, username, password}) => {
   if (!(username && id)) {
     return false;
   }
   const {connection, pool} = await getConnection();
   
   try {
-    const resultOperation = await connection.query(
-      'UPDATE user SET username=? WHERE id=? AND type=\'admin\' ;',
-      [username, id]
+    let resultOperation;
+    const getDataAdmin = await connection.query(
+      'SELECT * FROM user WHERE id=? AND type=\'admin\' ;',
+      [id]
     );
-    closeConnection({connection, pool});
+    if (getDataAdmin[0]) {
+      resultOperation = null;
 
+      if (password === getDataAdmin[0].password) {
+        resultOperation = await connection.query(
+          'UPDATE user SET username=? WHERE id=? AND type=\'admin\' ;',
+          [username, id]
+        );
+      }
+    }
+    closeConnection({connection, pool});
+    
     return resultOperation;
   } catch (err) {
     closeConnection({connection, pool});
