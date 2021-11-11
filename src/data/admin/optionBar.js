@@ -23,10 +23,5 @@ export const optionBarAdmin = {
     'Cargar Ventas': () => {
       openmodalShowAllSales();
     }
-  },
-  'Descargar Reportes': {
-    'Descargar Reportes Ventas': () => {
-      console.log('download sales report');
-    }
   }
 };
