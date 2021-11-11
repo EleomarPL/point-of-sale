@@ -1,8 +1,12 @@
 import { Modal } from 'bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { notifyWarning } from '../../consts/notifications';
+import { notifyError, notifyInfo, notifySuccess, notifyWarning } from '../../consts/notifications';
 import ButtonPersonalized from '../common/ButtonPersonalized';
+import useAdmin from '../../hooks/useAdmin';
+import Auth from '../../contexts/Auth';
+import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
+import { useContext } from 'react';
 
 export const openmodalUpdatePasswordAdmin = () => {
   let myModal = new Modal(
@@ -18,6 +22,45 @@ const ModalUpdatePasswordAdmin = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const {updatePasswordAdmin} = useAdmin();
+  const {userData} = useContext(Auth);
+
+  useEffect(() => {
+    window.electron.on('render:update-password-admin', (err, data) => {
+      setIsLoading(false);
+
+      if (!err) {
+        console.log('error update password admin');
+        return null;
+      }
+      let myModal = Modal.getInstance( document.getElementById('modalUpdatePasswordAdmin') );
+      setCurrentPassword('');
+      if (data) {
+        setNewPassword('');
+        setConfirmNewPassword('');
+        myModal.hide();
+        notifySuccess('Administrador actualizado correctamente');
+      } else if (data === undefined) {
+        setNewPassword('');
+        setConfirmNewPassword('');
+        myModal.hide();
+        notifyInfo('Administrador no encontrado');
+      } else if (data === null)
+        notifyWarning('Contraseña incorrecta');
+      else {
+        setNewPassword('');
+        setConfirmNewPassword('');
+        myModal.hide();
+        notifyError('Error en la base de datos');
+      }
+
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:update-password-admin');
+    };
+  }, []);
 
   const handleUpdatePassword = () => {
     if (newPassword !== confirmNewPassword) {
@@ -26,7 +69,8 @@ const ModalUpdatePasswordAdmin = () => {
       if (confirmNewPassword.length < 6 || confirmNewPassword.length > 50) {
         notifyWarning('Nueva contraseña debe tener de 6 a 50 caracteres');
       } else {
-        console.log('passed');
+        setIsLoading(true);
+        updatePasswordAdmin({id: userData.id, oldPassword: currentPassword, newPassword});
       }
     }
   };
@@ -96,11 +140,16 @@ const ModalUpdatePasswordAdmin = () => {
               onClick={ handleUpdatePassword }
               disabled={
                 newPassword !== confirmNewPassword || newPassword === ''
-                || confirmNewPassword === '' || currentPassword === ''
+                || confirmNewPassword === '' || currentPassword === '' || isLoading
               }
             >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                Actualizar Usuario
+                <span>
+                  { isLoading &&
+                    <SpinnerButtonLoading />
+                  }
+                  Actualizar Usuario
+                </span>
               </ButtonPersonalized>
             </button>
           </div>
