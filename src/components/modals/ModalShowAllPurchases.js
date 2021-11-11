@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 
 import TablePersonalized from '../common/TablePersonalized';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SearcherPersonalized from '../common/SearcherPersonalized';
+import useShopping from '../../hooks/useShopping';
 
 export const openmodalShowAllPurchases = () => {
   let myModal = new Modal(
@@ -19,6 +20,34 @@ const ModalShowAllPurchases = () => {
   const [searcher, setSearcher] = useState('');
   const [dataPurchases, setDataPurchases] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const [total, setTotal] = useState(0);
+  const {getPurchases} = useShopping();
+
+  useEffect(() => {
+    getPurchases({value: searcher});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-purchases', (err, data) => {
+      if (!err) {
+        console.log('error get purchases');
+        return null;
+      }
+      if (data)
+        setDataPurchases(data.map(purchase => {
+          return {
+            ...purchase, code: purchase.folio,
+            date: purchase.date.toLocaleString()
+          };
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-purchases');
+    };
+  }, []);
+  useEffect(() => {
+    setTotal(dataPurchases.reduce((acc, current) => current.total + acc, 0));
+  }, [dataPurchases]);
 
   let header = [
     'Codigo', 'Articulo', 'Empresa',
@@ -64,7 +93,7 @@ const ModalShowAllPurchases = () => {
               dataSelected={ dataSelected }
             />
             <div className="d-flex justify-content-end">
-              <strong style={ {fontSize: '2rem'} }>Total: 0.00</strong>
+              <strong style={ {fontSize: '2rem'} }>Total: { total.toFixed(2) }</strong>
             </div>
           </div>
           <div className="modal-footer m-0 p-0 w-100 d-flex justify-content-center">
