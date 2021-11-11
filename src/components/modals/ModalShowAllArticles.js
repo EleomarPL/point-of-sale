@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 
 import TablePersonalized from '../common/TablePersonalized';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SearcherPersonalized from '../common/SearcherPersonalized';
+import useArticle from '../../hooks/useArticles';
 
 export const openmodalShowAllArticles = () => {
   let myModal = new Modal(
@@ -18,8 +19,42 @@ export const openmodalShowAllArticles = () => {
 const ModalShowAllArticles = () => {
   const [searcher, setSearcher] = useState('');
   const [dataArticles, setDataArticles] = useState([]);
+  const [filterDataArticles, setFilterDataArticles] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isShowLockedArticle, setIsShowLockedArticle] = useState(true);
+  const {getArticles} = useArticle();
+
+  useEffect(() => {
+    getArticles({value: searcher});
+  }, [searcher]);
+  useEffect(() => {
+    window.electron.on('render:get-article-by-keyword', (err, data) => {
+      if (!err) {
+        console.log('error get articles');
+        return null;
+      }
+      
+      if (data)
+        setDataArticles(data.map(article => {
+          return {
+            ...article, code: article.id,
+            statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
+          };
+        }));
+      
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-article-by-keyword');
+    };
+  }, []);
+  useEffect(() => {
+    if (isShowLockedArticle)
+      setFilterDataArticles(dataArticles);
+    else
+      setFilterDataArticles(dataArticles.filter(article => article.statusArticle === 'Activo'));
+    
+  }, [isShowLockedArticle, dataArticles]);
 
   let header = [
     'Codigo', 'Articulo', 'Precio',
@@ -69,7 +104,7 @@ const ModalShowAllArticles = () => {
             <TablePersonalized
               header={ header }
               maxHeight={ '64vh' }
-              listData={ dataArticles }
+              listData={ filterDataArticles }
               listProperties={ properties }
               setDataSelected={ setDataSelected }
               dataSelected={ dataSelected }
@@ -77,8 +112,15 @@ const ModalShowAllArticles = () => {
             <div className="d-flex justify-content-around"
               style={ {fontSize: '1.4rem'} }
             >
-              <strong>Cantidad Productos: 0.00</strong>
-              <strong>Total Productos: 0.00</strong>
+              <strong>Cantidad Productos: {
+                filterDataArticles.length
+              }</strong>
+              <strong>Total Productos: {
+                Number(filterDataArticles.reduce(
+                  (acc, current) => current.amount * current.salesPrice + acc,
+                  0
+                )).toFixed(2)
+              }</strong>
             </div>
           </div>
           <div className="modal-footer m-0 p-0 w-100 d-flex justify-content-center">
