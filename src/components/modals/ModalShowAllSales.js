@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 
 import TablePersonalized from '../common/TablePersonalized';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SearcherPersonalized from '../common/SearcherPersonalized';
+import useSales from '../../hooks/useSales';
 
 export const openmodalShowAllSales = () => {
   let myModal = new Modal(
@@ -19,6 +20,29 @@ const ModalShowAllSales = () => {
   const [searcher, setSearcher] = useState('');
   const [dataSales, setDataSales] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
+  const {getStandardSales} = useSales();
+
+  useEffect(() => {
+    getStandardSales({value: searcher});
+  }, [searcher]);
+  
+  useEffect(() => {
+    window.electron.on('render:get-standard-sales', (err, data) => {
+      if (!err) {
+        console.log('error get standard sales');
+        return null;
+      }
+      
+      if (data)
+        setDataSales(data.map(sales => {
+          return {...sales, date: sales.date.toLocaleString()};
+        }));
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:get-standard-sales');
+    };
+  }, []);
 
   let header = [
     'Folio', 'Caja', 'Producto',
@@ -56,6 +80,7 @@ const ModalShowAllSales = () => {
               />
             </div>
             <TablePersonalized
+              keyByIndex={ true }
               header={ header }
               maxHeight={ '64vh' }
               listData={ dataSales }
@@ -64,7 +89,9 @@ const ModalShowAllSales = () => {
               dataSelected={ dataSelected }
             />
             <div className="d-flex justify-content-end">
-              <strong style={ {fontSize: '2rem'} }>Total: 0.00</strong>
+              <strong style={ {fontSize: '2rem'} }>Total: {
+                Number(dataSales.reduce((acc, current) => current.total + acc, 0)).toFixed(2)
+              }</strong>
             </div>
           </div>
           <div className="modal-footer m-0 p-0 w-100 d-flex justify-content-center">
