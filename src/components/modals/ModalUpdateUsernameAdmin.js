@@ -1,8 +1,11 @@
 import { Modal } from 'bootstrap';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import { notifyWarning } from '../../consts/notifications';
+import { notifyError, notifyInfo, notifySuccess, notifyWarning } from '../../consts/notifications';
 import ButtonPersonalized from '../common/ButtonPersonalized';
+import useAdmin from '../../hooks/useAdmin';
+import Auth from '../../contexts/Auth';
+import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 
 export const openmodalUpdateUsernameAdmin = () => {
   let myModal = new Modal(
@@ -17,13 +20,51 @@ export const openmodalUpdateUsernameAdmin = () => {
 const ModalUpdateUsernameAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const {updateUsernameAdmin} = useAdmin();
+  const {userData} = useContext(Auth);
+
+  useEffect(() => {
+    window.electron.on('render:update-username-admin', (err, data) => {
+      setIsLoading(false);
+
+      if (!err) {
+        console.log('error update username admin');
+        return null;
+      }
+      let myModal = Modal.getInstance( document.getElementById('modalUpdateUsernameAdmin') );
+      setPassword('');
+
+      if (data) {
+        setUsername('');
+        myModal.hide();
+        notifySuccess('Administrador actualizado correctamente');
+      } else if (data === undefined) {
+        setUsername('');
+        myModal.hide();
+        notifyInfo('Administrador no encontrado');
+      } else if (data === null)
+        notifyWarning('Contraseña incorrecta');
+      else {
+        setUsername('');
+        myModal.hide();
+        notifyError('Error en la base de datos');
+      }
+      
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:update-username-admin');
+    };
+  }, []);
 
   const handleUpdateUsername = () => {
     if (password && username) {
       if (username.length < 6 || username > 50) {
         notifyWarning('Nuevo usuario debe tener de 6 a 50 caracteres');
       } else {
-        console.log('passed');
+        setIsLoading(true);
+        updateUsernameAdmin({id: userData.id, password, username});
       }
     } else {
       notifyWarning('Rellene todos los campos');
@@ -81,9 +122,15 @@ const ModalUpdateUsernameAdmin = () => {
             </button>
             <button type="button" className="button-btn-modals"
               onClick={ handleUpdateUsername }
+              disabled={ isLoading }
             >
               <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
-                Actualizar Usuario
+                <span>
+                  { isLoading &&
+                    <SpinnerButtonLoading />
+                  }
+                  Actualizar Usuario
+                </span>
               </ButtonPersonalized>
             </button>
           </div>
