@@ -111,8 +111,7 @@ const getArticleByIdArticleCompany = async({value}) => {
     `SELECT article.id, article.article, article.purchasePrice, article.salesPrice,
     article.amount, article.dateofExpiry, article.statusArticle, provider.company
     FROM article INNER JOIN provider ON article.id_provider = provider.id
-    WHERE CONCAT(article.id, provider.company, article.article) LIKE '%${value}%'
-    };`
+    WHERE CONCAT(article.id, provider.company, article.article) LIKE '%${value}%' ;`
   );
 
   closeConnection({connection, pool});

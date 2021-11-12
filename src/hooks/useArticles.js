@@ -2,6 +2,9 @@ const useArticle = () => {
   const getArticles = ({value, limit}) => {
     window.electron.send('main:get-article-by-keyword', {value, limit});
   };
+  const getArticlesByKeywordaAndCompany = ({value}) => {
+    window.electron.send('main:get-article-by-keyword-company', {value});
+  };
   const updateSalesPriceArticle = ({id, salesPrice}) => {
     window.electron.send('main:update-salesprice-article', {id, salesPrice});
   };
@@ -17,7 +20,7 @@ const useArticle = () => {
 
   return {
     getArticles, updateSalesPriceArticle, updateStatusArticle, getArticleById,
-    getArticleForAuxTable
+    getArticleForAuxTable, getArticlesByKeywordaAndCompany
   };
 };
 

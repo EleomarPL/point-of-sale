@@ -22,13 +22,13 @@ const ModalShowAllArticles = () => {
   const [filterDataArticles, setFilterDataArticles] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isShowLockedArticle, setIsShowLockedArticle] = useState(true);
-  const {getArticles} = useArticle();
+  const {getArticlesByKeywordaAndCompany} = useArticle();
 
   useEffect(() => {
-    getArticles({value: searcher});
+    getArticlesByKeywordaAndCompany({value: searcher});
   }, [searcher]);
   useEffect(() => {
-    window.electron.on('render:get-article-by-keyword', (err, data) => {
+    window.electron.on('render:get-article-by-keyword-company', (err, data) => {
       if (!err) {
         console.log('error get articles');
         return null;
@@ -45,7 +45,7 @@ const ModalShowAllArticles = () => {
     });
 
     return () => {
-      window.electron.removeAllListeners('render:get-article-by-keyword');
+      window.electron.removeAllListeners('render:get-article-by-keyword-company');
     };
   }, []);
   useEffect(() => {
@@ -57,11 +57,11 @@ const ModalShowAllArticles = () => {
   }, [isShowLockedArticle, dataArticles]);
 
   let header = [
-    'Codigo', 'Articulo', 'Precio',
+    'Codigo', 'Proveedor', 'Articulo', 'Precio',
     'Existencia', 'Estado'
   ];
   let properties = [
-    'code', 'article', 'salesPrice',
+    'code', 'company', 'article', 'salesPrice',
     'amount', 'statusArticle'
   ];
   
@@ -85,7 +85,7 @@ const ModalShowAllArticles = () => {
           <div className="modal-body p-0 m-0" style={ {overflow: 'auto'} }>
             <div className="my-2 d-flex justify-content-center align-items-center">
               <SearcherPersonalized
-                placeholder="Id - Articulo"
+                placeholder="Id - Articulo - Proveedor"
                 value={ searcher }
                 setValue={ setSearcher }
                 title="Buscar"
