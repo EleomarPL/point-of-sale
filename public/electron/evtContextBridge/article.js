@@ -1,7 +1,9 @@
 const {ipcMain} = require('electron');
 
 const {updateSalesPriceArticle, updateStatusArticle} = require('../db/updates');
-const {getArticleById, getArticlesByIdArticle, getArticleForAuxTable} = require('../db/consults');
+const {
+  getArticleById, getArticlesByIdArticle, getArticleForAuxTable, getArticleByIdArticleCompany
+} = require('../db/consults');
 
 const triggerEventsArticle = ({windowToSend}) => {
   ipcMain.on('main:update-salesprice-article', async(_, { id, salesPrice }) => {
@@ -23,6 +25,11 @@ const triggerEventsArticle = ({windowToSend}) => {
     const dataArticle = await getArticlesByIdArticle({value, limit});
     
     windowToSend.webContents.send('render:get-article-by-keyword', dataArticle);
+  });
+  ipcMain.on('main:get-article-by-keyword-company', async(_, { value }) => {
+    const dataArticle = await getArticleByIdArticleCompany({value});
+    
+    windowToSend.webContents.send('render:get-article-by-keyword-company', dataArticle);
   });
   ipcMain.on('main:get-article-for-auxtable', async(_, { value }) => {
     const dataArticle = await getArticleForAuxTable({value});

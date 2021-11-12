@@ -104,6 +104,21 @@ const getArticlesByIdArticle = async({value = '', limit}) => {
 
   return getArticles;
 };
+const getArticleByIdArticleCompany = async({value}) => {
+  const {connection, pool} = await getConnection();
+
+  const getArticles = await connection.query(
+    `SELECT article.id, article.article, article.purchasePrice, article.salesPrice,
+    article.amount, article.dateofExpiry, article.statusArticle, provider.company
+    FROM article INNER JOIN provider ON article.id_provider = provider.id
+    WHERE CONCAT(article.id, provider.company, article.article) LIKE '%${value}%'
+    };`
+  );
+
+  closeConnection({connection, pool});
+
+  return getArticles;
+};
 const getStandardSales = async({value, startDate, endDate, limit}) => {
   const {connection, pool} = await getConnection();
 
@@ -192,5 +207,5 @@ module.exports = {
   login, isThereAnAdmin, getProviders, getPurchases, getArticleById,
   getProviderIdCompany, getArticleForAuxTable, getArticlesByIdArticle,
   getStandardSales, getStockSales, getDebts, getDebtsFromADebtor,
-  getEmployees, getDebtors
+  getEmployees, getDebtors, getArticleByIdArticleCompany
 };
