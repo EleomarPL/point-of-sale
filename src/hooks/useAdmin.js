@@ -10,9 +10,12 @@ const useAdmin = () => {
       name, lastName, motherLastName, age, isAMan, username, password
     });
   };
+  const isThereAnAdmin = () => {
+    window.electron.send('main:is-there-an-admin');
+  };
   
   return {
-    updatePasswordAdmin, updateUsernameAdmin, insertAdmin
+    updatePasswordAdmin, updateUsernameAdmin, insertAdmin, isThereAnAdmin
   };
 };
 

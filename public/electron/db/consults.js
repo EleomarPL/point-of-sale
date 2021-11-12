@@ -12,11 +12,15 @@ const login = async({username, password}) => {
 };
 const isThereAnAdmin = async() => {
   const {connection, pool} = await getConnection();
-
-  const adminInfo = await connection.query('SELECT * FROM user WHERE type=0;');
-  closeConnection({connection, pool});
-
-  return adminInfo[0] ? true : false;
+  try {
+    const adminInfo = await connection.query('SELECT * FROM user WHERE type=\'admin\' ;');
+    closeConnection({connection, pool});
+    return adminInfo[0] ? true : false;
+  } catch (err) {
+    closeConnection({connection, pool});
+    return null;
+  }
+    
 };
 const getProviders = async({value = '', limit}) => {
   const {connection, pool} = await getConnection();
