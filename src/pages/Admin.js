@@ -8,11 +8,12 @@ import AdminRouter from '../components/router/AdminRouter';
 import LogoutBox from '../components/views/LogoutBox';
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
 import OptionBarAdmin from '../components/views/OptionBarAdmin';
-import ModalUpdateUsernameAdmin from '../components/modals/ModalUpdateUsernameAdmin';
-import ModalUpdatePasswordAdmin from '../components/modals/ModalUpdatePasswordAdmin';
-import ModalShowAllPurchases from '../components/modals/ModalShowAllPurchases';
-import ModalShowAllArticles from '../components/modals/ModalShowAllArticles';
-import ModalShowAllSales from '../components/modals/ModalShowAllSales';
+
+const ModalUpdateUsernameAdmin = lazy(() => import('../components/modals/ModalUpdateUsernameAdmin'));
+const ModalUpdatePasswordAdmin = lazy(() => import('../components/modals/ModalUpdatePasswordAdmin'));
+const ModalShowAllPurchases = lazy(() => import('../components/modals/ModalShowAllPurchases'));
+const ModalShowAllArticles = lazy(() => import('../components/modals/ModalShowAllArticles'));
+const ModalShowAllSales = lazy(() => import('../components/modals/ModalShowAllSales'));
 
 const Provider = lazy(() => import('../subpages/admin/Provider'));
 const Shopping = lazy(() => import('../subpages/admin/Shopping'));
@@ -86,11 +87,13 @@ const Admin = () => {
         </div>
         <LogoutBox />
       </section>
-      <ModalUpdateUsernameAdmin />
-      <ModalUpdatePasswordAdmin />
-      <ModalShowAllPurchases />
-      <ModalShowAllArticles />
-      <ModalShowAllSales />
+      <Suspense fallback={ <SpinnerLoadingPage /> }>
+        <ModalUpdateUsernameAdmin />
+        <ModalUpdatePasswordAdmin />
+        <ModalShowAllPurchases />
+        <ModalShowAllArticles />
+        <ModalShowAllSales />
+      </Suspense>
     </HashRouter>
   );
 };
