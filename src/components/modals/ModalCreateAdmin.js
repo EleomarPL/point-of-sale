@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 
 import {inputEmployees} from '../../data/admin/modalEmployee';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import { isObjectValuesNull, validateLength } from '../../services/validations/generalValidations';
+import useAdmin from '../../hooks/useAdmin';
+import { notifySuccess } from '../../consts/notifications';
 
 export const openmodalCreateAdmin = () => {
   let myModal = new Modal(
@@ -23,12 +25,33 @@ const ModalCreateAdmin = () => {
     user: '', password: '', gender: 'M', age: 18
   });
   const [isLoading, setIsLoading] = useState(false);
+  const {insertAdmin} = useAdmin();
+  useEffect(() => {
+    window.electron.on('render:insert-admin', (err, data) => {
+      setIsLoading(false);
+      if (!err) {
+        console.log('error insert admin');
+        return null;
+      }
+      let myModal = Modal.getInstance( document.getElementById('modalCreateAdmin') );
+      if (data) {
+        notifySuccess('Administrador agregado correctamente');
+        window.electron.send('main:is-there-an-admin');
+        myModal.hide();
+      } else {
+        notifySuccess('Error al crear administrador');
+      }
+    });
+
+    return () => {
+      window.electron.removeAllListeners('render:insert-admin');
+    };
+  }, []);
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
-    // let myModal = Modal.getInstance( document.getElementById('modalCreateAdmin') );
 
-    let dataEmployeeForm = {
+    let dataAdminForm = {
       name: {
         name: 'Nombre',
         minLength: 2,
@@ -61,9 +84,14 @@ const ModalCreateAdmin = () => {
       }
     };
     
-    if ( !isObjectValuesNull(dataEmployeeForm) && validateLength(dataEmployeeForm) ) {
+    if ( !isObjectValuesNull(dataAdminForm) && validateLength(dataAdminForm) ) {
       setIsLoading(true);
-      console.log('passed');
+      insertAdmin({
+        name: dataAdminForm.name.value, lastName: dataAdminForm.lastName.value,
+        motherLastName: dataAdminForm.motherLastName.value,
+        username: dataAdminForm.userName.value, password: dataAdminForm.password.value,
+        age: evt.target[7].value, isAMan: evt.target[5].checked
+      });
     }
   };
 
