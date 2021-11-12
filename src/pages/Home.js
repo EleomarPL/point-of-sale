@@ -5,6 +5,7 @@ import InputPersonalized from '../components/common/InputPersonalized';
 import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
 import { notifyInfo, notifyWarning } from '../consts/notifications';
 import useLogin from '../hooks/useLogin';
+import ModalCreateAdmin from '../components/modals/ModalCreateAdmin';
 
 const Home = () => {
 
@@ -96,6 +97,7 @@ const Home = () => {
           </button>
         </div>
       </div>
+      <ModalCreateAdmin />
     </section>
   );
 };
