@@ -45,9 +45,10 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
           console.log('error provider');
           return null;
         }
-        if (data)
+        if (data) {
+          window.electron.send('main:get-provider', {keyword: '', limit: 50});
           notifySuccess('Proveedor agregado correctamente');
-        else
+        } else
           notifyError('No ha sido posible agregar proveedor');
       });
     } else {
@@ -57,9 +58,10 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
           console.log('error provider');
           return null;
         }
-        if (data)
+        if (data) {
+          window.electron.send('main:get-provider', {keyword: '', limit: 50});
           notifySuccess('Proveedor actualizado correctamente');
-        else
+        } else
           notifyError('No ha sido posible actualizar proveedor');
       });
     }
@@ -112,8 +114,6 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
           id: valueProvider.code, name: dataProvider.name.value,
           lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
         });
-      
-      window.electron.send('main:get-provider', {keyword: '', limit: 50});
       setDataSelected({});
       myModal.hide();
     }
