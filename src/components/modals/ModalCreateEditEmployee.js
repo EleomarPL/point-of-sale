@@ -7,7 +7,7 @@ import {isObjectValuesNull, validateLength} from '../../services/validations/gen
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useEmployee from '../../hooks/useEmployee';
-import { notifySuccess } from '../../consts/notifications';
+import { notifySuccess, notifyWarning } from '../../consts/notifications';
 
 export const openmodalCreateEditEmployee = () => {
   let myModal = new Modal(
@@ -46,12 +46,17 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
     window.electron.on('render:insert-employee', (err, data) => {
       setIsLoading(false);
       if (!err) {
-        console.log('error update status employee');
+        console.log('error insert employee');
         return null;
       }
       if (data) {
+        let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
         notifySuccess('Empleado agregado correctamente');
+        setDataSelected({});
         window.electron.send('main:get-employees', {value: '', limit: 50});
+        myModal.hide();
+      } else {
+        notifyWarning('Ingrese un diferente nombre de usuario');
       }
     });
     window.electron.on('render:update-employee', (err, data) => {
@@ -74,7 +79,6 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
-    let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
     let dataEmployeeForm = {
       name: {
         name: 'Nombre',
@@ -162,8 +166,6 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
           password: dataEmployeeForm.password ? dataEmployeeForm.password.value : ''
         });
       
-      setDataSelected({});
-      myModal.hide();
     }
   };
 
