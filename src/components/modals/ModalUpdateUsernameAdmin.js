@@ -47,8 +47,7 @@ const ModalUpdateUsernameAdmin = () => {
         notifyWarning('Contraseña incorrecta');
       else {
         setUsername('');
-        myModal.hide();
-        notifyError('Error en la base de datos');
+        notifyWarning('Ingrese un diferente nombre de usuario');
       }
       
     });
