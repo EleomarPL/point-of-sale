@@ -91,9 +91,11 @@ const insertEmployee = async({name, lastName, motherLastName, isAMan, age, usern
   const {connection, pool} = await getConnection();
   
   try {
+    const passwordHash = await bcrypt.hash(password, 10);
+
     const resultOperation = await connection.query(
       'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'employee\', \'unlocked\');',
-      [name, lastName, motherLastName, isAMan ? 'M' : 'W', age, username, password]
+      [name, lastName, motherLastName, isAMan ? 'M' : 'W', age, username, passwordHash]
     );
     closeConnection({connection, pool});
     return resultOperation;
