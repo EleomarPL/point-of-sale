@@ -1,14 +1,24 @@
+const bcrypt = require('bcrypt');
+
 const {getConnection, closeConnection} = require('../connection');
 
 const login = async({username, password}) => {
   const {connection, pool} = await getConnection();
 
   const userInfo = await connection.query(
-    `SELECT * FROM user WHERE username='${username}' AND password='${password}';`
+    'SELECT * FROM user WHERE username= ? ;',
+    [username]
   );
+  const passwordUser = userInfo[0] === undefined
+    ? false
+    : await bcrypt.compare(password, userInfo[0].password);
   closeConnection({connection, pool});
 
-  return userInfo[0] || null;
+  if (!(passwordUser && userInfo[0])) {
+    return null;
+  } else {
+    return userInfo[0];
+  }
 };
 const isThereAnAdmin = async() => {
   const {connection, pool} = await getConnection();
