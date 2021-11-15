@@ -113,7 +113,7 @@ const insertSales = async({idUser, total, salesRecords}) => {
 
     if (resultInsert.affectedRows) {
       let folioTicketf = resultInsert.insertId;
-      salesRecords.forEach(async sale => {
+      for (const sale of salesRecords) {
         if (!(sale.idArticle && sale.salesPrice && sale.amount && sale.total)) {
           return false;
         }
@@ -122,7 +122,7 @@ const insertSales = async({idUser, total, salesRecords}) => {
           [folioTicketf, sale.idArticle, sale.salesPrice, sale.amount, sale.total]
         );
         await updateAmountArticle({connection, id: sale.idArticle, amountToSubtract: sale.amount});
-      });
+      }
 
     }
 
