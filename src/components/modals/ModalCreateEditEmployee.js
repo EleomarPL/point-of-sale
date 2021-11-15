@@ -66,8 +66,13 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         return null;
       }
       if (data) {
+        let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
         notifySuccess('Empleado actualizado correctamente');
+        setDataSelected({});
         window.electron.send('main:get-employees', {value: '', limit: 50});
+        myModal.hide();
+      } else {
+        notifyWarning('Ingrese un diferente nombre de usuario');
       }
     });
 
