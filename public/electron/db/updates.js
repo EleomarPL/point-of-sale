@@ -80,7 +80,7 @@ const updateUsernameAdmin = async({id, username, password}) => {
   }
 };
 const updateArticleByPurchase = async({connection, idProvider, purchasePrice, dateofExpiry, amount, id}) => {
-  await connection.query(
+  return await connection.query(
     'UPDATE article SET id_provider=?, purchasePrice=?, dateofExpiry=?, amount=amount+? WHERE id=? ;',
     [ idProvider, purchasePrice, dateofExpiry || null, amount, id ]
   );

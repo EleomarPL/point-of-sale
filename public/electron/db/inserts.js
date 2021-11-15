@@ -50,7 +50,7 @@ const addPurchases = async({listPurchases}) => {
   }
   const {connection, pool} = await getConnection();
   
-  listPurchases.forEach(async(purchase) => {
+  for ( const purchase of listPurchases ) {
     if (!(purchase.id && purchase.article && purchase.purchasePrice && purchase.salesPrice
       && purchase.amount && purchase.idProvider
     )) {
@@ -70,14 +70,12 @@ const addPurchases = async({listPurchases}) => {
           amount: Number(purchase.amount), dateofExpiry: purchase.dateofExpiry
         });
       }
-      if (purchase.id !== 0) {
-        await connection.query(
-          'INSERT INTO shopping VALUES(null, ?, default, ?);',
-          [purchase.id, purchase.amount]
-        );
-      }
+      await connection.query(
+        'INSERT INTO shopping VALUES(null, ?, default, ?);',
+        [purchase.id, purchase.amount]
+      );
     }
-  });
+  }
 
   closeConnection({connection, pool});
   return true;
