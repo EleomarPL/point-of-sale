@@ -3,14 +3,22 @@
   --principal: #BED7AA;
   --menu-button: #8EB7C0;
   --button-personalized: #F6EDED;
-  --active: #0291B0
+  --active: #0291B0;
+
+  --nav: #68af8eb6;
+  --color-gradient1: #24834f80;
+  --color-gradient2: #0c7235;
 }
+
+/* option admin options menu */
 .option-bar-admin{
   transition: all .2s ease-in-out;
 }
 .option-bar-admin:hover {
   color: #00728b;
 }
+
+/* style for buttons component */
 .button-personalized:disabled{
   opacity: 0.5;
   color: #2e2e2e;
@@ -50,4 +58,22 @@
 }
 .active-admin{
   background-color: var(--active);
+}
+
+/* scroll bar customization */
+::-webkit-scrollbar {
+	background: var(--nav);
+	width: 0.5rem;
+  border-radius: 0.5rem;
+}
+::-webkit-scrollbar-track {
+	border-radius: 0.5rem;
+}
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(
+		125deg,
+		var(--color-gradient1),
+		var(--color-gradient2)
+	);
+	border-radius: 0.5rem;
 }
