@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const {getConnection, closeConnection} = require('../connection');
 const {isThereAnAdmin} = require('./consults');
 const {updateArticleByPurchase, updateAmountArticle} = require('./updates');
@@ -13,9 +15,11 @@ const insertAdmin = async({ name, lastName, motherLastName, isAMan, age, usernam
   if (isThereAdmin) return false;
   else {
     try {
+      const passwordHash = await bcrypt.hash(password, 10);
+      
       const resultOperation = await connection.query(
         'INSERT INTO user VALUES(null, ?, ?, ?, ?, ?, ?, ?, \'admin\', \'unlocked\');',
-        [name, lastName, motherLastName, isAMan ? 'M' : 'W', age, username, password]
+        [name, lastName, motherLastName, isAMan ? 'M' : 'W', age, username, passwordHash]
       );
       closeConnection({connection, pool});
       return resultOperation;
