@@ -8,9 +8,9 @@ const payDebt = async({idUser, total, salesRecords}) => {
   const {connection, pool} = await getConnection();
   
   try {
-    await salesRecords.forEach(async article => {
+    for (const article of salesRecords) {
       return await connection.query('DELETE FROM debts WHERE id=? ;', [article.idDebt]);
-    });
+    }
     await insertSales({idUser, total, salesRecords});
 
     closeConnection({connection, pool});
