@@ -157,10 +157,7 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
                 aria-describedby="ate-of-expiry"
                 style={ {backgroundColor: '#f6eded'} }
                 value={ dateofExpiry }
-                onChange={ (evt) => {
-                  console.log(evt.target.value);
-                  setDateofExpiry(evt.target.value);
-                } }
+                onChange={ (evt) => setDateofExpiry(evt.target.value) }
               />
             </td>
           </tr>
