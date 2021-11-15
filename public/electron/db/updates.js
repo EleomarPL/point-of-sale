@@ -137,15 +137,14 @@ const updateStatusArticle = async({id, willItLocked}) => {
 };
 const updateUsernamePasswordAgeEmployee = async({id, username, password, age}) => {
   if (!(id, username, age)) {
-    console.log({id, username, password, age});
-    console.log('no paso 1');
     return false;
   }
+  const passwordHash = password ? await bcrypt.hash(password, 10) : '';
   const personalizedQuery = password
     ? 'UPDATE user SET username=?, password=?, age=? WHERE id=? AND type=\'employee\' ;'
     : 'UPDATE user SET username=?, age=? WHERE id=? AND type=\'employee\' ;';
   const personalizedDataQuery = password
-    ? [username, password, age, id]
+    ? [username, passwordHash, age, id]
     : [username, age, id];
   const {connection, pool} = await getConnection();
   
