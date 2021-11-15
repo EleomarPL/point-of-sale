@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const {getConnection, closeConnection} = require('../connection');
 
 const updateProvider = async({id, name, lastName, motherLastName}) => {
@@ -33,11 +35,15 @@ const updatePasswordAdmin = async({id, oldPassword, newPassword}) => {
     );
     if (getDataAdmin[0]) {
       resultOperation = null;
+      const passwordUser = getDataAdmin[0] === undefined
+        ? false
+        : await bcrypt.compare(oldPassword, getDataAdmin[0].password);
 
-      if (oldPassword === getDataAdmin[0].password) {
+      if (passwordUser && getDataAdmin[0]) {
+        const passwordHash = await bcrypt.hash(newPassword, 10);
         resultOperation = await connection.query(
           'UPDATE user SET password=? WHERE id=? AND type=\'admin\' ;',
-          [newPassword, id]
+          [passwordHash, id]
         );
       }
     }
