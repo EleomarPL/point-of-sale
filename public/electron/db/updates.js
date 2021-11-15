@@ -69,8 +69,11 @@ const updateUsernameAdmin = async({id, username, password}) => {
     );
     if (getDataAdmin[0]) {
       resultOperation = null;
+      const passwordUser = getDataAdmin[0] === undefined
+        ? false
+        : await bcrypt.compare(password, getDataAdmin[0].password);
 
-      if (password === getDataAdmin[0].password) {
+      if (passwordUser && getDataAdmin[0]) {
         resultOperation = await connection.query(
           'UPDATE user SET username=? WHERE id=? AND type=\'admin\' ;',
           [username, id]
