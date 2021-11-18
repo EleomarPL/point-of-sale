@@ -262,8 +262,4 @@ const ModalShopping = () => {
   );
 };
 
-ModalShopping.propTypes = {
-  
-};
-
 export default ModalShopping;
