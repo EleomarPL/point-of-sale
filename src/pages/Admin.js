@@ -65,7 +65,7 @@ const Admin = () => {
             <AdminRouter path="/admin/products">
               <Suspense fallback={ <SpinnerLoadingPage /> }>
                 <Helmet>
-                  <title>Articulos | Administrador | Punto de venta</title>
+                  <title>Artículos | Administrador | Punto de venta</title>
                 </Helmet>
                 <Products />
               </Suspense>
