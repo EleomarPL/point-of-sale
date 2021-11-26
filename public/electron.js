@@ -31,6 +31,7 @@ function createWindow() {
     }
   });
   createMainWindow.loadURL('http://localhost:3000/');
+  // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
   createMainWindow.maximize();
 
   triggerEventsProvider({windowToSend: createMainWindow});
@@ -41,7 +42,6 @@ function createWindow() {
   triggerEventsAdmin({windowToSend: createMainWindow});
   triggerEventsDebts({windowToSend: createMainWindow});
   triggerEventsLogin({windowToSend: createMainWindow});
-  // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
 }
 
 app.whenReady().then(createWindow);
