@@ -1,3 +1,5 @@
+// utility to add or substract hours/days/years to current Date
+
 const subtractDays = ({currentDate, daysToSubtract}) => {
   let endDate = new Date(currentDate.setUTCHours(23, 59, 59, 0));
     
