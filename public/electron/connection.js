@@ -11,7 +11,7 @@ const getConnection = async() => {
     database: process.env.DATABASEMARIADB
   });
 
-  const connection = await pool.getConnection().catch(_ => null);
+  const connection = await pool.getConnection().catch(() => null);
   
   return { pool, connection };
 };
