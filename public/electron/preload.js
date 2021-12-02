@@ -1,3 +1,8 @@
+/*
+  the connection apis between the renderer and the main are loaded,
+  and allowed channels are validated
+*/
+
 const {contextBridge, ipcRenderer} = require('electron');
 
 const channelsProvider = require('./common/channelsProvider');
