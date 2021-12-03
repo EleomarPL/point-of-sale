@@ -3,6 +3,10 @@ require('dotenv').config();
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
+/*
+  require connection events between main and renderer
+*/
+
 const {triggerEventsProvider} = require('./electron/evtContextBridge/provider');
 const {triggerEventsShopping} = require('./electron/evtContextBridge/shopping');
 const {triggerEventsArticle} = require('./electron/evtContextBridge/article');
