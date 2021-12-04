@@ -38,6 +38,9 @@ function createWindow() {
   // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
   createMainWindow.maximize();
 
+  /*
+    trigger events between the main and the render by passing the main window
+  */
   triggerEventsProvider({windowToSend: createMainWindow});
   triggerEventsShopping({windowToSend: createMainWindow});
   triggerEventsArticle({windowToSend: createMainWindow});
