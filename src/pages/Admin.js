@@ -1,9 +1,9 @@
 import { HashRouter, Switch } from 'react-router-dom';
 import {lazy, Suspense} from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import NavigationAdmin from '../components/views/NavigationAdmin';
-import {routesAdmin} from '../data/routesAdmin';
+import { routesAdmin } from '../data/routesAdmin';
 import AdminRouter from '../components/router/AdminRouter';
 import LogoutBox from '../components/views/LogoutBox';
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
