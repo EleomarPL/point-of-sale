@@ -1,5 +1,5 @@
-import {lazy, Suspense} from 'react';
-import {HashRouter, Switch} from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { HashRouter, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Helmet from 'react-helmet';
 
