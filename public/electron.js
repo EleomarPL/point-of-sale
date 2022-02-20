@@ -15,12 +15,6 @@ const {triggerEventsSales} = require('./electron/evtContextBridge/sales');
 const {triggerEventsAdmin} = require('./electron/evtContextBridge/admin');
 const {triggerEventsDebts} = require('./electron/evtContextBridge/debts');
 const {triggerEventsLogin} = require('./electron/evtContextBridge/login');
-
-if (process.env.NODE_ENV !== 'production') {
-  require('electron-reload')(__dirname, {
-    electron: require(path.join(__dirname, '..', 'node_modules', 'electron'))
-  });
-}
  
 Menu.setApplicationMenu(null);
 

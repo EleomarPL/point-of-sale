@@ -10,7 +10,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
   
     'indent': ['error', 2],
-    'linebreak-style': ['error', 'windows'],
     'quotes': ['error', 'single'],
     'camelcase': 'error',
     'no-unused-vars': 'warn',
