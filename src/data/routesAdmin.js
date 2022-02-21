@@ -7,21 +7,21 @@ export const routesAdmin = [
   {
     text: 'Compras',
     classNameIcon: 'bi bi-cart-fill',
-    path: '/shopping'
+    path: 'shopping'
   },
   {
     text: 'Productos',
     classNameIcon: 'bi bi-filter-circle-fill',
-    path: '/products'
+    path: 'products'
   },
   {
     text: 'Empleados',
     classNameIcon: 'bi bi-people-fill',
-    path: '/employees'
+    path: 'employees'
   },
   {
     text: 'Ventas',
     classNameIcon: 'bi bi-newspaper',
-    path: '/sales'
+    path: 'sales'
   }
 ];

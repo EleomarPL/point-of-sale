@@ -2,21 +2,21 @@ export const routesModalDebts = [
   {
     text: 'Agregar Deudor',
     classNameIcon: 'bi bi-person-plus-fill',
-    path: '/my'
+    path: ''
   },
   {
     text: 'Agregar Deuda',
     classNameIcon: 'bi bi-cart-plus-fill',
-    path: '/my/debtors'
+    path: 'debtors'
   },
   {
     text: 'Pagar Deuda',
     classNameIcon: 'bi bi-currency-dollar',
-    path: '/my/pay-debt'
+    path: 'pay-debt'
   },
   {
     text: 'Ver Deudas',
     classNameIcon: 'bi bi-eye-fill',
-    path: '/my/see-debts'
+    path: 'see-debts'
   }
 ];

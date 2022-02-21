@@ -25,7 +25,7 @@
     "react-debounce-input": "3.2.5",
     "react-dom": "17.0.2",
     "react-helmet": "6.1.0",
-    "react-router-dom": "5.3.0",
+    "react-router-dom": "6.2.1",
     "react-scripts": "4.0.3",
     "react-toastify": "8.1.0",
     "validator": "13.7.0",
@@ -35,6 +35,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "electron": "electron .",
     "dev": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "eject": "react-scripts eject"
   },
@@ -58,10 +59,10 @@
   },
   "devDependencies": {
     "@types/bootstrap": "5.1.4",
-    "concurrently": "^7.0.0",
-    "cross-env": "^7.0.3",
+    "concurrently": "7.0.0",
+    "cross-env": "7.0.3",
     "electron": "^14.0.0",
-    "electron-builder": "^22.14.5",
+    "electron-builder": "22.14.5",
     "eslint": "7.11.0",
     "eslint-plugin-react": "7.27.1",
     "wait-on": "^6.0.0"

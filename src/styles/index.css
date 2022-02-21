@@ -56,9 +56,6 @@
 .is-menu:hover, .is-button-personalized:hover{
   background-color: #029fc2;
 }
-.active-admin{
-  background-color: var(--active);
-}
 
 /* scroll bar customization */
 ::-webkit-scrollbar {

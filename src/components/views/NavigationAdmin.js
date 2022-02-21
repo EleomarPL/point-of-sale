@@ -7,13 +7,15 @@ const NavigationAdmin = ({navigation}) => {
   return (
     <nav className="col-md-12 d-flex justify-content-evenly">
       { navigation &&
-        navigation.map((option, index) =>
+        navigation.map(option =>
           <NavLink
-            key={ option.classNameIcon } exact={ index === 0 }
-            to={ '/admin' + option.path }
+            key={ option.classNameIcon } end
+            to={ option.path }
             className="button-personalized is-menu text-black text-decoration-none"
-            style={ {minWidth: '19vw'} }
-            activeClassName="active-admin"
+            style={ ({isActive}) => ({
+              minWidth: '19vw',
+              backgroundColor: isActive && 'var(--active)'
+            }) }
           >
             <ButtonPersonalized
               classNameIcon={ option.classNameIcon }

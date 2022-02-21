@@ -1,10 +1,9 @@
-import { HashRouter, Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import {lazy, Suspense} from 'react';
 import { Helmet } from 'react-helmet';
 
 import NavigationAdmin from '../components/views/NavigationAdmin';
 import { routesAdmin } from '../data/routesAdmin';
-import AdminRouter from '../components/router/AdminRouter';
 import LogoutBox from '../components/views/LogoutBox';
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
 import OptionBarAdmin from '../components/views/OptionBarAdmin';
@@ -23,7 +22,7 @@ const Sales = lazy(() => import('../subpages/admin/Sales'));
 
 const Admin = () => {
   return (
-    <HashRouter>
+    <>
       <section className="col-md-12" style={ {backgroundColor: '#BED7AA'} }>
         <div
           style={ {
@@ -45,45 +44,55 @@ const Admin = () => {
           <NavigationAdmin navigation={ routesAdmin } />
         </div>
         <div style={ {maxHeight: '63vh', minHeight: '63vh', overflow: 'auto'} }>
-          <Switch>
-            <AdminRouter exact path="/admin">
-              <Suspense fallback={ <SpinnerLoadingPage /> }>
-                <Helmet>
-                  <title>Proveedores | Administrador | Punto de venta</title>
-                </Helmet>
-                <Provider />
-              </Suspense>
-            </AdminRouter>
-            <AdminRouter path="/admin/shopping">
-              <Suspense fallback={ <SpinnerLoadingPage /> }>
-                <Helmet>
-                  <title>Compras | Administrador | Punto de venta</title>
-                </Helmet>
-                <Shopping />
-              </Suspense>
-            </AdminRouter>
-            <AdminRouter path="/admin/products">
-              <Suspense fallback={ <SpinnerLoadingPage /> }>
-                <Helmet>
-                  <title>Artículos | Administrador | Punto de venta</title>
-                </Helmet>
-                <Products />
-              </Suspense>
-            </AdminRouter>
-            <AdminRouter path="/admin/employees">
-              <Suspense fallback={ <SpinnerLoadingPage /> }>
-                <Helmet>
-                  <title>Empleados | Administrador | Punto de venta</title>
-                </Helmet>
-                <Employees />
-              </Suspense>
-            </AdminRouter>
-            <AdminRouter path="/admin/sales">
-              <Suspense fallback={ <SpinnerLoadingPage /> }>
-                <Sales />
-              </Suspense>
-            </AdminRouter>
-          </Switch>
+          <Routes>
+            <Route index
+              element={
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Helmet>
+                    <title>Proveedores | Administrador | Punto de venta</title>
+                  </Helmet>
+                  <Provider />
+                </Suspense>
+              }
+            />
+            <Route path="shopping"
+              element={
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Helmet>
+                    <title>Compras | Administrador | Punto de venta</title>
+                  </Helmet>
+                  <Shopping />
+                </Suspense>
+              }
+            />
+            <Route path="products"
+              element={
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Helmet>
+                    <title>Artículos | Administrador | Punto de venta</title>
+                  </Helmet>
+                  <Products />
+                </Suspense>
+              }
+            />
+            <Route path="employees"
+              element={
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Helmet>
+                    <title>Empleados | Administrador | Punto de venta</title>
+                  </Helmet>
+                  <Employees />
+                </Suspense>
+              }
+            />
+            <Route path="sales/*"
+              element={
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Sales />
+                </Suspense>
+              }
+            />
+          </Routes>
         </div>
         <LogoutBox />
       </section>
@@ -94,7 +103,7 @@ const Admin = () => {
         <ModalShowAllArticles />
         <ModalShowAllSales />
       </Suspense>
-    </HashRouter>
+    </>
   );
 };
 

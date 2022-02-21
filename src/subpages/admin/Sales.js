@@ -1,10 +1,9 @@
-import { HashRouter, Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import {lazy, Suspense} from 'react';
 import Helmet from 'react-helmet';
 
 import NavigationAdmin from '../../components/views/NavigationAdmin';
 import {routesAdminSales} from '../../data/routesAdminSales';
-import AdminRouter from '../../components/router/AdminRouter';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
 
 const Standard = lazy(() => import('./sales/Standard'));
@@ -14,41 +13,47 @@ const Debts = lazy(() => import('./sales/Debts'));
 
 const Sales = () => {
   return (
-    <HashRouter>
+    <>
       <div style={ {minHeight: '10vh', backgroundColor: '#c8e1cc'} }
         className="d-flex flex-wrap align-items-center"
       >
         <NavigationAdmin navigation={ routesAdminSales } />
       </div>
       <div style={ {maxHeight: '52vh', minHeight: '52vh', overflow: 'auto'} }>
-        <Switch>
-          <AdminRouter exact path="/admin/sales">
-            <Suspense fallback={ <SpinnerLoadingPage /> }>
-              <Helmet>
-                <title>Ventas Estandar | Administrador | Punto de venta</title>
-              </Helmet>
-              <Standard />
-            </Suspense>
-          </AdminRouter>
-          <AdminRouter exact path="/admin/sales/stock">
-            <Suspense fallback={ <SpinnerLoadingPage /> }>
-              <Helmet>
-                <title>Ventas Stock | Administrador | Punto de venta</title>
-              </Helmet>
-              <Stock />
-            </Suspense>
-          </AdminRouter>
-          <AdminRouter exact path="/admin/sales/debts">
-            <Suspense fallback={ <SpinnerLoadingPage /> }>
-              <Helmet>
-                <title>Deudas | Administrador | Punto de venta</title>
-              </Helmet>
-              <Debts />
-            </Suspense>
-          </AdminRouter>
-        </Switch>
+        <Routes>
+          <Route index
+            element={
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Helmet>
+                  <title>Ventas Estandar | Administrador | Punto de venta</title>
+                </Helmet>
+                <Standard />
+              </Suspense>
+            }
+          />
+          <Route path="stock"
+            element={
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Helmet>
+                  <title>Ventas Stock | Administrador | Punto de venta</title>
+                </Helmet>
+                <Stock />
+              </Suspense>
+            }
+          />
+          <Route path="debts"
+            element={
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Helmet>
+                  <title>Deudas | Administrador | Punto de venta</title>
+                </Helmet>
+                <Debts />
+              </Suspense>
+            }
+          />
+        </Routes>
       </div>
-    </HashRouter>
+    </>
   );
 };
 

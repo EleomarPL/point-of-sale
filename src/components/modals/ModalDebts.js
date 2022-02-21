@@ -1,5 +1,5 @@
 import { Modal } from 'bootstrap';
-import { NavLink, Switch } from 'react-router-dom';
+import { NavLink, Routes, Route } from 'react-router-dom';
 
 import { routesModalDebts } from '../../data/routesModalDebts';
 import Debts from '../../subpages/admin/sales/Debts';
@@ -7,7 +7,6 @@ import AddDebt from '../../subpages/user/modalDebts/AddDebt';
 import AddDebtor from '../../subpages/user/modalDebts/AddDebtor';
 import PayDebt from '../../subpages/user/modalDebts/PayDebt';
 import ButtonPersonalized from '../common/ButtonPersonalized';
-import MyRouter from '../router/MyRouter';
 
 export const openmodalDebts = () => {
   let myModal = new Modal(
@@ -36,10 +35,12 @@ const ModalDebts = () => {
                 routesModalDebts.map( option =>
                   <NavLink
                     key={ option.classNameIcon }
-                    to={ option.path } exact
+                    to={ option.path } end
                     className="button-personalized is-menu text-black text-decoration-none py-1"
-                    activeClassName="active-admin"
-                    style={ {width: '19%', fontSize: '1rem'} }
+                    style={ ({isActive}) => ({
+                      width: '19%', fontSize: '1rem',
+                      backgroundColor: isActive && 'var(--active)'
+                    }) }
                   >
                     <ButtonPersonalized
                       isColumn={ true }
@@ -56,20 +57,20 @@ const ModalDebts = () => {
             ></button>
           </div>
           <div className="modal-body p-0 m-0 mt-1" style={ {overflow: 'auto'} }>
-            <Switch>
-              <MyRouter exact path="/my/">
-                <AddDebtor />
-              </MyRouter>
-              <MyRouter exact path="/my/debtors">
-                <AddDebt />
-              </MyRouter>
-              <MyRouter exact path="/my/pay-debt">
-                <PayDebt />
-              </MyRouter>
-              <MyRouter exact path="/my/see-debts">
-                <Debts />
-              </MyRouter>
-            </Switch>
+            <Routes>
+              <Route index
+                element={ <AddDebtor /> }
+              />
+              <Route path="debtors"
+                element={ <AddDebt /> }
+              />
+              <Route path="pay-debt"
+                element={ <PayDebt /> }
+              />
+              <Route path="see-debts"
+                element={ <Debts /> }
+              />
+            </Routes>
           </div>
         </div>
       </div>

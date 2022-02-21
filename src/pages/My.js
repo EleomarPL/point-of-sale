@@ -1,4 +1,3 @@
-import { HashRouter } from 'react-router-dom';
 import {lazy, Suspense} from 'react';
 
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
@@ -18,9 +17,7 @@ const My = () => {
           <ModalAddArticle />
           <ModalViewsArticles />
         </Suspense>
-        <HashRouter>
-          <ModalDebts />
-        </HashRouter>
+        <ModalDebts />
       </section>
     </SalesProvider>
   );

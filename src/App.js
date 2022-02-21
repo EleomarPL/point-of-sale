@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { HashRouter, Switch } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Helmet from 'react-helmet';
 
@@ -23,29 +23,42 @@ const App = () => {
   return (
     <AuthProvider>
       <HashRouter>
-        <Switch>
-          <PublicRoute exact path="/">
-            <Suspense fallback={ <SpinnerLoadingPage /> }>
-              <Helmet>
-                <title>Inicio | Punto de venta</title>
-              </Helmet>
-              <Home />
-            </Suspense>
-          </PublicRoute>
-          <MyRouter path="/my">
-            <Suspense fallback={ <SpinnerLoadingPage /> }>
-              <Helmet>
-                <title>Cajero | Punto de venta</title>
-              </Helmet>
-              <My />
-            </Suspense>
-          </MyRouter>
-          <AdminRouter path="/admin">
-            <Suspense fallback={ <SpinnerLoadingPage /> }>
-              <Admin />
-            </Suspense>
-          </AdminRouter>
-        </Switch>
+        <Routes>
+          <Route index
+            element={
+              <PublicRoute>
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Helmet>
+                    <title>Inicio | Punto de venta</title>
+                  </Helmet>
+                  <Home />
+                </Suspense>
+              </PublicRoute>
+            }
+          />
+          <Route path="/my/*"
+            element={
+              <MyRouter>
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Helmet>
+                    <title>Cajero | Punto de venta</title>
+                  </Helmet>
+                  <My />
+                </Suspense>
+              </MyRouter>
+            }
+          />
+          <Route path="/admin/*"
+            element={
+              <AdminRouter>
+                <Suspense fallback={ <SpinnerLoadingPage /> }>
+                  <Admin />
+                </Suspense>
+              </AdminRouter>
+            }
+          >
+          </Route>
+        </Routes>
       </HashRouter>
       <ToastContainer position="top-right"
         autoClose={ 5000 } hideProgressBar={ false }
