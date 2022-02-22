@@ -36,7 +36,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "electron": "electron .",
-    "dev": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -59,12 +58,9 @@
   },
   "devDependencies": {
     "@types/bootstrap": "5.1.4",
-    "concurrently": "7.0.0",
-    "cross-env": "7.0.3",
     "electron": "^14.0.0",
     "electron-builder": "22.14.5",
     "eslint": "7.11.0",
-    "eslint-plugin-react": "7.27.1",
-    "wait-on": "^6.0.0"
+    "eslint-plugin-react": "7.27.1"
   }
 }

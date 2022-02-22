@@ -9,7 +9,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fontsource/roboto';
 
-import {AuthProvider} from './contexts/Auth';
+import { AuthProvider } from './contexts/Auth';
 import PublicRoute from './components/router/PublicRouter';
 import MyRouter from './components/router/MyRouter';
 import AdminRouter from './components/router/AdminRouter';
