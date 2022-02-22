@@ -1,7 +1,9 @@
 import { Modal } from 'bootstrap';
 import { useEffect, useState } from 'react';
 
-import { notifyError, notifyInfo, notifySuccess, notifyWarning } from '../../consts/notifications';
+import {
+  notifyError, notifyInfo, notifySuccess, notifyWarning
+} from '../../consts/notifications';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import useAdmin from '../../hooks/useAdmin';
 import Auth from '../../contexts/Auth';

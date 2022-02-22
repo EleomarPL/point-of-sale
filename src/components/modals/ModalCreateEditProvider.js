@@ -3,11 +3,11 @@ import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
 import {inputProvider} from '../../data/admin/modalProvider';
-import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
+import { isObjectValuesNull, validateLength } from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useProvider from '../../hooks/useProvider';
-import {notifySuccess, notifyError} from '../../consts/notifications';
+import { notifySuccess, notifyError } from '../../consts/notifications';
 
 export const openmodalCreateEditProvider = () => {
   let myModal = new Modal(

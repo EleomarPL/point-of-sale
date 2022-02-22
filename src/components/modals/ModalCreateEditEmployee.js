@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
-import {inputEmployees} from '../../data/admin/modalEmployee';
-import {isObjectValuesNull, validateLength} from '../../services/validations/generalValidations';
+import { inputEmployees } from '../../data/admin/modalEmployee';
+import { isObjectValuesNull, validateLength } from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useEmployee from '../../hooks/useEmployee';

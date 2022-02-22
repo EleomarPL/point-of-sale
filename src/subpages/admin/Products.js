@@ -6,7 +6,7 @@ import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import {openmodalModifyProduct} from '../../components/modals/ModalModifyProduct';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
 import useArticle from '../../hooks/useArticles';
-import {notifySuccess, notifyError} from '../../consts/notifications';
+import { notifySuccess, notifyError } from '../../consts/notifications';
 
 const ModalModifyProduct = lazy(() => import('../../components/modals/ModalModifyProduct'));
 

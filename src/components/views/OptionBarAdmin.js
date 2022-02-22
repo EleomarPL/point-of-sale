@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { optionBarAdmin } from '../../data/admin/optionBar';
 
 const OptionBarAdmin = () => {

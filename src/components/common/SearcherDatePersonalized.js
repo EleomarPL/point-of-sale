@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { notifyWarning } from '../../consts/notifications';
 
+import { notifyWarning } from '../../consts/notifications';
 import ButtonSearch from '../buttons/ButtonSearch';
 
 const SearcherDatePersonalized = ({children, setValue, isAddedSelectProvider = false}) => {

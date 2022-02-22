@@ -4,7 +4,9 @@ import { Modal } from 'bootstrap';
 import TablePersonalized from '../common/TablePersonalized';
 import BoxInputsShoppingModal from '../views/admin/BoxInputsShoppingModal';
 import ButtonPersonalized from '../common/ButtonPersonalized';
-import {isInteger, isObjectValuesNull, isNumberValue, validateLength} from '../../services/validations/generalValidations';
+import {
+  isInteger, isObjectValuesNull, isNumberValue, validateLength
+} from '../../services/validations/generalValidations';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useShopping from '../../hooks/useShopping';
 import { notifySuccess, notifyWarning } from '../../consts/notifications';

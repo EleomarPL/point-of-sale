@@ -5,7 +5,7 @@ import SearcherDatePersonalized from '../../components/common/SearcherDatePerson
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import GroupRadioOptions from '../../components/views/GroupRadioOptions';
 import TablePersonalized from '../../components/common/TablePersonalized';
-import {openmodalShopping} from '../../components/modals/ModalShopping';
+import { openmodalShopping } from '../../components/modals/ModalShopping';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
 import useShopping from '../../hooks/useShopping';
 

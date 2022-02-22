@@ -1,5 +1,5 @@
 import validator from 'validator';
-import {notifyWarning} from '../../consts/notifications';
+import { notifyWarning } from '../../consts/notifications';
 
 export const isObjectValuesNull = (objectData) => {
   let isNull = false;

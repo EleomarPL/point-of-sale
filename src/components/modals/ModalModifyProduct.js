@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
-import {inputProduct} from '../../data/admin/modalProduct';
+import { inputProduct } from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import {isNumberValue} from '../../services/validations/generalValidations';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
-import {notifySuccess, notifyError} from '../../consts/notifications';
+import { notifySuccess, notifyError } from '../../consts/notifications';
 import useArticle from '../../hooks/useArticles';
 
 export const openmodalModifyProduct = () => {

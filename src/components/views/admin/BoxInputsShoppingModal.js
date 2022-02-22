@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import {inputShopping} from '../../../data/admin/modalShopping';
+import { inputShopping } from '../../../data/admin/modalShopping';
 import SelectProvider from '../../common/SelectProvider';
 import DebounceInput from '../../common/DebounceInput';
 import useArticle from '../../../hooks/useArticles';
-import {convertDateYYYYMMDD} from '../../../utils/convertDateYMD';
+import { convertDateYYYYMMDD } from '../../../utils/convertDateYMD';
 
 const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelected2}) => {
   const [code, setCode] = useState('');

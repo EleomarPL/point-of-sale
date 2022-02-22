@@ -1,4 +1,4 @@
-import {lazy, Suspense} from 'react';
+import { lazy, Suspense } from 'react';
 
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
 import Home from '../subpages/user/Home';

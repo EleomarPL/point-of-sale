@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import { useContext, useState } from 'react';
 
 import TablePersonalized from '../../components/common/TablePersonalized';
 import ButtonsMy from '../../components/views/ButtonsMy';

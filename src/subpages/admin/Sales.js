@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import {lazy, Suspense} from 'react';
+import { lazy, Suspense } from 'react';
 import Helmet from 'react-helmet';
 
 import NavigationAdmin from '../../components/views/NavigationAdmin';
