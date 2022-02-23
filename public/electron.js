@@ -20,8 +20,10 @@ Menu.setApplicationMenu(null);
 
 function createWindow() {
   const createMainWindow = new BrowserWindow({
-    width: 1000,
+    width: 1200,
     height: 700,
+    minWidth: 1200,
+    minHeight: 699,
     webPreferences: {
       nodeIntegration: true,
       nativeWindowOpen: true,
