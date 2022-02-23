@@ -29,7 +29,7 @@ function createWindow() {
     }
   });
   createMainWindow.loadURL('http://localhost:3000/');
-  // createWindow.loadFile(path.join(__dirname, '../', 'build' , 'index.html'));
+  //createMainWindow.loadFile(path.join(__dirname, '../', 'build', 'index.html'));
   createMainWindow.maximize();
 
   /*
