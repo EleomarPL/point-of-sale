@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+// Component to group radio buttons with their respective components
+
 const GroupRadioOptions = ({
   textRadio1, textRadio2, className, component1, component2, valueRadio1, setValueRadio1
 }) => {

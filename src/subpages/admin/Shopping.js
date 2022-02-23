@@ -20,6 +20,7 @@ const Shopping = () => {
   const {getPurchases} = useShopping();
 
   useEffect(() => {
+    // Run employee search
     if (valueFirstRadio)
       getPurchases({value: searcher, limit: 50});
     else if (searcher) {
@@ -30,11 +31,13 @@ const Shopping = () => {
     }
   }, [searcher]);
   useEffect(() => {
+    // Clean browser for each change of the group of radio buttons
     setSearcher('');
     if (!valueFirstRadio)
       getPurchases({value: '', limit: 50});
   }, [valueFirstRadio]);
   useEffect(() => {
+    // Wait for result when getting purchases search
     window.electron.on('render:get-purchases', (err, data) => {
       if (!err) {
         console.log('error get purchases');
@@ -48,12 +51,13 @@ const Shopping = () => {
           };
         }));
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-purchases');
     };
   }, []);
 
+  // List to create the buttons on the left
   let listShopping = [
     {
       classNameIcon: 'bi bi-cart-plus-fill',
@@ -66,6 +70,7 @@ const Shopping = () => {
     }
   ];
 
+  // Data lists to create the table
   let header = [
     'Codigo', 'Articulo', 'Empresa',
     'Cantidad', 'Precio', 'Total', 'Fecha'

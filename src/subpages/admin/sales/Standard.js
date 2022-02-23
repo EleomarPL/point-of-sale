@@ -14,6 +14,7 @@ const Standard = () => {
   const {getStandardSales} = useSales();
 
   useEffect(() => {
+    // Run standard sales search
     if (valueFirstRadio)
       getStandardSales({value: searcher, limit: 50});
     else if (searcher) {
@@ -24,11 +25,13 @@ const Standard = () => {
     }
   }, [searcher]);
   useEffect(() => {
+    // Clean browser for each change of the group of radio buttons
     setSearcher('');
     if (!valueFirstRadio)
       getStandardSales({value: '', limit: 50});
   }, [valueFirstRadio]);
   useEffect(() => {
+    // Wait for result when getting standard sales search
     window.electron.on('render:get-standard-sales', (err, data) => {
       if (!err) {
         console.log('error get standard sales');
@@ -39,12 +42,12 @@ const Standard = () => {
           return {...sales, date: sales.date.toLocaleString()};
         }));
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-standard-sales');
     };
   }, []);
-
+  // Data lists to create the table
   let header = [
     'Folio', 'Caja', 'Producto',
     'Vendidos', 'Precio', 'Total Compra', 'Fecha'

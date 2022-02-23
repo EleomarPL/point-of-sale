@@ -8,12 +8,16 @@ import LogoutBox from '../components/views/LogoutBox';
 import SpinnerLoadingPage from '../components/common/SpinnerLoadingPage';
 import OptionBarAdmin from '../components/views/OptionBarAdmin';
 
+/*
+  Modals considered necessary for additional options
+*/
 const ModalUpdateUsernameAdmin = lazy(() => import('../components/modals/ModalUpdateUsernameAdmin'));
 const ModalUpdatePasswordAdmin = lazy(() => import('../components/modals/ModalUpdatePasswordAdmin'));
 const ModalShowAllPurchases = lazy(() => import('../components/modals/ModalShowAllPurchases'));
 const ModalShowAllArticles = lazy(() => import('../components/modals/ModalShowAllArticles'));
 const ModalShowAllSales = lazy(() => import('../components/modals/ModalShowAllSales'));
 
+// Administrator subpages
 const Provider = lazy(() => import('../subpages/admin/Provider'));
 const Shopping = lazy(() => import('../subpages/admin/Shopping'));
 const Products = lazy(() => import('../subpages/admin/Products'));
@@ -30,6 +34,7 @@ const Admin = () => {
             backgroundColor: '#CBD8C4', borderBottom: '1px solid #334630'
           } }
         >
+          { /* Admin menu bar */ }
           <OptionBarAdmin />
         </div>
         <div style={ {minHeight: '10vh', maxHeight: '10vh', backgroundColor: '#CBD8C4'} }
@@ -41,6 +46,9 @@ const Admin = () => {
         <div style={ {minHeight: '13vh', maxHeight: '13vh', backgroundColor: '#D5E1CC'} }
           className="d-flex flex-wrap align-items-center"
         >
+          { /*
+            Links or navigation to the different subpages of the administrator
+          */ }
           <NavigationAdmin navigation={ routesAdmin } />
         </div>
         <div style={ {maxHeight: '63vh', minHeight: '63vh', overflow: 'auto'} }>
@@ -96,6 +104,7 @@ const Admin = () => {
         </div>
         <LogoutBox />
       </section>
+      { /* Modal injections with code splitting */ }
       <Suspense fallback={ <SpinnerLoadingPage /> }>
         <ModalUpdateUsernameAdmin />
         <ModalUpdatePasswordAdmin />

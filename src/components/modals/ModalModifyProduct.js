@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { inputProduct } from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
-import {isNumberValue} from '../../services/validations/generalValidations';
+import { isNumberValue } from '../../services/validations/generalValidations';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import { notifySuccess, notifyError } from '../../consts/notifications';
 import useArticle from '../../hooks/useArticles';
@@ -30,6 +30,7 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
     setValueProduct({...dataProduct});
   }, [dataProduct]);
   useEffect(() => {
+    // Wait for the result of updating sales price article
     window.electron.on('render:update-salesprice-article', (err, data) => {
       setIsLoading(false);
       if (!err) {
@@ -43,7 +44,7 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
       
       window.electron.send('main:get-article-by-keyword', {value: '', limit: 50});
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:update-salesprice-article');
     };

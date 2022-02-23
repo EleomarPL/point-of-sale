@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 
+/*
+  Group left and right components, with buttons with
+  different functionality on the left and the table on the right
+*/
 const GroupPagesAdmin = ({children, listButtons}) => {
   return (
     <div className="w-100 d-flex mt-2">

@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+// Custom Input with an icon like style
+
 const InputPersonalized = ({
   type, classNameIcon, id, placeholder, ariaLabel, value, setValue, autofocus = false, event
 }) => {

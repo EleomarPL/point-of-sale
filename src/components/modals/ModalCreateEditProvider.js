@@ -39,6 +39,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
   }, [isCreateProvider, dataProvider]);
   useEffect(() => {
     if (isCreateProvider) {
+      // Wait for the result of inserting provider
       window.electron.on('render:insert-provider', (err, data) => {
         setIsLoading(false);
         if (!err) {
@@ -52,6 +53,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
           notifyError('No ha sido posible agregar proveedor');
       });
     } else {
+      // Wait for the result of updating provider
       window.electron.on('render:update-provider', (err, data) => {
         setIsLoading(false);
         if (!err) {
@@ -65,7 +67,7 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
           notifyError('No ha sido posible actualizar proveedor');
       });
     }
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:insert-provider');
       window.electron.removeAllListeners('render:update-provider');

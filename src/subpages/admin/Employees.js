@@ -18,9 +18,11 @@ const Employees = () => {
   const {getEmployees, updateStatusEmployee} = useEmployee();
 
   useEffect(() => {
+    // Run employee search
     getEmployees({value: searcher, limit: 50});
   }, [searcher]);
   useEffect(() => {
+    // Wait for result when getting employee search
     window.electron.on('render:get-employees', (err, data) => {
       if (!err) {
         console.log('error insert purchases');
@@ -34,6 +36,7 @@ const Employees = () => {
           };
         }));
     });
+    // Wait for result when updating employee status
     window.electron.on('render:update-status-employee', (err, data) => {
       if (!err) {
         console.log('error update status employee');
@@ -44,13 +47,14 @@ const Employees = () => {
         window.electron.send('main:get-employees', {value: '', limit: 50});
       }
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-employees');
       window.electron.removeAllListeners('render:update-status-employee');
     };
   }, []);
 
+  // Data lists to create the table
   let header = [
     'Codigo', 'Nombre', 'Apellido Paterno',
     'Apellido Materno', 'Sexo', 'Edad', 'Estado'
@@ -59,7 +63,8 @@ const Employees = () => {
     'code', 'name', 'lastName',
     'motherLastName', 'gender', 'age', 'status'
   ];
-
+  
+  // List to create the buttons on the left
   let listProviders = [
     {
       classNameIcon: 'bi bi-person-plus-fill',
@@ -119,6 +124,7 @@ const Employees = () => {
           listData={ dataEmployees }
         />
       </GroupPagesAdmin>
+      { /* Modal injections with code splitting */ }
       <Suspense fallback={ <SpinnerLoadingPage /> }>
         <ModalCreateEditEmployee
           dataEmployee={ dataSelected }

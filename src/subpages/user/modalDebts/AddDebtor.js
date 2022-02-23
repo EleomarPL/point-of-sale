@@ -13,11 +13,12 @@ const AddDebtor = () => {
   const [dataSelected, setDataSelected] = useState({});
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
-  const {getDebtors, insertDebtor, updateDebtor} = useDebts();
+  const { getDebtors, insertDebtor, updateDebtor } = useDebts();
 
   useEffect(() => {
     getDebtors({value: ''});
 
+    // Wait for result when getting debtors search
     window.electron.on('render:get-debtors', (err, data) => {
       if (!err) {
         console.log('error get debtors');
@@ -32,6 +33,7 @@ const AddDebtor = () => {
           };
         }));
     });
+    // Wait for the result of inserting debtor
     window.electron.on('render:insert-debtor', (err, data) => {
       if (!err) {
         console.log('error get debts');
@@ -43,6 +45,7 @@ const AddDebtor = () => {
         window.electron.send('main:get-debtors', {value: ''});
       }
     });
+    // Wait for the result of updating debts
     window.electron.on('render:update-debtor', (err, data) => {
       if (!err) {
         console.log('error update debtor');
@@ -55,15 +58,15 @@ const AddDebtor = () => {
         window.electron.send('main:get-debtors', {value: ''});
       }
     });
-  
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-debtors');
       window.electron.removeAllListeners('render:insert-debtor');
       window.electron.removeAllListeners('render:update-debtor');
     };
   }, []);
-
+  
+  // Data lists to create the table
   let header = [
     'Codigo', 'Nombre', 'Apellido Paterno',
     'Apellido Materno', 'Domicilio', 'Sexo'

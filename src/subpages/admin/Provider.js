@@ -17,9 +17,11 @@ const Provider = () => {
   const {getProviders} = useProvider();
 
   useEffect(() => {
+    // Run provider search
     getProviders({keyword: searcher, limit: 50});
   }, [searcher]);
   useEffect(() => {
+    // Wait for result when getting provider search
     window.electron.on('render:get-provider', (err, data) => {
       if (!err) {
         console.log('error get providers');
@@ -30,12 +32,13 @@ const Provider = () => {
           return {...provider, code: provider.id};
         }));
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-provider');
     };
   }, []);
 
+  // Data lists to create the table
   let header = [
     'Codigo', 'Empresa', 'Nombre',
     'Apellido paterno', 'Apellido materno'
@@ -45,6 +48,7 @@ const Provider = () => {
     'lastName', 'motherLastName'
   ];
 
+  // List to create the buttons on the left
   let listProviders = [
     {
       classNameIcon: 'bi bi-person-plus-fill',

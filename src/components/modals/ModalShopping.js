@@ -30,6 +30,7 @@ const ModalShopping = () => {
   const {insertPurchases} = useShopping();
 
   useEffect(() => {
+    // Wait for the result of inserting purchases
     window.electron.on('render:insert-purchases', (err, data) => {
       setIsLoading(false);
       if (!err) {
@@ -40,12 +41,13 @@ const ModalShopping = () => {
         notifySuccess('Compra realizada correctamente');
       window.electron.send('main:get-purchases', {value: '', limit: 50});
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:insert-purchases');
     };
   }, []);
 
+  // Data lists to create the table
   let header = [
     'Codigo', 'Articulo', 'Empresa',
     'Cantidad', 'Total'

@@ -1,6 +1,8 @@
 import { DebounceInput as Input } from 'react-debounce-input';
 import PropTypes from 'prop-types';
 
+// Reusable input to add a debouncer
+
 const DebounceInput = ({value, setValue, placeholder, inputRef}) => {
 
   const handleChangeInput = (evt) => {

@@ -27,6 +27,7 @@ const ModalCreateAdmin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const {insertAdmin} = useAdmin();
   useEffect(() => {
+    // Wait for the result of inserting admin
     window.electron.on('render:insert-admin', (err, data) => {
       setIsLoading(false);
       if (!err) {
@@ -42,7 +43,7 @@ const ModalCreateAdmin = () => {
         notifySuccess('Error al crear administrador');
       }
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:insert-admin');
     };

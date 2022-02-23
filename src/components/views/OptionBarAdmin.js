@@ -35,7 +35,6 @@ const OptionBarAdmin = () => {
           </div>
         )
       }
-      
     </div>
   );
 };

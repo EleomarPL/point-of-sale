@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+// Custom button with an icon like style
+
 const ButtonPersonalized = ({ children, classNameIcon, isColumn = false }) => {
   return (
     <span

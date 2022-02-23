@@ -9,7 +9,10 @@ const SelectProvider = ({ widthSelect = '10%', keyProvider = '', children, setSe
   const {getProviderForSelect} = useProvider();
 
   useEffect(() => {
+    // Run provider search
     getProviderForSelect();
+
+    // Wait for result when getting provider search
     window.electron.on('render:get-provider-forselect', (err, data) => {
       if (!err) {
         console.log('error get article by id');
@@ -22,7 +25,7 @@ const SelectProvider = ({ widthSelect = '10%', keyProvider = '', children, setSe
           setSelect(data[0].id);
       }
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-provider-forselect');
     };

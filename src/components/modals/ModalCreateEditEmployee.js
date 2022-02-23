@@ -43,6 +43,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
       });
   }, [isCreateEmployee, dataEmployee]);
   useEffect(() => {
+    // Wait for the result of inserting employee
     window.electron.on('render:insert-employee', (err, data) => {
       setIsLoading(false);
       if (!err) {
@@ -59,6 +60,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         notifyWarning('Ingrese un diferente nombre de usuario');
       }
     });
+    // Wait for the result of updating employee
     window.electron.on('render:update-employee', (err, data) => {
       setIsLoading(false);
       if (!err) {
@@ -75,7 +77,7 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
         notifyWarning('Ingrese un diferente nombre de usuario');
       }
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:insert-employee');
       window.electron.removeAllListeners('render:update-employee');

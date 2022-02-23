@@ -7,15 +7,17 @@ import useDebts from '../../../hooks/useDebts';
 const PayDebt = () => {
   const [listDebts, setListDebts] = useState([]);
   const [debtorSelect, setDebtorSelect] = useState('none');
-  const {getDebtsFromDebtor} = useDebts();
+  const { getDebtsFromDebtor } = useDebts();
 
   useEffect(() => {
+    // Run provider search
     if (debtorSelect !== 'none')
       getDebtsFromDebtor({idDebtor: debtorSelect});
     else
       setListDebts([]);
   }, [debtorSelect]);
   useEffect(() => {
+    // Wait for result when getting debts from debtor
     window.electron.on('render:get-debts-from-debtor', (err, data) => {
       if (!err) {
         console.log('error get debts from debtor');
@@ -27,12 +29,13 @@ const PayDebt = () => {
           return {...debts, box: true};
         }));
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-debts-from-debtor');
     };
   }, []);
 
+  // Data lists to create the table
   let header = [ 'Casilla', 'Codigo Deuda', 'Codigo Articulo', 'Articulo', 'Amount', 'Price', 'Total' ];
 
   return (

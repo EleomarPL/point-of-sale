@@ -1,6 +1,8 @@
 import { DebounceInput } from 'react-debounce-input';
 import PropTypes from 'prop-types';
 
+// Custom search engine with representative icon
+
 const SearcherPersonalized = ({ title, value, setValue, placeholder }) => {
   const handleChangeInput = (evt) => {
     setValue(evt.target.value);

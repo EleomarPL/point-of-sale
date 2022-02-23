@@ -9,10 +9,18 @@ const ModalAddArticle = lazy(() => import('../components/modals/ModalAddArticle'
 const ModalViewsArticles = lazy(() => import('../components/modals/ModalViewArticles'));
 
 const My = () => {
+
+  /*
+    Use of a context (SalesContext) to manipulate the information of a possible sale
+  */
+
   return (
     <SalesProvider>
       <section>
         <Home />
+        { /*
+          Modal injections with code splitting
+        */ }
         <Suspense fallback={ <SpinnerLoadingPage /> }>
           <ModalAddArticle />
           <ModalViewsArticles />

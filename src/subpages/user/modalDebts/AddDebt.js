@@ -13,15 +13,16 @@ const AddDebt = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [debtorSelect, setDebtorSelect] = useState('none');
   const [total, setTotal] = useState(0);
-  const {addDebt} = useDebts();
-  const {listSales, setListSales} = useContext(SalesContext);
-  const {userData} = useContext(Auth);
+  const { addDebt } = useDebts();
+  const { listSales, setListSales } = useContext(SalesContext);
+  const { userData } = useContext(Auth);
 
   useEffect(() => {
     setTotal(listSales.reduce((acc, current) => current.total + acc, 0));
   }, [listSales]);
   useEffect(() => {
-    window.electron.on('render:insert-debt', (err, data) => {
+    // Wait for the result of inserting debts
+    window.electron.on('render:insert-debt', (err) => {
       if (!err) {
         console.log('error insert debt');
         return null;
@@ -32,7 +33,7 @@ const AddDebt = () => {
       notifySuccess('Deuda agregada exitosamente');
 
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:insert-debt');
     };

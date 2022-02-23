@@ -17,9 +17,11 @@ const Products = () => {
   const {getArticles, updateStatusArticle} = useArticle();
 
   useEffect(() => {
+    // Run article search
     getArticles({value: searcher, limit: 50});
   }, [searcher]);
   useEffect(() => {
+    // Wait for result when getting article search
     window.electron.on('render:get-article-by-keyword', (err, data) => {
       if (!err) {
         console.log('error get articles');
@@ -33,6 +35,7 @@ const Products = () => {
           };
         }));
     });
+    // Wait for result when updating article status
     window.electron.on('render:update-status-article', (err, data) => {
       if (!err) {
         console.log('error update status article');
@@ -47,13 +50,14 @@ const Products = () => {
       setSearcher('');
       setDataSelected({});
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-article-by-keyword');
       window.electron.removeAllListeners('render:update-status-article');
     };
   }, []);
 
+  // Data lists to create the table
   let header = [
     'Codigo', 'Producto', 'Precio compra',
     'Precio venta', 'Existencia', 'Estado'
@@ -63,6 +67,7 @@ const Products = () => {
     'salesPrice', 'amount', 'statusArticle'
   ];
 
+  // List to create the buttons on the left
   let listProviders = [
     {
       classNameIcon: 'bi bi-pencil-fill',
@@ -112,6 +117,7 @@ const Products = () => {
           listData={ dataProducts }
         />
       </GroupPagesAdmin>
+      { /* Modal injections with code splitting */ }
       <Suspense fallback={ <SpinnerLoadingPage /> }>
         <ModalModifyProduct
           dataProduct={ dataSelected }

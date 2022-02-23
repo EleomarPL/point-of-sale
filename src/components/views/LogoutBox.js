@@ -3,7 +3,7 @@ import useLogin from '../../hooks/useLogin';
 
 const LogoutBox = () => {
 
-  const {logout} = useLogin();
+  const { logout } = useLogin();
   
   const handleLogout = () => {
     logout();

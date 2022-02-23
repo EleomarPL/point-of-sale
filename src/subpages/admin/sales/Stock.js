@@ -15,6 +15,7 @@ const Stock = () => {
   const {getStockSales} = useSales();
 
   useEffect(() => {
+    // Run stock sales search
     let splitSearcher = searcher.split(' ');
     const startDate = splitSearcher[0];
     const endDate = splitSearcher[1];
@@ -23,6 +24,7 @@ const Stock = () => {
     getStockSales({startDate, endDate, value: provider});
   }, [searcher]);
   useEffect(() => {
+    // Wait for result when getting stock sales search
     window.electron.on('render:get-stock-sales', (err, data) => {
       if (!err) {
         console.log('error update employee');
@@ -32,12 +34,12 @@ const Stock = () => {
         setDataSales(data);
       
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-stock-sales');
     };
   }, []);
-
+  // Data lists to create the table
   let header = [
     'Caja', 'Empresa', 'Producto',
     'Existencia', 'Vendidos', 'Total Compra'

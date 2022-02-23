@@ -27,6 +27,7 @@ const ModalShowAllPurchases = () => {
     getPurchases({value: searcher});
   }, [searcher]);
   useEffect(() => {
+    // Wait for result when getting purchases search
     window.electron.on('render:get-purchases', (err, data) => {
       if (!err) {
         console.log('error get purchases');
@@ -40,7 +41,7 @@ const ModalShowAllPurchases = () => {
           };
         }));
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-purchases');
     };
@@ -49,6 +50,7 @@ const ModalShowAllPurchases = () => {
     setTotal(dataPurchases.reduce((acc, current) => current.total + acc, 0));
   }, [dataPurchases]);
 
+  // Data lists to create the table
   let header = [
     'Codigo', 'Articulo', 'Empresa',
     'Cantidad', 'Precio', 'Total', 'Fecha'

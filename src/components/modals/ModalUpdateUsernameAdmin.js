@@ -25,6 +25,7 @@ const ModalUpdateUsernameAdmin = () => {
   const {userData} = useContext(Auth);
 
   useEffect(() => {
+    // Wait for the result of updating username admin
     window.electron.on('render:update-username-admin', (err, data) => {
       setIsLoading(false);
 
@@ -51,7 +52,7 @@ const ModalUpdateUsernameAdmin = () => {
       }
       
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:update-username-admin');
     };

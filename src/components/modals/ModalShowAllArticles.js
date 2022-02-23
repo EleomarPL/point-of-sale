@@ -25,9 +25,11 @@ const ModalShowAllArticles = () => {
   const {getArticlesByKeywordaAndCompany} = useArticle();
 
   useEffect(() => {
+    // Run employee search
     getArticlesByKeywordaAndCompany({value: searcher});
   }, [searcher]);
   useEffect(() => {
+    // Wait for result when getting article by company keyword
     window.electron.on('render:get-article-by-keyword-company', (err, data) => {
       if (!err) {
         console.log('error get articles');
@@ -43,7 +45,7 @@ const ModalShowAllArticles = () => {
         }));
       
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-article-by-keyword-company');
     };

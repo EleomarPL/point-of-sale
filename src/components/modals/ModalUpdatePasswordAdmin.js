@@ -29,6 +29,7 @@ const ModalUpdatePasswordAdmin = () => {
   const {userData} = useContext(Auth);
 
   useEffect(() => {
+    // Wait for the result of updating password admin
     window.electron.on('render:update-password-admin', (err, data) => {
       setIsLoading(false);
 
@@ -58,7 +59,7 @@ const ModalUpdatePasswordAdmin = () => {
       }
 
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:update-password-admin');
     };

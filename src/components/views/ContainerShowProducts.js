@@ -16,6 +16,7 @@ const ContainerShowProducts = ({
     getArticles({value: searcher, limit: 15});
   }, [searcher]);
   useEffect(() => {
+    // Wait for result when getting article by keyword
     window.electron.on('render:get-article-by-keyword', (err, data) => {
       if (!err) {
         console.log('error get articles');
@@ -34,12 +35,13 @@ const ContainerShowProducts = ({
         }));
       }
     });
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-article-by-keyword');
     };
   }, []);
 
+  // Data lists to create the table
   let header = [
     'Codigo', 'Articulo', 'Precio',
     'Existencia', isQuery && 'Estado'

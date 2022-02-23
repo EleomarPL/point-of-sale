@@ -15,6 +15,10 @@ import MyRouter from './components/router/MyRouter';
 import AdminRouter from './components/router/AdminRouter';
 import SpinnerLoadingPage from './components/common/SpinnerLoadingPage';
 
+
+/*
+  These are the main pages, the login (Home), cashier (My) and administrator (Admin)
+*/
 const Home = lazy(() => import('./pages/Home'));
 const My = lazy(() => import('./pages/My'));
 const Admin = lazy(() => import('./pages/Admin'));

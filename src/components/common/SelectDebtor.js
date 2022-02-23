@@ -8,8 +8,10 @@ const SelectDebtor = ({ widthSelect = '50%', id, debtorSelect, setDebtorSelect})
   const {getDebtors} = useDebts();
 
   useEffect(() => {
+    // Run provider search
     getDebtors({value: ''});
 
+    // Wait for result when getting debtors search
     window.electron.on('render:get-debtors', (err, data) => {
       if (!err) {
         console.log('error get debtors');
@@ -23,8 +25,7 @@ const SelectDebtor = ({ widthSelect = '50%', id, debtorSelect, setDebtorSelect})
           };
         }));
     });
-  
-
+    // Delete previous events
     return () => {
       window.electron.removeAllListeners('render:get-debtors');
     };
