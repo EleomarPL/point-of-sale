@@ -15,7 +15,7 @@ const Employees = () => {
   const [dataEmployees, setDataEmployees] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [isCreateEmployee, setIsCreateEmployee] = useState(true);
-  const {getEmployees, updateStatusEmployee} = useEmployee();
+  const { getEmployees, updateStatusEmployee } = useEmployee();
 
   useEffect(() => {
     // Run employee search
