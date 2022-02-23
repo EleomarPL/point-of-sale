@@ -1,8 +1,8 @@
-const {ipcMain} = require('electron');
+const { ipcMain } = require('electron');
 const { isThereAnAdmin } = require('../db/consults');
 
-const {insertAdmin} = require('../db/inserts');
-const {updateUsernameAdmin, updatePasswordAdmin} = require('../db/updates');
+const { insertAdmin } = require('../db/inserts');
+const { updateUsernameAdmin, updatePasswordAdmin } = require('../db/updates');
 
 const triggerEventsAdmin = ({windowToSend}) => {
   ipcMain.on('main:insert-admin', async(_, { name, lastName, motherLastName, age, isAMan, username, password }) => {

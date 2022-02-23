@@ -1,7 +1,7 @@
-const {ipcMain} = require('electron');
+const { ipcMain } = require('electron');
 
-const {getPurchases} = require('../db/consults');
-const {addPurchases} = require('../db/inserts');
+const { getPurchases } = require('../db/consults');
+const { addPurchases } = require('../db/inserts');
 
 const triggerEventsShopping = ({windowToSend}) => {
   

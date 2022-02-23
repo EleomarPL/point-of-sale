@@ -1,8 +1,8 @@
-const {ipcMain} = require('electron');
+const { ipcMain } = require('electron');
 
-const {getProviders, getProviderIdCompany} = require('../db/consults');
-const {insertProvider} = require('../db/inserts');
-const {updateProvider} = require('../db/updates');
+const { getProviders, getProviderIdCompany } = require('../db/consults');
+const { insertProvider } = require('../db/inserts');
+const { updateProvider } = require('../db/updates');
 
 const triggerEventsProvider = ({windowToSend}) => {
 

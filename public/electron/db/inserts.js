@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 
-const {getConnection, closeConnection} = require('../connection');
-const {isThereAnAdmin} = require('./consults');
-const {updateArticleByPurchase, updateAmountArticle} = require('./updates');
+const { getConnection, closeConnection } = require('../connection');
+const { isThereAnAdmin } = require('./consults');
+const { updateArticleByPurchase, updateAmountArticle } = require('./updates');
 
 const insertAdmin = async({ name, lastName, motherLastName, isAMan, age, username, password }) => {
   if (!(name && lastName && motherLastName && age && username && password)) {

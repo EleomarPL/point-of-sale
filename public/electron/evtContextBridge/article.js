@@ -1,6 +1,8 @@
-const {ipcMain} = require('electron');
+const { ipcMain } = require('electron');
 
-const {updateSalesPriceArticle, updateStatusArticle} = require('../db/updates');
+const {
+  updateSalesPriceArticle, updateStatusArticle
+} = require('../db/updates');
 const {
   getArticleById, getArticlesByIdArticle, getArticleForAuxTable, getArticleByIdArticleCompany
 } = require('../db/consults');

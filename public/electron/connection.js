@@ -1,6 +1,6 @@
 // creating the connection to the database
 
-const {createPool} = require('mariadb');
+const { createPool } = require('mariadb');
 
 const getConnection = async() => {
   const pool = createPool({

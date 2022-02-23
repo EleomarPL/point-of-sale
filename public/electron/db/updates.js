@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const {getConnection, closeConnection} = require('../connection');
+const { getConnection, closeConnection } = require('../connection');
 
 const updateProvider = async({id, name, lastName, motherLastName}) => {
   if (!(name && lastName && motherLastName)) {

@@ -3,7 +3,7 @@
   and allowed channels are validated
 */
 
-const {contextBridge, ipcRenderer} = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
 const channelsProvider = require('./common/channelsProvider');
 const channelsShopping = require('./common/channelsShopping');

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const {getConnection, closeConnection} = require('../connection');
+const { getConnection, closeConnection } = require('../connection');
 
 const login = async({username, password}) => {
   const {connection, pool} = await getConnection();

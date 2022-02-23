@@ -1,8 +1,8 @@
-const {ipcMain} = require('electron');
+const { ipcMain } = require('electron');
 
-const {getEmployees} = require('../db/consults');
-const {insertEmployee} = require('../db/inserts');
-const {updateUsernamePasswordAgeEmployee, updateStatusEmployee} = require('../db/updates');
+const { getEmployees } = require('../db/consults');
+const { insertEmployee } = require('../db/inserts');
+const { updateUsernamePasswordAgeEmployee, updateStatusEmployee } = require('../db/updates');
 
 const triggerEventsEmployee = ({windowToSend}) => {
   ipcMain.on('main:get-employees', async(_, { value, limit }) => {

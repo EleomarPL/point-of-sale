@@ -1,8 +1,8 @@
-const {ipcMain} = require('electron');
+const { ipcMain } = require('electron');
 
-const {getDebts, getDebtsFromADebtor, getDebtors} = require('../db/consults');
-const {insertDebtor, insertDebt} = require('../db/inserts');
-const {payDebt} = require('../db/delete');
+const { getDebts, getDebtsFromADebtor, getDebtors } = require('../db/consults');
+const { insertDebtor, insertDebt } = require('../db/inserts');
+const { payDebt } = require('../db/delete');
 const { updateDebtor } = require('../db/updates');
 
 const triggerEventsDebts = ({windowToSend}) => {

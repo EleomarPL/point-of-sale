@@ -1,7 +1,7 @@
-const {ipcMain} = require('electron');
+const { ipcMain } = require('electron');
 
-const {getStandardSales, getStockSales} = require('../db/consults');
-const {insertSales} = require('../db/inserts');
+const { getStandardSales, getStockSales } = require('../db/consults');
+const { insertSales } = require('../db/inserts');
 
 const triggerEventsSales = ({windowToSend}) => {
   ipcMain.on('main:get-standard-sales', async(_, { value, startDate, endDate, limit }) => {

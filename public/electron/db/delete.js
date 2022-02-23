@@ -1,5 +1,5 @@
-const {getConnection, closeConnection} = require('../connection');
-const {insertSales} = require('./inserts');
+const { getConnection, closeConnection } = require('../connection');
+const { insertSales } = require('./inserts');
 
 const payDebt = async({idUser, total, salesRecords}) => {
   if (!(idUser, total, salesRecords)) {
