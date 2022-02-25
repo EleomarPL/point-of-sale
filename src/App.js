@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
