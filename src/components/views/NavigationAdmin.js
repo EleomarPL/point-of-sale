@@ -7,9 +7,9 @@ const NavigationAdmin = ({navigation}) => {
   return (
     <nav className="col-md-12 d-flex justify-content-evenly">
       { navigation &&
-        navigation.map(option =>
+        navigation.map( (option, index) =>
           <NavLink
-            key={ option.classNameIcon } end
+            key={ option.classNameIcon } end={ index === 0 }
             to={ option.path }
             className="button-personalized is-menu text-black text-decoration-none"
             style={ ({isActive}) => ({
