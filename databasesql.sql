@@ -1,4 +1,4 @@
-CREATE DATABASE point_of_sale;
+CREATE DATABASE IF NOT EXISTS point_of_sale;
 USE point_of_sale;
 
 DROP TABLE IF EXISTS user;
