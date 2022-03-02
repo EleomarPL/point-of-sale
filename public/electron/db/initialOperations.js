@@ -1,5 +1,15 @@
-const { getConnection, closeConnection } = require('./connection');
+const { getConnection, closeConnection } = require('../connection');
 
+const validateConnectionToDB = async() => {
+  let isSuccessfulConnection = true;
+
+  const { pool, connection } = await getConnection();
+  if (connection === null) isSuccessfulConnection = false;
+
+  await closeConnection({connection, pool});
+
+  return isSuccessfulConnection;
+};
 const createSQLStructure = async() => {
   const { pool, connection } = await getConnection();
 
@@ -129,4 +139,4 @@ const createSQLStructure = async() => {
   await closeConnection({pool, connection});
 };
 
-module.exports = { createSQLStructure };
+module.exports = { validateConnectionToDB, createSQLStructure };
