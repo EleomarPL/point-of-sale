@@ -13,11 +13,12 @@ const channelsSales = require('./common/channelsSales');
 const channelsDebts = require('./common/channelsDebts');
 const channelsAdmin = require('./common/channelsAdmin');
 const channelsLogin = require('./common/channelsLogin');
+const channelsInitialOperations = require('./common/channelsInitialOperations');
 
 const validChannels = [
   ...channelsProvider, ...channelsShopping, ...channelsArticle,
   ...channelsEmployee, ...channelsSales, ...channelsDebts,
-  ...channelsAdmin, ...channelsLogin
+  ...channelsAdmin, ...channelsLogin, ...channelsInitialOperations
 ];
 
 contextBridge.exposeInMainWorld(
