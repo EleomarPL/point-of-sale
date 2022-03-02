@@ -15,6 +15,7 @@ const { triggerEventsSales } = require('./electron/evtContextBridge/sales');
 const { triggerEventsAdmin } = require('./electron/evtContextBridge/admin');
 const { triggerEventsDebts } = require('./electron/evtContextBridge/debts');
 const { triggerEventsLogin } = require('./electron/evtContextBridge/login');
+const { triggerEventsInitialOperations } = require('./electron/evtContextBridge/initialOperations');
  
 Menu.setApplicationMenu(null);
 
@@ -45,6 +46,7 @@ function createWindow() {
   triggerEventsAdmin({ windowToSend: createMainWindow });
   triggerEventsDebts({ windowToSend: createMainWindow });
   triggerEventsLogin({ windowToSend: createMainWindow });
+  triggerEventsInitialOperations({ windowToSend: createMainWindow });
 }
 
 app.whenReady().then(createWindow);
