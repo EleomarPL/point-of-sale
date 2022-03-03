@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Helmet } from 'react-helmet';
@@ -24,6 +24,10 @@ const My = lazy(() => import('./pages/My'));
 const Admin = lazy(() => import('./pages/Admin'));
 
 const App = () => {
+  useEffect(() => {
+    
+  });
+
   return (
     <AuthProvider>
       <HashRouter>
@@ -62,6 +66,12 @@ const App = () => {
             }
           >
           </Route>
+          <Route
+            path="/create-connection-to-db"
+            element={
+              <p>Conection</p>
+            }
+          />
         </Routes>
       </HashRouter>
       <ToastContainer position="top-right"
