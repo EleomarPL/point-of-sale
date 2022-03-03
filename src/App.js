@@ -15,13 +15,13 @@ import AdminRouter from './components/router/AdminRouter';
 import SpinnerLoadingPage from './components/common/SpinnerLoadingPage';
 import useConnection from './hooks/useConnection';
 
-
 /*
   These are the main pages, the login (Home), cashier (My) and administrator (Admin)
 */
 const Home = lazy(() => import('./pages/Home'));
 const My = lazy(() => import('./pages/My'));
 const Admin = lazy(() => import('./pages/Admin'));
+const Connection = lazy(() => import('./pages/Connection'));
 
 const App = () => {
   const { validateConnectionToDB } = useConnection();
@@ -78,7 +78,9 @@ const App = () => {
         <Route
           path="/create-connection-to-db"
           element={
-            <p>Conection</p>
+            <Suspense fallback={ <SpinnerLoadingPage /> }>
+              <Connection />
+            </Suspense>
           }
         />
       </Routes>
