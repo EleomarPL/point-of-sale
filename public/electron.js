@@ -17,7 +17,7 @@ const { triggerEventsDebts } = require('./electron/evtContextBridge/debts');
 const { triggerEventsLogin } = require('./electron/evtContextBridge/login');
 const { triggerEventsInitialOperations } = require('./electron/evtContextBridge/initialOperations');
  
-Menu.setApplicationMenu(null);
+//Menu.setApplicationMenu(null);
 
 function createWindow() {
   const createMainWindow = new BrowserWindow({
