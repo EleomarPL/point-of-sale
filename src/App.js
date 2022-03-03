@@ -14,6 +14,7 @@ import PublicRoute from './components/router/PublicRouter';
 import MyRouter from './components/router/MyRouter';
 import AdminRouter from './components/router/AdminRouter';
 import SpinnerLoadingPage from './components/common/SpinnerLoadingPage';
+import useConnection from './hooks/useConnection';
 
 
 /*
@@ -24,9 +25,11 @@ const My = lazy(() => import('./pages/My'));
 const Admin = lazy(() => import('./pages/Admin'));
 
 const App = () => {
+  const { validateConnectionToDB } = useConnection();
+
   useEffect(() => {
-    
-  });
+    validateConnectionToDB();
+  }, []);
 
   return (
     <AuthProvider>

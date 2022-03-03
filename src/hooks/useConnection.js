@@ -1,4 +1,4 @@
-const useConecction = () => {
+const useConnection = () => {
   const validateConnectionToDB = () => {
     window.electron.send('main:validate-connection-to-db');
   };
@@ -8,4 +8,4 @@ const useConecction = () => {
   };
 };
 
-export default useConecction;
+export default useConnection;
