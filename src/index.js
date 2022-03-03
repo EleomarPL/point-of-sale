@@ -1,7 +1,17 @@
 import { render } from 'react-dom';
+import { HashRouter } from 'react-router-dom';
+
+import { AuthProvider } from './contexts/Auth';
 import App from './App';
 
 import './styles/index.css';
 
-var mountNode = document.getElementById('root');
-render(<App />, mountNode);
+let mountNode = document.getElementById('root');
+render(
+  <AuthProvider>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </AuthProvider>,
+  mountNode
+);

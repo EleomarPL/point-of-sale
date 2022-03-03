@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 
@@ -9,7 +9,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@fontsource/roboto';
 
-import { AuthProvider } from './contexts/Auth';
 import PublicRoute from './components/router/PublicRouter';
 import MyRouter from './components/router/MyRouter';
 import AdminRouter from './components/router/AdminRouter';
@@ -26,64 +25,70 @@ const Admin = lazy(() => import('./pages/Admin'));
 
 const App = () => {
   const { validateConnectionToDB } = useConnection();
+  const navigate = useNavigate();
 
   useEffect(() => {
     validateConnectionToDB();
+    window.electron.on('render:validate-connection-to-db', (err, data) => {
+      if (!err) {
+        console.log('error validate connection to db');
+        return null;
+      }
+      if (!data) navigate('/create-connection-to-db');
+    });
   }, []);
 
   return (
-    <AuthProvider>
-      <HashRouter>
-        <Routes>
-          <Route index
-            element={
-              <PublicRoute>
-                <Suspense fallback={ <SpinnerLoadingPage /> }>
-                  <Helmet>
-                    <title>Inicio | Punto de venta</title>
-                  </Helmet>
-                  <Home />
-                </Suspense>
-              </PublicRoute>
-            }
-          />
-          <Route path="/my/*"
-            element={
-              <MyRouter>
-                <Suspense fallback={ <SpinnerLoadingPage /> }>
-                  <Helmet>
-                    <title>Cajero | Punto de venta</title>
-                  </Helmet>
-                  <My />
-                </Suspense>
-              </MyRouter>
-            }
-          />
-          <Route path="/admin/*"
-            element={
-              <AdminRouter>
-                <Suspense fallback={ <SpinnerLoadingPage /> }>
-                  <Admin />
-                </Suspense>
-              </AdminRouter>
-            }
-          >
-          </Route>
-          <Route
-            path="/create-connection-to-db"
-            element={
-              <p>Conection</p>
-            }
-          />
-        </Routes>
-      </HashRouter>
+    <>
+      <Routes>
+        <Route index
+          element={
+            <PublicRoute>
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Helmet>
+                  <title>Inicio | Punto de venta</title>
+                </Helmet>
+                <Home />
+              </Suspense>
+            </PublicRoute>
+          }
+        />
+        <Route path="/my/*"
+          element={
+            <MyRouter>
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Helmet>
+                  <title>Cajero | Punto de venta</title>
+                </Helmet>
+                <My />
+              </Suspense>
+            </MyRouter>
+          }
+        />
+        <Route path="/admin/*"
+          element={
+            <AdminRouter>
+              <Suspense fallback={ <SpinnerLoadingPage /> }>
+                <Admin />
+              </Suspense>
+            </AdminRouter>
+          }
+        >
+        </Route>
+        <Route
+          path="/create-connection-to-db"
+          element={
+            <p>Conection</p>
+          }
+        />
+      </Routes>
       <ToastContainer position="top-right"
         autoClose={ 5000 } hideProgressBar={ false }
         newestOnTop={ false } closeOnClick
         rtl={ false } pauseOnFocusLoss
         draggable={ false } pauseOnHover
       />
-    </AuthProvider>
+    </>
   );
 };
 
