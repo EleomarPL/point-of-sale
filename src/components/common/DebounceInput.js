@@ -1,37 +1,44 @@
-import { DebounceInput as Input } from 'react-debounce-input';
+import { debounce } from 'lodash';
+import { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 // Reusable input to add a debouncer
 
-const DebounceInput = ({value, setValue, placeholder, inputRef}) => {
+const DebounceInput = ({setValue, placeholder, inputRef}) => {
 
-  const handleChangeInput = (evt) => {
-    setValue(evt.target.value);
+  const manejarCambios = (event) => {
+    setValue(event.target.value);
   };
+  const handleDebounceChanges = useMemo(
+    () => debounce(manejarCambios, 1000)
+    , []
+  );
+  useEffect(() => {
+    return () => {
+      handleDebounceChanges.cancel();
+    };
+  }, []);
   
   return (
-    <Input
+    <input
       minLength={ 2 }
       type="text"
-      { ...(inputRef && {inputRef: inputRef}) }
+      ref={ inputRef }
       aria-label="Buscar"
       aria-describedby="search"
-      className="form-control"
-      debounceTimeout={ 500 }
-      onChange={ handleChangeInput }
+      className="form-control flex-fill"
+      onChange={ handleDebounceChanges } autoFocus
       style={ {backgroundColor: '#f6eded'} }
-      value={ value }
       placeholder={ placeholder }
     />
   );
 };
 
 DebounceInput.propTypes = {
-  value: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   inputRef: PropTypes.oneOfType([
-    PropTypes.func,
+    PropTypes.object,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) })
   ])
 };
