@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { inputShopping } from '../../../data/admin/modalShopping';
 import SelectProvider from '../../common/SelectProvider';
 import DebounceInput from '../../common/DebounceInput';
 import useArticle from '../../../hooks/useArticles';
@@ -10,14 +9,18 @@ import { convertDateYYYYMMDD } from '../../../utils/convertDateYMD';
 const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelected2}) => {
   const [code, setCode] = useState('');
   const [article, setArticle] = useState('');
-  const [dataArticle, setDataArticle] = useState({
-    purchasePrice: '', salesPrice: '', stock: '', amount: ''
-  });
   const [providerSelect, setProviderSelect] = useState('');
-  const [dateofExpiry, setDateofExpiry] = useState('');
-  const {getArticleById, getArticleForAuxTable} = useArticle();
-
   const [isProductExist, setIsProductExist] = useState(false);
+
+  const codeRef = useRef({});
+  const nameRef = useRef({});
+  const purchasePriceRef = useRef({});
+  const salesPriceRef = useRef({});
+  const stockRef = useRef({});
+  const amountRef = useRef({});
+  const dateofExpiryRef = useRef({});
+
+  const {getArticleById, getArticleForAuxTable} = useArticle();
 
   useEffect(() => {
     if (code) {
@@ -40,28 +43,30 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
         console.log('error get article by id');
         return null;
       }
+      amountRef.current.value = '';
       if (data[0] !== undefined) {
         setIsProductExist(true);
-        setDataArticle({
-          purchasePrice: data[0].purchasePrice, salesPrice: data[0].salesPrice,
-          stock: data[0].amount, amount: ''
-        });
-        setArticle(data[0].article);
+        
+        nameRef.current.value = data[0].article;
+        purchasePriceRef.current.value = data[0].purchasePrice;
+        salesPriceRef.current.value = data[0].salesPrice;
+        stockRef.current.value = data[0].amount;
+
         setProviderSelect(data[0].id_provider.toString());
         
         if (data[0].dateofExpiry) {
           let splitDate = new Date(data[0].dateofExpiry).toLocaleDateString().split('/');
-          setDateofExpiry(convertDateYYYYMMDD({day: splitDate[0], month: splitDate[1], year: splitDate[2]}));
+          dateofExpiryRef.current.value = convertDateYYYYMMDD({day: splitDate[0], month: splitDate[1], year: splitDate[2]});
         } else
-          setDateofExpiry('');
+          dateofExpiryRef.current.value = '';
         
       } else {
         setIsProductExist(false);
-        setDataArticle({
-          purchasePrice: '', salesPrice: '',
-          stock: '', amount: ''
-        });
-        setArticle('');
+        nameRef.current.value = '';
+        purchasePriceRef.current.value = '';
+        salesPriceRef.current.value = '';
+        stockRef.current.value = '0';
+        dateofExpiryRef.current.value = '';
       }
     });
     window.electron.on('render:get-article-for-auxtable', (err, data) => {
@@ -86,83 +91,86 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
     if (!code)
       if (dataSelected2.id) {
         setIsProductExist(true);
-        setDataArticle({
-          purchasePrice: dataSelected2.purchasePrice, salesPrice: dataSelected2.salesPrice,
-          stock: dataSelected2.amount, amount: ''
-        });
-        setArticle(dataSelected2.article);
-        setCode(dataSelected2.id.toString());
+        codeRef.current.value = dataSelected2.id.toString();
+        nameRef.current.value = dataSelected2.article;
+        purchasePriceRef.current.value = dataSelected2.purchasePrice;
+        salesPriceRef.current.value = dataSelected2.salesPrice;
+        stockRef.current.value = dataSelected2.amount;
+        amountRef.current.value = '';
       } else {
         setIsProductExist(false);
-        setDataArticle({
-          purchasePrice: '', salesPrice: '',
-          stock: '', amount: ''
-        });
+        purchasePriceRef.current.value = '';
+        salesPriceRef.current.value = '';
+        stockRef.current.value = '0';
+        dateofExpiryRef.current.value = '';
       }
   }, [dataSelected2]);
 
-  const setNewValue = ({property, value}) => {
-    setDataArticle({
-      ...dataArticle,
-      [property]: value
-    });
-  };
-
   return (
-    <div className="w-100">
-      <table className="w-100">
-        <tbody>
-          <tr>
-            <td>Codigo</td>
-            <td>
-              <DebounceInput
-                placeholder="Codigo"
-                setValue={ setCode }
-                value={ code }
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Producto</td>
-            <td>
-              <DebounceInput
-                placeholder="Producto"
-                setValue={ setArticle }
-                value={ article }
-              />
-            </td>
-          </tr>
-          { inputShopping &&
-            inputShopping.map(data =>
-              <tr key={ data.id }>
-                <td>{ data.placeholder }</td>
-                <td>
-                  <input type={ data.type } className="form-control"
-                    placeholder={ data.placeholder } aria-label={ data.id.toUpperCase() }
-                    aria-describedby={ data.id }
-                    disabled={ isProductExist && (data.id === 'purchasePrice' || data.id === 'stock') }
-                    style={ {backgroundColor: '#f6eded'} }
-                    value={ dataArticle[data.id] }
-                    onChange={ (evt) => setNewValue({property: data.id, value: evt.target.value}) }
-                  />
-                </td>
-              </tr>
-            )
-          }
-          <tr>
-            <td>Fecha de Caducidad</td>
-            <td>
-              <input type="date" className="form-control"
-                aria-label="DateofExpiry"
-                aria-describedby="ate-of-expiry"
-                style={ {backgroundColor: '#f6eded'} }
-                value={ dateofExpiry }
-                onChange={ (evt) => setDateofExpiry(evt.target.value) }
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div className="w-100 row row-cols-lg-1 g-1">
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label">Codigo</label>
+        <DebounceInput
+          placeholder="Codigo"
+          setValue={ setCode }
+          inputRef={ codeRef }
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label">Nombre</label>
+        <DebounceInput
+          placeholder="Nombre"
+          setValue={ setArticle }
+          inputRef={ nameRef }
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label">Precio compra</label>
+        <input
+          type="text" ref={ purchasePriceRef }
+          className="form-control flex-fill"
+          style={ {backgroundColor: '#f6eded'} }
+          placeholder="Precio compra"
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label">Precio venta</label>
+        <input
+          type="text" ref={ salesPriceRef }
+          className="form-control flex-fill"
+          style={ {backgroundColor: '#f6eded'} }
+          disabled={ isProductExist }
+          placeholder="Precio venta"
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label">Cantidad</label>
+        <input
+          type="text" ref={ amountRef }
+          className="form-control flex-fill"
+          style={ {backgroundColor: '#f6eded'} }
+          placeholder="Cantidad"
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label">Existencia</label>
+        <input
+          type="text" ref={ stockRef }
+          className="form-control flex-fill"
+          style={ {backgroundColor: '#f6eded'} }
+          disabled={ true }
+          placeholder="Existencia"
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label">Fecha de caducidad</label>
+        <input type="date" className="form-control"
+          aria-label="DateofExpiry"
+          aria-describedby="ate-of-expiry"
+          style={ {backgroundColor: '#f6eded'} }
+          ref={ dateofExpiryRef }
+        />
+      </div>
       <div className="d-flex align-items-center justify-content-between">
         <SelectProvider widthSelect="58%" keyProvider={ providerSelect } />
       </div>
