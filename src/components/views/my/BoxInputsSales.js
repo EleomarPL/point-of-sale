@@ -82,6 +82,7 @@ const BoxInputsSales = ({setDataSelected}) => {
           setPrice('');
           setAmount('');
           setStock('');
+          inputCodeRef.current.value = '';
           inputCodeRef.current.focus();
         }
       } else {
