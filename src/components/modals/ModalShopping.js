@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Modal } from 'bootstrap';
 
 import TablePersonalized from '../common/TablePersonalized';
@@ -27,6 +27,9 @@ const ModalShopping = () => {
   const [dataProductTemp, setDataProductTemp] = useState([]);
   const [dataSelected2, setDataSelected2] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const formRef = useRef({});
+
   const {insertPurchases} = useShopping();
 
   useEffect(() => {
@@ -87,13 +90,13 @@ const ModalShopping = () => {
           maxLength: 6,
           value: evt.target[3].value
         },
-        stock: {
+        amount: {
           name: 'Existencia',
           minLength: 0,
           maxLength: 6,
           value: evt.target[4].value
         },
-        amount: {
+        stock: {
           name: 'Cantidad',
           minLength: 0,
           maxLength: 6,
@@ -139,6 +142,7 @@ const ModalShopping = () => {
                 }
               ]);
             }
+            formRef.current.reset();
           }
         }
       }
@@ -155,6 +159,11 @@ const ModalShopping = () => {
       };
     });
     insertPurchases({listPurchases});
+    setDataNewShopping([]);
+    setDataSelected({});
+    setDataSelected2({});
+    setDataProductTemp([]);
+    formRef.current.reset();
     myModal.hide();
   };
   const handleDeleteArticle = () => {
@@ -182,7 +191,9 @@ const ModalShopping = () => {
           <div className="modal-body p-0 m-0" style={ {overflow: 'auto'} }>
             <div className="row col-md-12">
               <div className="col-md-5">
-                <form onSubmit={ handleAddNewPurchase } id="form-add-shopping">
+                <form onSubmit={ handleAddNewPurchase } id="form-add-shopping"
+                  ref={ formRef }
+                >
                   <BoxInputsShoppingModal
                     setDataProductTemp={ setDataProductTemp }
                     dataSelected2={ dataSelected2 }
