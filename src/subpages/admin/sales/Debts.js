@@ -45,7 +45,6 @@ const Debts = () => {
         <SearcherPersonalized
           placeholder="Nombre"
           title="Buscar"
-          value={ searcher }
           setValue={ setSearcher }
         />
       </div>

@@ -55,7 +55,7 @@ const ContainerShowProducts = ({
       <div className="w-100 d-flex justify-content-center mt-1">
         <SearcherPersonalized
           placeholder="Buscar" title="Buscar"
-          value={ searcher } setValue={ setSearcher }
+          setValue={ setSearcher }
         />
       </div>
       <div className="row col-md-12 mx-0 mt-1" style={ {minHeight: '64vh', maxHeight: '64vh'} }>

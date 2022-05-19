@@ -77,7 +77,6 @@ const ModalShowAllSales = () => {
             <div className="my-2 d-flex justify-content-center">
               <SearcherPersonalized
                 placeholder="Folio - Caja - Artículo"
-                value={ searcher }
                 setValue={ setSearcher }
                 title="Buscar"
               />

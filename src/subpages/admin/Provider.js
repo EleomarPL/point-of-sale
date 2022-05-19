@@ -77,7 +77,6 @@ const Provider = () => {
         <SearcherPersonalized
           placeholder="Empresa"
           title="Buscar"
-          value={ searcher }
           setValue={ setSearcher }
         />
       </div>

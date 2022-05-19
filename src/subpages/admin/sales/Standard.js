@@ -67,7 +67,6 @@ const Standard = () => {
         component1={
           <SearcherPersonalized
             placeholder="Nombre"
-            value={ searcher }
             setValue={ setSearcher }
             title="Buscar"
           />
