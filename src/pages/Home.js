@@ -6,6 +6,7 @@ import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
 import { notifyError, notifyInfo, notifyWarning } from '../consts/notifications';
 import useLogin from '../hooks/useLogin';
 import useAdmin from '../hooks/useAdmin';
+import useValidationLogin from '../hooks/validations/useValidationLogin';
 import ModalCreateAdmin, { openmodalCreateAdmin } from '../components/modals/ModalCreateAdmin';
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const { validateLogin } = useValidationLogin();
   const {login, setNewUserData} = useLogin();
   const {isThereAnAdmin} = useAdmin();
 
@@ -59,9 +61,12 @@ const Home = () => {
     };
   }, []);
 
-  const handleLogin = () => {
-    setIsLoading(true);
-    login({userName, password});
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (validateLogin({event: e})) {
+      setIsLoading(true);
+      login({userName, password});
+    }
   };
 
   return (
@@ -77,8 +82,9 @@ const Home = () => {
           style={ {height: '100%', objectFit: 'cover'} }
         />
       </div>
-      <div className="col-md-12 row justify-content-center align-items-center"
+      <form className="col-md-12 row justify-content-center align-items-center"
         style={ {height: '15vh', borderTop: '1px solid black'} }
+        onSubmit={ handleLogin }
       >
         <div className="col-md-3">
           <InputPersonalized
@@ -95,14 +101,12 @@ const Home = () => {
             type="password" placeholder="Contraseña"
             classNameIcon="bi bi-lock-fill"
             value={ password } setValue={ setPassword }
-            event={ handleLogin }
           />
         </div>
         <div className="col-md-auto">
           <button
-            type="button"
+            type="submit"
             className="button-personalized is-button-personalized w-100"
-            onClick={ handleLogin }
             style={ {borderRadius: '10px'} }
             disabled={ isLoading }
           >
@@ -114,7 +118,7 @@ const Home = () => {
             </ButtonPersonalized>
           </button>
         </div>
-      </div>
+      </form>
       <ModalCreateAdmin />
     </section>
   );
