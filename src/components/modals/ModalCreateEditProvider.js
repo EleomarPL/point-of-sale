@@ -8,6 +8,7 @@ import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useProvider from '../../hooks/useProvider';
 import useValidationProvider from '../../hooks/validations/useValidationProvider';
 import { notifySuccess, notifyError } from '../../consts/notifications';
+import { updateArray } from '../../utils/updateArray';
 
 export const openmodalCreateEditProvider = () => {
   let myModal = new Modal(
@@ -19,7 +20,7 @@ export const openmodalCreateEditProvider = () => {
   myModal.show();
 };
 
-const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelected}) => {
+const ModalCreateEditProvider = ({isCreateProvider, dataSelected, dataProvider, setDataProvider, setDataSelected}) => {
   const [valueProvider, setValueProvider] = useState({
     code: '', company: '', name: '', lastName: '', motherLastName: ''
   });
@@ -31,50 +32,14 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
   useEffect(() => {
     if (!isCreateProvider) {
       setValueProvider({
-        ...dataProvider
+        ...dataSelected
       });
     } else
       setValueProvider({
         code: '', company: '', name: '',
         lastName: '', motherLastName: ''
       });
-  }, [isCreateProvider, dataProvider]);
-  useEffect(() => {
-    if (isCreateProvider) {
-      // Wait for the result of inserting provider
-      window.electron.on('render:insert-provider', (err, data) => {
-        setIsLoading(false);
-        if (!err) {
-          console.log('error provider');
-          return null;
-        }
-        if (data) {
-          window.electron.send('main:get-provider', {keyword: '', limit: 50});
-          notifySuccess('Proveedor agregado correctamente');
-        } else
-          notifyError('No ha sido posible agregar proveedor');
-      });
-    } else {
-      // Wait for the result of updating provider
-      window.electron.on('render:update-provider', (err, data) => {
-        setIsLoading(false);
-        if (!err) {
-          console.log('error provider');
-          return null;
-        }
-        if (data) {
-          window.electron.send('main:get-provider', {keyword: '', limit: 50});
-          notifySuccess('Proveedor actualizado correctamente');
-        } else
-          notifyError('No ha sido posible actualizar proveedor');
-      });
-    }
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:insert-provider');
-      window.electron.removeAllListeners('render:update-provider');
-    };
-  }, [isCreateProvider]);
+  }, [isCreateProvider, dataSelected]);
 
   const handleSubmitProvider = (evt) => {
     evt.preventDefault();
@@ -86,9 +51,25 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
         createProvider({
           company: evt.target[0].value, name: evt.target[1].value,
           lastName: evt.target[2].value, motherLastName: evt.target[3].value
+        }).then(response => {
+          setIsLoading(false);
+          if (response.affectedRows === 1) {
+            setDataProvider([
+              {
+                code: response.insertId,
+                company: evt.target[0].value,
+                name: evt.target[1].value,
+                lastName: evt.target[2].value,
+                motherLastName: evt.target[3].value
+              },
+              ...dataProvider
+            ]);
+            notifySuccess('Proveedor agregado correctamente');
+            setDataSelected({});
+            myModal.hide();
+          } else
+            notifyError('No ha sido posible agregar proveedor');
         });
-        setDataSelected({});
-        myModal.hide();
       }
     } else {
       if (validateEditProvider({event: evt}) ) {
@@ -96,9 +77,29 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
         editProvider({
           id: valueProvider.code, name: evt.target[1].value,
           lastName: evt.target[2].value, motherLastName: evt.target[3].value
+        }).then(response => {
+          setIsLoading(false);
+          if (response) {
+            notifySuccess('Proveedor actualizado correctamente');
+            const updateProviderArray = updateArray({
+              array: dataProvider,
+              item: {
+                code: valueProvider.code,
+                company: evt.target[0].value,
+                name: evt.target[1].value,
+                lastName: evt.target[2].value,
+                motherLastName: evt.target[3].value
+              },
+              key: 'code'
+            });
+
+            setDataProvider(updateProviderArray);
+            setDataSelected({});
+            myModal.hide();
+          } else
+            notifyError('No ha sido posible actualizar proveedor');
         });
-        setDataSelected({});
-        myModal.hide();
+        
       }
     }
 
@@ -176,7 +177,9 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
 
 ModalCreateEditProvider.propTypes = {
   isCreateProvider: PropTypes.bool.isRequired,
-  dataProvider: PropTypes.object.isRequired,
+  dataSelected: PropTypes.object.isRequired,
+  dataProvider: PropTypes.array.isRequired,
+  setDataProvider: PropTypes.func.isRequired,
   setDataSelected: PropTypes.func.isRequired
 };
 

@@ -18,25 +18,10 @@ const Provider = () => {
 
   useEffect(() => {
     // Run provider search
-    getProviders({keyword: searcher, limit: 50});
-  }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting provider search
-    window.electron.on('render:get-provider', (err, data) => {
-      if (!err) {
-        console.log('error get providers');
-        return null;
-      }
-      if (data)
-        setDataProvider(data.map(provider => {
-          return {...provider, code: provider.id};
-        }));
+    getProviders({keyword: searcher, limit: 50}).then(response => {
+      if (response) setDataProvider(response);
     });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-provider');
-    };
-  }, []);
+  }, [searcher]);
 
   // Data lists to create the table
   let header = [
@@ -91,7 +76,9 @@ const Provider = () => {
       </GroupPagesAdmin>
       <Suspense fallback={ <SpinnerLoadingPage /> }>
         <ModalCreateEditProvider
-          dataProvider={ dataSelected }
+          dataSelected={ dataSelected }
+          dataProvider={ dataProvider }
+          setDataProvider={ setDataProvider }
           isCreateProvider={ isCreateProvider }
           setDataSelected={ setDataSelected }
         />
