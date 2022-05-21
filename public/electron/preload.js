@@ -28,6 +28,11 @@ contextBridge.exposeInMainWorld(
         ipcRenderer.send(channel, data);
       }
     },
+    invoke: async(channel, data) => {
+      if (validChannels.includes(channel)) {
+        return await ipcRenderer.invoke(channel, data);
+      }
+    },
     on: (channel, callback) => {
       if (validChannels.includes(channel)) {
         ipcRenderer.on(channel, callback);
