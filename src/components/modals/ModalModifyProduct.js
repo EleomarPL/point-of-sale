@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 import { inputProduct } from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
-import { isNumberValue } from '../../services/validations/generalValidations';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import { notifySuccess, notifyError } from '../../consts/notifications';
 import useArticle from '../../hooks/useArticles';
+import useValidationArticle from '../../hooks/validations/useValidationArticle';
 
 export const openmodalModifyProduct = () => {
   let myModal = new Modal(
@@ -24,6 +24,8 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
     code: '', product: '', purchasePrice: '', salesPrice: '', stock: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const { validateModifyArticle } = useValidationArticle();
   const {updateSalesPriceArticle} = useArticle();
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
     evt.preventDefault();
 
     let myModal = Modal.getInstance( document.getElementById('modalModifyProduct') );
-    if (isNumberValue({ name: 'Precio Venta', value: evt.target[2].value })) {
+    if (validateModifyArticle({event: evt})) {
       setIsLoading(true);
       updateSalesPriceArticle({id: valueProduct.code, salesPrice: evt.target[2].value});
       setDataSelected({});
