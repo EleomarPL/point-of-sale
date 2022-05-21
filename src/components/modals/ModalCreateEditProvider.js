@@ -3,10 +3,10 @@ import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
 import {inputProvider} from '../../data/admin/modalProvider';
-import { isObjectValuesNull, validateLength } from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useProvider from '../../hooks/useProvider';
+import useValidationProvider from '../../hooks/validations/useValidationProvider';
 import { notifySuccess, notifyError } from '../../consts/notifications';
 
 export const openmodalCreateEditProvider = () => {
@@ -24,6 +24,8 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
     code: '', company: '', name: '', lastName: '', motherLastName: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const { validateCreationProvider, validateEditProvider } = useValidationProvider();
   const {createProvider, editProvider} = useProvider();
 
   useEffect(() => {
@@ -76,49 +78,30 @@ const ModalCreateEditProvider = ({isCreateProvider, dataProvider, setDataSelecte
 
   const handleSubmitProvider = (evt) => {
     evt.preventDefault();
+
     let myModal = Modal.getInstance( document.getElementById('modalEditCreateProvider') );
-    setIsLoading(true);
-    let dataProvider = {
-      company: {
-        name: 'Empresa',
-        minLength: 2,
-        maxLength: 30,
-        value: evt.target[0].value
-      },
-      name: {
-        name: 'Nombre',
-        minLength: 2,
-        maxLength: 40,
-        value: evt.target[1].value
-      },
-      lastName: {
-        name: 'Apellido paterno',
-        minLength: 2,
-        maxLength: 40,
-        value: evt.target[2].value
-      },
-      motherLastName: {
-        name: 'Apellido materno',
-        minLength: 2,
-        maxLength: 40,
-        value: evt.target[3].value
-      }
-    };
-    if ( !isObjectValuesNull(dataProvider) && validateLength(dataProvider) ) {
-      setIsLoading(true);
-      if (isCreateProvider)
+    if (isCreateProvider) {
+      if ( validateCreationProvider({event: evt}) ) {
+        setIsLoading(true);
         createProvider({
-          company: dataProvider.company.value, name: dataProvider.name.value,
-          lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
+          company: evt.target[0].value, name: evt.target[1].value,
+          lastName: evt.target[2].value, motherLastName: evt.target[3].value
         });
-      else
+        setDataSelected({});
+        myModal.hide();
+      }
+    } else {
+      if (validateEditProvider({event: evt}) ) {
+        setIsLoading(true);
         editProvider({
-          id: valueProvider.code, name: dataProvider.name.value,
-          lastName: dataProvider.lastName.value, motherLastName: dataProvider.motherLastName.value
+          id: valueProvider.code, name: evt.target[1].value,
+          lastName: evt.target[2].value, motherLastName: evt.target[3].value
         });
-      setDataSelected({});
-      myModal.hide();
+        setDataSelected({});
+        myModal.hide();
+      }
     }
+
   };
 
   return (
