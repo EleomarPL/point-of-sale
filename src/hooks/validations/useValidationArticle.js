@@ -13,9 +13,11 @@ const useValidationArticle = () => {
     };
 
     if (isObjectValuesNull(dataNumeric)) return false;
-    if (!isNumberValue(dataNumeric)) return false;
+    if (!isNumberValue({
+      ...dataNumeric['salesPrice']
+    })) return false;
 
-    return false;
+    return true;
   };
   
   return {
