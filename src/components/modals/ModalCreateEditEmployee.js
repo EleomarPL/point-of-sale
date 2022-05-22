@@ -3,10 +3,10 @@ import { Modal } from 'bootstrap';
 import PropTypes from 'prop-types';
 
 import { inputEmployees } from '../../data/admin/modalEmployee';
-import { isObjectValuesNull, validateLength } from '../../services/validations/generalValidations';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useEmployee from '../../hooks/useEmployee';
+import useValidationEmployee from '../../hooks/validations/useValidationEmployee';
 import { notifySuccess, notifyWarning } from '../../consts/notifications';
 
 export const openmodalCreateEditEmployee = () => {
@@ -26,8 +26,10 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
     user: '', password: '', gender: 'M', age: 18
   });
   const [isLoading, setIsLoading] = useState(false);
-  const {insertEmployee, updateEmployee} = useEmployee();
   const [showPassword, setShowPassword] = useState(false);
+
+  const { validateCreationEmployee, validateUpdateEmployee } = useValidationEmployee();
+  const {insertEmployee, updateEmployee} = useEmployee();
 
   useEffect(() => {
     if (!isCreateEmployee) {
@@ -86,93 +88,25 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
-    let dataEmployeeForm = {
-      name: {
-        name: 'Nombre',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[0].value
-      },
-      lastName: {
-        name: 'Apellido paterno',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[1].value
-      },
-      motherLastName: {
-        name: 'Apellido materno',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[2].value
-      },
-      userName: {
-        name: 'Usuario',
-        minLength: 6,
-        maxLength: 50,
-        value: evt.target[3].value
-      },
-      password: {
-        name: 'Contraseña',
-        minLength: 6,
-        maxLength: 50,
-        value: evt.target[4].value
-      }
-    };
-    if (!isCreateEmployee) {
-      dataEmployeeForm = {
-        name: {
-          name: 'Nombre',
-          minLength: 2,
-          maxLength: 50,
-          value: evt.target[1].value
-        },
-        lastName: {
-          name: 'Apellido paterno',
-          minLength: 2,
-          maxLength: 50,
-          value: evt.target[2].value
-        },
-        motherLastName: {
-          name: 'Apellido materno',
-          minLength: 2,
-          maxLength: 50,
-          value: evt.target[3].value
-        },
-        userName: {
-          name: 'Usuario',
-          minLength: 6,
-          maxLength: 50,
-          value: evt.target[4].value
-        }
-      };
-      if (evt.target[0].checked) {
-        dataEmployeeForm = {
-          ...dataEmployeeForm,
-          password: {
-            name: 'Contraseña',
-            minLength: 6,
-            maxLength: 50,
-            value: evt.target[5].value
-          }
-        };
-      }
-    }
-    if ( !isObjectValuesNull(dataEmployeeForm) && validateLength(dataEmployeeForm) ) {
-      setIsLoading(true);
-      if (isCreateEmployee)
+    if (isCreateEmployee) {
+      if (validateCreationEmployee({event: evt})) {
+        setIsLoading(true);
         insertEmployee({
-          name: dataEmployeeForm.name.value, lastName: dataEmployeeForm.lastName.value,
-          motherLastName: dataEmployeeForm.motherLastName.value, age: evt.target[7].value,
-          username: dataEmployeeForm.userName.value, password: dataEmployeeForm.password.value,
+          name: evt.target[0].value, lastName: evt.target[1].value,
+          motherLastName: evt.target[2].value, age: evt.target[7].value,
+          username: evt.target[3].value, password: evt.target[4].value,
           isAMan: evt.target[5].checked
         });
-      else
+      }
+    } else {
+      if (validateUpdateEmployee({event: evt, itWillPasswordChange: showPassword})) {
+        setIsLoading(true);
         updateEmployee({
           id: dataEmployee.code, age: showPassword ? evt.target[8].value : evt.target[7].value,
-          username: dataEmployeeForm.userName.value,
-          password: dataEmployeeForm.password ? dataEmployeeForm.password.value : ''
+          username: evt.target[4].value,
+          password: showPassword ? evt.target[5].value : ''
         });
-      
+      }
     }
   };
 
