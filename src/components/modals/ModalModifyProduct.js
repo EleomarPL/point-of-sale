@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { inputProduct } from '../../data/admin/modalProduct';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
-import { notifySuccess, notifyError } from '../../consts/notifications';
 import useArticle from '../../hooks/useArticles';
 import useValidationArticle from '../../hooks/validations/useValidationArticle';
+import { updateArray } from '../../utils/updateArray';
 
 export const openmodalModifyProduct = () => {
   let myModal = new Modal(
@@ -19,7 +19,7 @@ export const openmodalModifyProduct = () => {
   myModal.show();
 };
 
-const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
+const ModalModifyProduct = ({dataSelected, setDataSelected, dataProducts, setDataProducts}) => {
   const [valueProduct, setValueProduct] = useState({
     code: '', product: '', purchasePrice: '', salesPrice: '', stock: ''
   });
@@ -29,28 +29,8 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
   const {updateSalesPriceArticle} = useArticle();
 
   useEffect(() => {
-    setValueProduct({...dataProduct});
-  }, [dataProduct]);
-  useEffect(() => {
-    // Wait for the result of updating sales price article
-    window.electron.on('render:update-salesprice-article', (err, data) => {
-      setIsLoading(false);
-      if (!err) {
-        console.log('error update article');
-        return null;
-      }
-      if (data)
-        notifySuccess('Articulo actualizado correctamente');
-      else
-        notifyError('Error, articulo no actualizado');
-      
-      window.electron.send('main:get-article-by-keyword', {value: '', limit: 50});
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:update-salesprice-article');
-    };
-  }, []);
+    setValueProduct({...dataSelected});
+  }, [dataSelected]);
 
   const handleSubmitProduct = (evt) => {
     evt.preventDefault();
@@ -58,9 +38,22 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
     let myModal = Modal.getInstance( document.getElementById('modalModifyProduct') );
     if (validateModifyArticle({event: evt})) {
       setIsLoading(true);
-      updateSalesPriceArticle({id: valueProduct.code, salesPrice: evt.target[2].value});
-      setDataSelected({});
-      myModal.hide();
+      updateSalesPriceArticle({id: valueProduct.code, salesPrice: evt.target[2].value}).then(response => {
+        setIsLoading(false);
+        if (response) {
+          const newData = updateArray({
+            array: [...dataProducts],
+            key: 'code',
+            item: {
+              code: valueProduct.code,
+              salesPrice: evt.target[2].value
+            }
+          });
+          setDataProducts(newData);
+          setDataSelected({});
+          myModal.hide();
+        }
+      });
     }
   };
 
@@ -135,8 +128,10 @@ const ModalModifyProduct = ({dataProduct, setDataSelected}) => {
 };
 
 ModalModifyProduct.propTypes = {
-  dataProduct: PropTypes.object.isRequired,
-  setDataSelected: PropTypes.func.isRequired
+  dataSelected: PropTypes.object.isRequired,
+  setDataSelected: PropTypes.func.isRequired,
+  dataProducts: PropTypes.array.isRequired,
+  setDataProducts: PropTypes.func.isRequired
 };
 
 export default ModalModifyProduct;

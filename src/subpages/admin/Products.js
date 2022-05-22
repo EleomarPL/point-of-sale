@@ -6,7 +6,7 @@ import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import {openmodalModifyProduct} from '../../components/modals/ModalModifyProduct';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
 import useArticle from '../../hooks/useArticles';
-import { notifySuccess, notifyError } from '../../consts/notifications';
+import { updateStatusArray } from '../../utils/updateArray';
 
 const ModalModifyProduct = lazy(() => import('../../components/modals/ModalModifyProduct'));
 
@@ -18,44 +18,10 @@ const Products = () => {
 
   useEffect(() => {
     // Run article search
-    getArticles({value: searcher, limit: 50});
+    getArticles({value: searcher, limit: 50}).then(response => {
+      if (response) setDataProducts(response);
+    });
   }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting article search
-    window.electron.on('render:get-article-by-keyword', (err, data) => {
-      if (!err) {
-        console.log('error get articles');
-        return null;
-      }
-      if (data)
-        setDataProducts(data.map(article => {
-          return {
-            ...article, code: article.id,
-            statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
-          };
-        }));
-    });
-    // Wait for result when updating article status
-    window.electron.on('render:update-status-article', (err, data) => {
-      if (!err) {
-        console.log('error update status article');
-        return null;
-      }
-      if (data) {
-        notifySuccess('Estado del articulo actualizado correctamente');
-        window.electron.send('main:get-article-by-keyword', {value: '', limit: 50});
-      } else
-        notifyError('Estado del articulo no actualizado');
-      
-      setSearcher('');
-      setDataSelected({});
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-article-by-keyword');
-      window.electron.removeAllListeners('render:update-status-article');
-    };
-  }, []);
 
   // Data lists to create the table
   let header = [
@@ -84,7 +50,19 @@ const Products = () => {
       disabled: dataSelected.code === undefined,
       onClick: () => {
         if (dataSelected.code)
-          updateStatusArticle({id: dataSelected.code, willItLocked: true});
+          updateStatusArticle({id: dataSelected.code, willItLocked: true}).then(response => {
+            if (response?.affectedRows === 1) {
+              const newData = updateStatusArray({
+                array: [...dataProducts],
+                valueKey: dataSelected.code,
+                key: 'code',
+                keyStatus: 'statusArticle',
+                willItLocked: true
+              });
+              setDataProducts(newData);
+              setDataSelected({});
+            }
+          });
       }
     },
     {
@@ -93,7 +71,19 @@ const Products = () => {
       disabled: dataSelected.code === undefined,
       onClick: () => {
         if (dataSelected.code)
-          updateStatusArticle({id: dataSelected.code, willItLocked: false});
+          updateStatusArticle({id: dataSelected.code, willItLocked: false}).then(response => {
+            if (response?.affectedRows === 1) {
+              const newData = updateStatusArray({
+                array: [...dataProducts],
+                valueKey: dataSelected.code,
+                key: 'code',
+                keyStatus: 'statusArticle',
+                willItLocked: false
+              });
+              setDataProducts(newData);
+              setDataSelected({});
+            }
+          });
       }
     }
   ];
@@ -119,8 +109,10 @@ const Products = () => {
       { /* Modal injections with code splitting */ }
       <Suspense fallback={ <SpinnerLoadingPage /> }>
         <ModalModifyProduct
-          dataProduct={ dataSelected }
+          dataSelected={ dataSelected }
           setDataSelected={ setDataSelected }
+          dataProducts={ dataProducts }
+          setDataProducts={ setDataProducts }
         />
       </Suspense>
     </div>

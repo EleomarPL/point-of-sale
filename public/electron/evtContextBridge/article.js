@@ -8,25 +8,25 @@ const {
 } = require('../db/consults');
 
 const triggerEventsArticle = ({windowToSend}) => {
-  ipcMain.on('main:update-salesprice-article', async(_, { id, salesPrice }) => {
+  ipcMain.handle('main:update-salesprice-article', async(_, { id, salesPrice }) => {
     const resultUpdate = await updateSalesPriceArticle({id, salesPrice});
     
-    windowToSend.webContents.send('render:update-salesprice-article', resultUpdate);
+    return resultUpdate;
   });
-  ipcMain.on('main:update-status-article', async(_, { id, willItLocked }) => {
+  ipcMain.handle('main:update-status-article', async(_, { id, willItLocked }) => {
     const resultUpdate = await updateStatusArticle({id, willItLocked});
     
-    windowToSend.webContents.send('render:update-status-article', resultUpdate);
+    return resultUpdate;
   });
   ipcMain.on('main:get-article-by-id', async(_, { id }) => {
     const dataArticle = await getArticleById({id});
     
     windowToSend.webContents.send('render:get-article-by-id', dataArticle);
   });
-  ipcMain.on('main:get-article-by-keyword', async(_, { value, limit }) => {
+  ipcMain.handle('main:get-article-by-keyword', async(_, { value, limit }) => {
     const dataArticle = await getArticlesByIdArticle({value, limit});
     
-    windowToSend.webContents.send('render:get-article-by-keyword', dataArticle);
+    return dataArticle;
   });
   ipcMain.on('main:get-article-by-keyword-company', async(_, { value }) => {
     const dataArticle = await getArticleByIdArticleCompany({value});
