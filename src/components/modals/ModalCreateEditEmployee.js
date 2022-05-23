@@ -7,7 +7,7 @@ import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useEmployee from '../../hooks/useEmployee';
 import useValidationEmployee from '../../hooks/validations/useValidationEmployee';
-import { notifySuccess, notifyWarning } from '../../consts/notifications';
+import { updateArray } from '../../utils/updateArray';
 
 export const openmodalCreateEditEmployee = () => {
   let myModal = new Modal(
@@ -19,7 +19,9 @@ export const openmodalCreateEditEmployee = () => {
   myModal.show();
 };
 
-const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelected}) => {
+const ModalCreateEditEmployee = ({
+  isCreateEmployee, dataSelected, setDataSelected, dataEmployees, setDataEmployees
+}) => {
   const [radio1, setRadio1] = useState(true);
   const [valueUser, setValueUser] = useState({
     code: '', name: '', lastName: '', motherLastName: '',
@@ -34,60 +36,20 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
   useEffect(() => {
     if (!isCreateEmployee) {
       setValueUser({
-        ...dataEmployee,
-        user: dataEmployee.username, password: ''
+        ...dataSelected,
+        user: dataSelected.username, password: ''
       });
-      setRadio1(dataEmployee.gender === 'M');
+      setRadio1(dataSelected.gender === 'M');
     } else
       setValueUser({
         code: '', name: '', lastName: '', motherLastName: '',
         user: '', password: '', gender: 'M', age: 18
       });
-  }, [isCreateEmployee, dataEmployee]);
-  useEffect(() => {
-    // Wait for the result of inserting employee
-    window.electron.on('render:insert-employee', (err, data) => {
-      setIsLoading(false);
-      if (!err) {
-        console.log('error insert employee');
-        return null;
-      }
-      if (data) {
-        let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
-        notifySuccess('Empleado agregado correctamente');
-        setDataSelected({});
-        window.electron.send('main:get-employees', {value: '', limit: 50});
-        myModal.hide();
-      } else {
-        notifyWarning('Ingrese un diferente nombre de usuario');
-      }
-    });
-    // Wait for the result of updating employee
-    window.electron.on('render:update-employee', (err, data) => {
-      setIsLoading(false);
-      if (!err) {
-        console.log('error update employee');
-        return null;
-      }
-      if (data) {
-        let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
-        notifySuccess('Empleado actualizado correctamente');
-        setDataSelected({});
-        window.electron.send('main:get-employees', {value: '', limit: 50});
-        myModal.hide();
-      } else {
-        notifyWarning('Ingrese un diferente nombre de usuario');
-      }
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:insert-employee');
-      window.electron.removeAllListeners('render:update-employee');
-    };
-  }, []);
+  }, [isCreateEmployee, dataSelected]);
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
+    let myModal = Modal.getInstance( document.getElementById('modalCreateEditEmployee') );
     if (isCreateEmployee) {
       if (validateCreationEmployee({event: evt})) {
         setIsLoading(true);
@@ -96,15 +58,47 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
           motherLastName: evt.target[2].value, age: evt.target[7].value,
           username: evt.target[3].value, password: evt.target[4].value,
           isAMan: evt.target[5].checked
+        }).then(response => {
+          setIsLoading(false);
+          if (response?.affectedRows === 1) {
+            setDataEmployees([
+              {
+                code: response.insertId, id: response.insertId,
+                name: evt.target[0].value, lastName: evt.target[1].value,
+                motherLastName: evt.target[2].value,
+                gender: evt.target[5].checked ? 'M' : 'F',
+                age: evt.target[7].value,
+                status: 'Activo'
+
+              },
+              ...dataEmployees
+            ]);
+            myModal.hide();
+          }
         });
       }
     } else {
       if (validateUpdateEmployee({event: evt, itWillPasswordChange: showPassword})) {
         setIsLoading(true);
         updateEmployee({
-          id: dataEmployee.code, age: showPassword ? evt.target[8].value : evt.target[7].value,
+          id: dataSelected.code, age: showPassword ? evt.target[8].value : evt.target[7].value,
           username: evt.target[4].value,
           password: showPassword ? evt.target[5].value : ''
+        }).then(response => {
+          setIsLoading(false);
+          if (response) {
+            const dataUpdate = updateArray({
+              array: [...dataEmployees],
+              item: {
+                code: dataSelected.code,
+                age: showPassword ? evt.target[8].value : evt.target[7].value,
+                username: evt.target[4].value
+              },
+              key: 'code'
+            });
+            setDataEmployees(dataUpdate);
+            myModal.hide();
+          }
         });
       }
     }
@@ -258,8 +252,10 @@ const ModalCreateEditEmployee = ({isCreateEmployee, dataEmployee, setDataSelecte
 
 ModalCreateEditEmployee.propTypes = {
   isCreateEmployee: PropTypes.bool.isRequired,
-  dataEmployee: PropTypes.object.isRequired,
-  setDataSelected: PropTypes.func.isRequired
+  dataSelected: PropTypes.object.isRequired,
+  setDataSelected: PropTypes.func.isRequired,
+  dataEmployees: PropTypes.array.isRequired,
+  setDataEmployees: PropTypes.func.isRequired
 };
 
 export default ModalCreateEditEmployee;

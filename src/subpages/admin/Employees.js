@@ -6,7 +6,7 @@ import TablePersonalized from '../../components/common/TablePersonalized';
 import GroupPagesAdmin from '../../components/layouts/GroupPagesAdmin';
 import SpinnerLoadingPage from '../../components/common/SpinnerLoadingPage';
 import useEmployee from '../../hooks/useEmployee';
-import { notifySuccess } from '../../consts/notifications';
+import { updateStatusArray } from '../../utils/updateArray';
 
 const ModalCreateEditEmployee = lazy(() => import('../../components/modals/ModalCreateEditEmployee'));
 
@@ -19,40 +19,10 @@ const Employees = () => {
 
   useEffect(() => {
     // Run employee search
-    getEmployees({value: searcher, limit: 50});
+    getEmployees({value: searcher, limit: 50}).then(response => {
+      if (response) setDataEmployees(response);
+    });
   }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting employee search
-    window.electron.on('render:get-employees', (err, data) => {
-      if (!err) {
-        console.log('error insert purchases');
-        return null;
-      }
-      if (data)
-        setDataEmployees(data.map(employee => {
-          return {
-            ...employee, code: employee.id,
-            status: employee.statusUser === 'locked' ? 'Bloqueado' : 'Activo'
-          };
-        }));
-    });
-    // Wait for result when updating employee status
-    window.electron.on('render:update-status-employee', (err, data) => {
-      if (!err) {
-        console.log('error update status employee');
-        return null;
-      }
-      if (data) {
-        notifySuccess('Estado del empleado actualizado correctamente');
-        window.electron.send('main:get-employees', {value: '', limit: 50});
-      }
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-employees');
-      window.electron.removeAllListeners('render:update-status-employee');
-    };
-  }, []);
 
   // Data lists to create the table
   let header = [
@@ -91,7 +61,19 @@ const Employees = () => {
       disabled: dataSelected.code === undefined,
       onClick: () => {
         if (dataSelected.code)
-          updateStatusEmployee({id: dataSelected.code, willIsLocked: true});
+          updateStatusEmployee({id: dataSelected.code, willIsLocked: true}).then(response => {
+            if (response) {
+              const dataUpdated = updateStatusArray({
+                array: [...dataEmployees],
+                key: 'code',
+                valueKey: dataSelected.code,
+                keyStatus: 'status',
+                willItLocked: true
+              });
+              setDataEmployees(dataUpdated);
+              setDataSelected({});
+            }
+          });
       }
     },
     {
@@ -100,7 +82,19 @@ const Employees = () => {
       disabled: dataSelected.code === undefined,
       onClick: () => {
         if (dataSelected.code)
-          updateStatusEmployee({id: dataSelected.code, willIsLocked: false});
+          updateStatusEmployee({id: dataSelected.code, willIsLocked: false}).then(response => {
+            if (response) {
+              const dataUpdated = updateStatusArray({
+                array: [...dataEmployees],
+                key: 'code',
+                valueKey: dataSelected.code,
+                keyStatus: 'status',
+                willItLocked: false
+              });
+              setDataEmployees(dataUpdated);
+              setDataSelected({});
+            }
+          });
       }
     }
   ];
@@ -126,9 +120,11 @@ const Employees = () => {
       { /* Modal injections with code splitting */ }
       <Suspense fallback={ <SpinnerLoadingPage /> }>
         <ModalCreateEditEmployee
-          dataEmployee={ dataSelected }
+          dataSelected={ dataSelected }
           isCreateEmployee={ isCreateEmployee }
           setDataSelected={ setDataSelected }
+          dataEmployees={ dataEmployees }
+          setDataEmployees={ setDataEmployees }
         />
       </Suspense>
     </div>

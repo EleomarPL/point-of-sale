@@ -1,17 +1,37 @@
+import { notifyError, notifySuccess, notifyWarning } from '../consts/notifications';
+
 const useEmployee = () => {
-  const getEmployees = ({value, limit}) => {
-    window.electron.send('main:get-employees', {value, limit});
+  const getEmployees = async({value, limit}) => {
+    const data = await window.electron.invoke('main:get-employees', {value, limit});
+    if (!data) return false;
+
+    return data.map(employee => ({
+      ...employee, code: employee.id,
+      status: employee.statusUser === 'locked' ? 'Bloqueado' : 'Activo'
+    }));
   };
-  const insertEmployee = ({name, lastName, motherLastName, age, isAMan, username, password}) => {
-    window.electron.send('main:insert-employee', {
+  const insertEmployee = async({name, lastName, motherLastName, age, isAMan, username, password}) => {
+    const data = await window.electron.invoke('main:insert-employee', {
       name, lastName, motherLastName, age, isAMan, username, password
     });
+    if (data) notifySuccess('Empleado agregado correctamente');
+    else notifyWarning('Ingrese un diferente nombre de usuario');
+
+    return data;
   };
-  const updateStatusEmployee = ({id, willIsLocked}) => {
-    window.electron.send('main:update-status-employee', {id, willIsLocked});
+  const updateStatusEmployee = async({id, willIsLocked}) => {
+    const data = await window.electron.invoke('main:update-status-employee', {id, willIsLocked});
+    if (data.affectedRows) notifySuccess('Estado del empleado actualizado correctamente');
+    else notifyError('Estado del empleado no actualizado');
+
+    return data.affectedRows;
   };
-  const updateEmployee = ({id, age, username, password}) => {
-    window.electron.send('main:update-employee', {id, age, username, password});
+  const updateEmployee = async({id, age, username, password}) => {
+    const data = await window.electron.invoke('main:update-employee', {id, age, username, password});
+    if (data.affectedRows) notifySuccess('Empleado actualizado correctamente');
+    else notifyError('Empleado no actualizado');
+
+    return data.affectedRows;
   };
   
   return {

@@ -5,27 +5,40 @@ const { insertEmployee } = require('../db/inserts');
 const { updateUsernamePasswordAgeEmployee, updateStatusEmployee } = require('../db/updates');
 
 const triggerEventsEmployee = ({windowToSend}) => {
-  ipcMain.on('main:get-employees', async(_, { value, limit }) => {
-    const dataEmployees = await getEmployees({value, limit});
+  ipcMain.handle('main:get-employees', async(_, { value, limit }) => {
+    try {
+      const dataEmployees = await getEmployees({value, limit});
+      return dataEmployees;
+    } catch (e) {
+      return false;
+    }
     
-    windowToSend.webContents.send('render:get-employees', dataEmployees);
   });
-  ipcMain.on('main:insert-employee', async(_, { name, lastName, motherLastName, age, isAMan, username, password }) => {
-    const resultOperation = await insertEmployee({name, lastName, motherLastName, age, isAMan, username, password});
-    
-    windowToSend.webContents.send('render:insert-employee', resultOperation);
+  ipcMain.handle('main:insert-employee', async(_, { name, lastName, motherLastName, age, isAMan, username, password }) => {
+    try {
+      const resultOperation = await insertEmployee({name, lastName, motherLastName, age, isAMan, username, password});
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
-  ipcMain.on('main:update-employee', async(_, { id, age, username, password }) => {
-    const resultOperation = await updateUsernamePasswordAgeEmployee({
-      id, age, username, password
-    });
-    
-    windowToSend.webContents.send('render:update-employee', resultOperation);
+  ipcMain.handle('main:update-employee', async(_, { id, age, username, password }) => {
+    try {
+      const resultOperation = await updateUsernamePasswordAgeEmployee({
+        id, age, username, password
+      });
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
-  ipcMain.on('main:update-status-employee', async(_, { id, willIsLocked }) => {
-    const resultOperation = await updateStatusEmployee({id, willIsLocked});
-    
-    windowToSend.webContents.send('render:update-status-employee', resultOperation);
+  ipcMain.handle('main:update-status-employee', async(_, { id, willIsLocked }) => {
+    try {
+      const resultOperation = await updateStatusEmployee({id, willIsLocked});
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
 };
 
