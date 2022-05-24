@@ -16,37 +16,26 @@ const Standard = () => {
   useEffect(() => {
     // Run standard sales search
     if (valueFirstRadio)
-      getStandardSales({value: searcher, limit: 50});
+      getStandardSales({value: searcher, limit: 50}).then(response => {
+        if (response) setDataSales(response);
+      });
     else if (searcher) {
       const dateSplit = searcher.split(' ');
       const startDate = dateSplit[0];
       const endDate = dateSplit[1];
-      getStandardSales({startDate, endDate, limit: 50});
+      getStandardSales({startDate, endDate, limit: 50}).then(response => {
+        if (response) setDataSales(response);
+      });
     }
   }, [searcher]);
   useEffect(() => {
     // Clean browser for each change of the group of radio buttons
     setSearcher('');
     if (!valueFirstRadio)
-      getStandardSales({value: '', limit: 50});
+      getStandardSales({value: '', limit: 50}).then(response => {
+        if (response) setDataSales(response);
+      });
   }, [valueFirstRadio]);
-  useEffect(() => {
-    // Wait for result when getting standard sales search
-    window.electron.on('render:get-standard-sales', (err, data) => {
-      if (!err) {
-        console.log('error get standard sales');
-        return null;
-      }
-      if (data)
-        setDataSales(data.map(sales => {
-          return {...sales, date: sales.date.toLocaleString()};
-        }));
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-standard-sales');
-    };
-  }, []);
   // Data lists to create the table
   let header = [
     'Folio', 'Caja', 'Producto',
