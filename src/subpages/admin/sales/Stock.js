@@ -21,7 +21,9 @@ const Stock = () => {
     const endDate = splitSearcher[1];
     const provider = splitSearcher[2] === 'all' ? '' : splitSearcher[2];
 
-    getStockSales({startDate, endDate, value: provider});
+    getStockSales({startDate, endDate, value: provider}).then(response => {
+      if (response) setDataSales(response);
+    });
   }, [searcher]);
   useEffect(() => {
     // Wait for result when getting stock sales search

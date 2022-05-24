@@ -12,10 +12,13 @@ const triggerEventsSales = ({windowToSend}) => {
       return false;
     }
   });
-  ipcMain.on('main:get-stock-sales', async(_, { value, startDate, endDate }) => {
-    const dataSales = await getStockSales({value, startDate, endDate});
-    
-    windowToSend.webContents.send('render:get-stock-sales', dataSales);
+  ipcMain.handle('main:get-stock-sales', async(_, { value, startDate, endDate }) => {
+    try {
+      const dataSales = await getStockSales({value, startDate, endDate});
+      return dataSales;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.on('main:insert-sales', async(_, { idUser, total, salesRecords }) => {
     const dataSales = await insertSales({idUser, total, salesRecords});

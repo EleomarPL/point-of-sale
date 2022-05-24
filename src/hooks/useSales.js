@@ -7,8 +7,10 @@ const useSales = () => {
       ...sales, date: sales.date.toLocaleString()
     }));
   };
-  const getStockSales = ({value, startDate, endDate}) => {
-    window.electron.send('main:get-stock-sales', {value, startDate, endDate});
+  const getStockSales = async({value, startDate, endDate}) => {
+    const data = await window.electron.invoke('main:get-stock-sales', {value, startDate, endDate});
+    
+    return data;
   };
   const getArticleById = ({id}) => {
     window.electron.send('main:get-article-by-id', {id});
