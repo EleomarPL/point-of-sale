@@ -1,6 +1,7 @@
 const useDebts = () => {
-  const getDebtsByKeyword = ({value}) => {
-    window.electron.send('main:get-debts', {value, isGroupByDebtor: true});
+  const getDebtsByKeyword = async({value}) => {
+    const data = await window.electron.invoke('main:get-debts', {value, isGroupByDebtor: true});
+    return data;
   };
   const getDebtors = ({value}) => {
     window.electron.send('main:get-debtors', {value});

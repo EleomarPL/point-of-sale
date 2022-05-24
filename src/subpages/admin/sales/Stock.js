@@ -25,22 +25,6 @@ const Stock = () => {
       if (response) setDataSales(response);
     });
   }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting stock sales search
-    window.electron.on('render:get-stock-sales', (err, data) => {
-      if (!err) {
-        console.log('error update employee');
-        return null;
-      }
-      if (data)
-        setDataSales(data);
-      
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-stock-sales');
-    };
-  }, []);
   // Data lists to create the table
   let header = [
     'Caja', 'Empresa', 'Producto',

@@ -6,10 +6,13 @@ const { payDebt } = require('../db/delete');
 const { updateDebtor } = require('../db/updates');
 
 const triggerEventsDebts = ({windowToSend}) => {
-  ipcMain.on('main:get-debts', async(_, { value, isGroupByDebtor }) => {
-    const dataDebts = await getDebts({value, isGroupByDebtor});
-    
-    windowToSend.webContents.send('render:get-debts', dataDebts);
+  ipcMain.handle('main:get-debts', async(_, { value, isGroupByDebtor }) => {
+    try {
+      const dataDebts = await getDebts({value, isGroupByDebtor});
+      return dataDebts;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.on('main:get-debts-from-debtor', async(_, { idDebtor }) => {
     const dataDebts = await getDebtsFromADebtor({idDebtor});

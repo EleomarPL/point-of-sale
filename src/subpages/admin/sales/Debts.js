@@ -12,23 +12,10 @@ const Debts = () => {
 
   useEffect(() => {
     // Run debts search
-    getDebtsByKeyword({value: searcher});
-  }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting debts search
-    window.electron.on('render:get-debts', (err, data) => {
-      if (!err) {
-        console.log('error get debts');
-        return null;
-      }
-      if (data)
-        setDataDebts(data);
+    getDebtsByKeyword({value: searcher}).then(response => {
+      if (response) setDataDebts(response);
     });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-debts');
-    };
-  }, []);
+  }, [searcher]);
 
   // Data lists to create the table
   let header = [
