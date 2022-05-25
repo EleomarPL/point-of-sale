@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { notifyWarning } from '../../consts/notifications';
+import { notifyInfo, notifyWarning } from '../../consts/notifications';
 
 export const isObjectValuesNull = (objectData) => {
   let isNull = false;
@@ -14,6 +14,30 @@ export const isObjectValuesNull = (objectData) => {
     notifyWarning('Rellene todos los campos');
 
   return isNull;
+};
+export const isObjectValuesInteger = ( objectData ) => {
+  let isInteger = true;
+
+  Object.keys(objectData).forEach(key => {
+    if (!validator.isInt(objectData[key].value)) {
+      isInteger = false;
+      notifyWarning(`${objectData[key].name} ser un número entero`);
+    }
+  });
+
+  return isInteger;
+};
+export const isObjectValuesNumber = ( objectData ) => {
+  let isNumeric = true;
+
+  Object.keys(objectData).forEach(key => {
+    if (!validator.isNumeric(objectData[key].value)) {
+      isNumeric = false;
+      notifyWarning(`${objectData[key].name} ser un número`);
+    }
+  });
+
+  return isNumeric;
 };
 export const validateLength = ( objectData ) => {
   let isCorrectValue = true;

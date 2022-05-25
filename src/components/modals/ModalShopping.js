@@ -4,12 +4,11 @@ import { Modal } from 'bootstrap';
 import TablePersonalized from '../common/TablePersonalized';
 import BoxInputsShoppingModal from '../views/admin/BoxInputsShoppingModal';
 import ButtonPersonalized from '../common/ButtonPersonalized';
-import {
-  isInteger, isObjectValuesNull, isNumberValue, validateLength
-} from '../../services/validations/generalValidations';
+
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useShopping from '../../hooks/useShopping';
-import { notifySuccess, notifyWarning } from '../../consts/notifications';
+import useValidationShopping from '../../hooks/validations/useValidationShopping';
+import { notifySuccess } from '../../consts/notifications';
 
 export const openmodalShopping = () => {
   let myModal = new Modal(
@@ -30,7 +29,8 @@ const ModalShopping = () => {
 
   const formRef = useRef({});
 
-  const {insertPurchases} = useShopping();
+  const { insertPurchases } = useShopping();
+  const { validatePossiblePurchase } = useValidationShopping();
 
   useEffect(() => {
     // Wait for the result of inserting purchases
@@ -64,90 +64,39 @@ const ModalShopping = () => {
 
   const handleAddNewPurchase = (evt) => {
     evt.preventDefault();
-    if (evt.target[7].value) {
-      let dataPurchase = {
-        code: {
-          name: 'Codigo',
-          minLength: 2,
-          maxLength: 20,
-          value: evt.target[0].value
-        },
-        article: {
-          name: 'Producto',
-          minLength: 2,
-          maxLength: 100,
-          value: evt.target[1].value
-        },
-        purchasePrice: {
-          name: 'Precio Compra',
-          minLength: 0,
-          maxLength: 6,
-          value: evt.target[2].value
-        },
-        salesPrice: {
-          name: 'Precio Venta',
-          minLength: 0,
-          maxLength: 6,
-          value: evt.target[3].value
-        },
-        amount: {
-          name: 'Existencia',
-          minLength: 0,
-          maxLength: 6,
-          value: evt.target[4].value
-        },
-        stock: {
-          name: 'Cantidad',
-          minLength: 0,
-          maxLength: 6,
-          value: evt.target[5].value
-        }
-      };
-    
-      if ( !isObjectValuesNull(dataPurchase) && validateLength(dataPurchase) ) {
-        if (isInteger({name: 'Codigo', value: dataPurchase.code.value}) &&
-        isInteger({name: 'Existencia', value: dataPurchase.stock.value}) &&
-        isInteger({name: 'Cantidad', value: dataPurchase.amount.value})
-        ) {
-          if (isNumberValue({name: 'Precio Compra', value: dataPurchase.purchasePrice.value}) &&
-          isNumberValue({name: 'Precio Venta', value: dataPurchase.salesPrice.value})
-          ) {
-            let searchArticle = dataNewShopping.findIndex(purchase => purchase.code === dataPurchase.code.value);
-            if (searchArticle !== -1) {
-              let newDataToDataNewShopping = dataNewShopping.map((purchase, index) => {
-                if (searchArticle === index) {
-                  return {
-                    ...purchase, company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
-                    quantity: Number(purchase.quantity) + Number(dataPurchase.amount.value),
-                    total: Number(dataPurchase.purchasePrice.value) * (Number(purchase.quantity) + Number(dataPurchase.amount.value)),
-                    idProvider: evt.target[7].value, amount: Number(purchase.quantity) + Number(dataPurchase.amount.value)
-                  };
-                } else
-                  return purchase;
-              });
 
-              setDataNewShopping(newDataToDataNewShopping);
-            } else {
-              setDataNewShopping([
-                ...dataNewShopping,
-                {
-                  code: dataPurchase.code.value, article: dataPurchase.article.value,
-                  company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
-                  purchasePrice: dataPurchase.purchasePrice.value,
-                  salesPrice: dataPurchase.salesPrice.value,
-                  quantity: dataPurchase.amount.value, isAdded: evt.target[8].value,
-                  total: dataPurchase.purchasePrice.value * dataPurchase.amount.value,
-                  id: dataPurchase.code.value, amount: dataPurchase.amount.value,
-                  idProvider: evt.target[7].value, dateofExpiry: evt.target[6].value || null
-                }
-              ]);
-            }
-            formRef.current.reset();
+    if (validatePossiblePurchase({event: evt})) {
+      let searchArticle = dataNewShopping.findIndex(purchase => purchase.code === evt.target[0].value);
+      if (searchArticle !== -1) {
+        let newDataToDataNewShopping = dataNewShopping.map((purchase, index) => {
+          if (searchArticle === index) {
+            return {
+              ...purchase, company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
+              quantity: Number(purchase.quantity) + Number(evt.target[4].value),
+              total: Number(evt.target[2].value) * (Number(purchase.quantity) + Number(evt.target[4].value)),
+              idProvider: evt.target[7].value, amount: Number(purchase.quantity) + Number(evt.target[4].value)
+            };
+          } else
+            return purchase;
+        });
+
+        setDataNewShopping(newDataToDataNewShopping);
+      } else {
+        setDataNewShopping([
+          ...dataNewShopping,
+          {
+            code: evt.target[0].value, article: evt.target[1].value,
+            company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
+            purchasePrice: evt.target[2].value,
+            salesPrice: evt.target[3].value,
+            quantity: evt.target[4].value, isAdded: evt.target[8].value,
+            total: evt.target[2].value * evt.target[4].value,
+            id: evt.target[0].value, amount: evt.target[4].value,
+            idProvider: evt.target[7].value, dateofExpiry: evt.target[6].value || null
           }
-        }
+        ]);
       }
-    } else {
-      notifyWarning('Primero debe agregar al menos un proveedor');
+      formRef.current.reset();
     }
   };
   const handleAddPurchase = () => {
