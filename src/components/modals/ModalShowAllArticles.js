@@ -26,30 +26,11 @@ const ModalShowAllArticles = () => {
 
   useEffect(() => {
     // Run employee search
-    getArticlesByKeywordaAndCompany({value: searcher});
-  }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting article by company keyword
-    window.electron.on('render:get-article-by-keyword-company', (err, data) => {
-      if (!err) {
-        console.log('error get articles');
-        return null;
-      }
-      
-      if (data)
-        setDataArticles(data.map(article => {
-          return {
-            ...article, code: article.id,
-            statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
-          };
-        }));
-      
+    getArticlesByKeywordaAndCompany({value: searcher}).then(response => {
+      if (response) setDataArticles(response);
     });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-article-by-keyword-company');
-    };
-  }, []);
+  }, [searcher]);
+
   useEffect(() => {
     if (isShowLockedArticle)
       setFilterDataArticles(dataArticles);

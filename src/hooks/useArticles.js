@@ -10,8 +10,16 @@ const useArticle = () => {
       statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
     }));
   };
-  const getArticlesByKeywordaAndCompany = ({value}) => {
-    window.electron.send('main:get-article-by-keyword-company', {value});
+  const getArticlesByKeywordaAndCompany = async({value}) => {
+    const data = await window.electron.invoke('main:get-article-by-keyword-company', {value});
+    if (!data) return false;
+    
+    return data.map(article => (
+      {
+        ...article, code: article.id,
+        statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
+      }
+    ));
   };
   const updateSalesPriceArticle = async({id, salesPrice}) => {
     const data = await window.electron.invoke('main:update-salesprice-article', {id, salesPrice});

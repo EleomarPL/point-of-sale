@@ -31,10 +31,13 @@ const triggerEventsArticle = ({windowToSend}) => {
     
     return dataArticle;
   });
-  ipcMain.on('main:get-article-by-keyword-company', async(_, { value }) => {
-    const dataArticle = await getArticleByIdArticleCompany({value});
-    
-    windowToSend.webContents.send('render:get-article-by-keyword-company', dataArticle);
+  ipcMain.handle('main:get-article-by-keyword-company', async(_, { value }) => {
+    try {
+      const dataArticle = await getArticleByIdArticleCompany({value});
+      return dataArticle;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.handle('main:get-article-for-auxtable', async(_, { value }) => {
     try {
