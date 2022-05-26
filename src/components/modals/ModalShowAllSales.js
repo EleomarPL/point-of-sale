@@ -24,27 +24,10 @@ const ModalShowAllSales = () => {
 
   useEffect(() => {
     // Run employee search
-    getStandardSales({value: searcher});
-  }, [searcher]);
-  
-  useEffect(() => {
-    // Wait for result when getting standard sales
-    window.electron.on('render:get-standard-sales', (err, data) => {
-      if (!err) {
-        console.log('error get standard sales');
-        return null;
-      }
-      
-      if (data)
-        setDataSales(data.map(sales => {
-          return {...sales, date: sales.date.toLocaleString()};
-        }));
+    getStandardSales({value: searcher}).then(response => {
+      if (response) setDataSales(response);
     });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-standard-sales');
-    };
-  }, []);
+  }, [searcher]);
 
   // Data lists to create the table
   let header = [
