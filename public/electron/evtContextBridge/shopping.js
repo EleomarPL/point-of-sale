@@ -5,15 +5,21 @@ const { addPurchases } = require('../db/inserts');
 
 const triggerEventsShopping = ({windowToSend}) => {
   
-  ipcMain.on('main:get-purchases', async(_, {value, startDate, endDate, limit}) => {
-    const dataPurchases = await getPurchases({value, startDate, endDate, limit});
-
-    windowToSend.webContents.send('render:get-purchases', dataPurchases);
+  ipcMain.handle('main:get-purchases', async(_, {value, startDate, endDate, limit}) => {
+    try {
+      const dataPurchases = await getPurchases({value, startDate, endDate, limit});
+      return dataPurchases;
+    } catch (e) {
+      return false;
+    }
   });
-  ipcMain.on('main:insert-purchases', async(_, {listPurchases}) => {
-    const resultOperation = await addPurchases({listPurchases});
-
-    windowToSend.webContents.send('render:insert-purchases', resultOperation);
+  ipcMain.handle('main:insert-purchases', async(_, {listPurchases}) => {
+    try {
+      const resultOperation = await addPurchases({listPurchases});
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
 };
 

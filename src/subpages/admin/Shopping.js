@@ -22,40 +22,26 @@ const Shopping = () => {
   useEffect(() => {
     // Run employee search
     if (valueFirstRadio)
-      getPurchases({value: searcher, limit: 50});
+      getPurchases({value: searcher, limit: 50}).then(response => {
+        if (response) setDataShopping(response);
+      });
     else if (searcher) {
       const dateSplit = searcher.split(' ');
       const startDate = dateSplit[0];
       const endDate = dateSplit[1];
-      getPurchases({limit: 50, startDate, endDate});
+      getPurchases({limit: 50, startDate, endDate}).then(response => {
+        if (response) setDataShopping(response);
+      });
     }
   }, [searcher]);
   useEffect(() => {
     // Clean browser for each change of the group of radio buttons
     setSearcher('');
     if (!valueFirstRadio)
-      getPurchases({value: '', limit: 50});
+      getPurchases({value: '', limit: 50}).then(response => {
+        if (response) setDataShopping(response);
+      });
   }, [valueFirstRadio]);
-  useEffect(() => {
-    // Wait for result when getting purchases search
-    window.electron.on('render:get-purchases', (err, data) => {
-      if (!err) {
-        console.log('error get purchases');
-        return null;
-      }
-      if (data)
-        setDataShopping(data.map(purchase => {
-          return {
-            ...purchase, code: purchase.folio,
-            date: purchase.date.toLocaleString()
-          };
-        }));
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-purchases');
-    };
-  }, []);
 
   // List to create the buttons on the left
   let listShopping = [
@@ -102,6 +88,7 @@ const Shopping = () => {
       <GroupPagesAdmin listButtons={ listShopping }>
         <TablePersonalized
           header={ header }
+          keyByIndex={ true }
           listData={ dataShopping }
           listProperties={ properties }
           setDataSelected={ setDataSelected }
@@ -109,7 +96,10 @@ const Shopping = () => {
         />
       </GroupPagesAdmin>
       <Suspense fallback={ <SpinnerLoadingPage /> }>
-        <ModalShopping />
+        <ModalShopping
+          dataShopping={ dataShopping }
+          setDataShopping={ setDataShopping }
+        />
       </Suspense>
     </div>
   );

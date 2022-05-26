@@ -18,10 +18,13 @@ const triggerEventsArticle = ({windowToSend}) => {
     
     return resultUpdate;
   });
-  ipcMain.on('main:get-article-by-id', async(_, { id }) => {
-    const dataArticle = await getArticleById({id});
-    
-    windowToSend.webContents.send('render:get-article-by-id', dataArticle);
+  ipcMain.handle('main:get-article-by-id', async(_, { id }) => {
+    try {
+      const dataArticle = await getArticleById({id});
+      return dataArticle;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.handle('main:get-article-by-keyword', async(_, { value, limit }) => {
     const dataArticle = await getArticlesByIdArticle({value, limit});
@@ -33,10 +36,13 @@ const triggerEventsArticle = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:get-article-by-keyword-company', dataArticle);
   });
-  ipcMain.on('main:get-article-for-auxtable', async(_, { value }) => {
-    const dataArticle = await getArticleForAuxTable({value});
-    
-    windowToSend.webContents.send('render:get-article-for-auxtable', dataArticle);
+  ipcMain.handle('main:get-article-for-auxtable', async(_, { value }) => {
+    try {
+      const dataArticle = await getArticleForAuxTable({value});
+      return dataArticle;
+    } catch (e) {
+      return false;
+    }
   });
 };
 

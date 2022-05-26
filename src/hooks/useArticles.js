@@ -36,11 +36,21 @@ const useArticle = () => {
     notifySuccess('Estado del articulo actualizado correctamente');
     return data;
   };
-  const getArticleById = ({id}) => {
-    window.electron.send('main:get-article-by-id', {id});
+  const getArticleById = async({id}) => {
+    const data = await window.electron.invoke('main:get-article-by-id', {id});
+    if (!data) return false;
+    
+    return data[0];
   };
-  const getArticleForAuxTable = ({value}) => {
-    window.electron.send('main:get-article-for-auxtable', {value});
+  const getArticleForAuxTable = async({value}) => {
+    const data = await window.electron.invoke('main:get-article-for-auxtable', {value});
+    if (!data) return false;
+
+    return data.map(dataArticle => {
+      return {
+        ...dataArticle, code: dataArticle.id
+      };
+    });
   };
 
   return {

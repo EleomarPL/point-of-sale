@@ -53,7 +53,8 @@ const addPurchases = async({listPurchases}) => {
     return false;
   }
   const {connection, pool} = await getConnection();
-  
+  let foliosArray = [];
+
   for ( const purchase of listPurchases ) {
     if (!(purchase.id && purchase.article && purchase.purchasePrice && purchase.salesPrice
       && purchase.amount && purchase.idProvider
@@ -74,15 +75,16 @@ const addPurchases = async({listPurchases}) => {
           amount: Number(purchase.amount), dateofExpiry: purchase.dateofExpiry
         });
       }
-      await connection.query(
+      const result = await connection.query(
         'INSERT INTO shopping VALUES(null, ?, default, ?);',
         [purchase.id, purchase.amount]
       );
+      foliosArray = [{date: new Date(), folio: result.insertId}, ...foliosArray];
     }
   }
 
   closeConnection({connection, pool});
-  return true;
+  return foliosArray;
 };
 const insertEmployee = async({name, lastName, motherLastName, isAMan, age, username, password}) => {
   if (!(name, lastName, motherLastName, age, username, password)) {

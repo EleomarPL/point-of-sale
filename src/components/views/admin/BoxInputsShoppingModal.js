@@ -24,7 +24,33 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
 
   useEffect(() => {
     if (code) {
-      getArticleById({id: code});
+      getArticleById({id: code}).then(response => {
+        amountRef.current.value = '';
+        if (response) {
+          setIsProductExist(true);
+          
+          nameRef.current.value = response.article;
+          purchasePriceRef.current.value = response.purchasePrice;
+          salesPriceRef.current.value = response.salesPrice;
+          stockRef.current.value = response.amount;
+  
+          setProviderSelect(response.id_provider.toString());
+          
+          if (response.dateofExpiry) {
+            let splitDate = new Date(response.dateofExpiry).toLocaleDateString().split('/');
+            dateofExpiryRef.current.value = convertDateYYYYMMDD({day: splitDate[0], month: splitDate[1], year: splitDate[2]});
+          } else
+            dateofExpiryRef.current.value = '';
+          
+        } else {
+          setIsProductExist(false);
+          nameRef.current.value = '';
+          purchasePriceRef.current.value = '';
+          salesPriceRef.current.value = '';
+          stockRef.current.value = '0';
+          dateofExpiryRef.current.value = '';
+        }
+      });
       setDataProductTemp([]);
       setDataSelected2({});
     }
@@ -32,61 +58,13 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
 
   useEffect(() => {
     if (article && !code) {
-      getArticleForAuxTable({value: article});
+      getArticleForAuxTable({value: article}).then(response => {
+        if (response) setDataProductTemp(response);
+      });
       setDataSelected2({});
     }
   }, [article]);
-
-  useEffect(() => {
-    window.electron.on('render:get-article-by-id', (err, data) => {
-      if (!err) {
-        console.log('error get article by id');
-        return null;
-      }
-      amountRef.current.value = '';
-      if (data[0] !== undefined) {
-        setIsProductExist(true);
-        
-        nameRef.current.value = data[0].article;
-        purchasePriceRef.current.value = data[0].purchasePrice;
-        salesPriceRef.current.value = data[0].salesPrice;
-        stockRef.current.value = data[0].amount;
-
-        setProviderSelect(data[0].id_provider.toString());
-        
-        if (data[0].dateofExpiry) {
-          let splitDate = new Date(data[0].dateofExpiry).toLocaleDateString().split('/');
-          dateofExpiryRef.current.value = convertDateYYYYMMDD({day: splitDate[0], month: splitDate[1], year: splitDate[2]});
-        } else
-          dateofExpiryRef.current.value = '';
-        
-      } else {
-        setIsProductExist(false);
-        nameRef.current.value = '';
-        purchasePriceRef.current.value = '';
-        salesPriceRef.current.value = '';
-        stockRef.current.value = '0';
-        dateofExpiryRef.current.value = '';
-      }
-    });
-    window.electron.on('render:get-article-for-auxtable', (err, data) => {
-      if (!err) {
-        console.log('error get article for auxtable');
-        return null;
-      }
-      if (data)
-        setDataProductTemp(data.map(dataArticle => {
-          return {
-            ...dataArticle, code: dataArticle.id
-          };
-        }));
-    });
-
-    return () => {
-      window.electron.removeAllListeners('render:get-article-by-id');
-      window.electron.removeAllListeners('render:get-article-for-auxtable');
-    };
-  }, []);
+  
   useEffect(() => {
     if (!code)
       if (dataSelected2.id) {

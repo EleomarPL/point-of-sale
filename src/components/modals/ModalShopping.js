@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Modal } from 'bootstrap';
+import PropTypes from 'prop-types';
 
 import TablePersonalized from '../common/TablePersonalized';
 import BoxInputsShoppingModal from '../views/admin/BoxInputsShoppingModal';
@@ -8,7 +9,6 @@ import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useShopping from '../../hooks/useShopping';
 import useValidationShopping from '../../hooks/validations/useValidationShopping';
-import { notifySuccess } from '../../consts/notifications';
 
 export const openmodalShopping = () => {
   let myModal = new Modal(
@@ -20,7 +20,7 @@ export const openmodalShopping = () => {
   myModal.show();
 };
 
-const ModalShopping = () => {
+const ModalShopping = ({dataShopping, setDataShopping}) => {
   const [dataNewShopping, setDataNewShopping] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [dataProductTemp, setDataProductTemp] = useState([]);
@@ -31,24 +31,6 @@ const ModalShopping = () => {
 
   const { insertPurchases } = useShopping();
   const { validatePossiblePurchase } = useValidationShopping();
-
-  useEffect(() => {
-    // Wait for the result of inserting purchases
-    window.electron.on('render:insert-purchases', (err, data) => {
-      setIsLoading(false);
-      if (!err) {
-        console.log('error insert purchases');
-        return null;
-      }
-      if (data)
-        notifySuccess('Compra realizada correctamente');
-      window.electron.send('main:get-purchases', {value: '', limit: 50});
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:insert-purchases');
-    };
-  }, []);
 
   // Data lists to create the table
   let header = [
@@ -74,7 +56,8 @@ const ModalShopping = () => {
               ...purchase, company: evt.target[7].options[evt.target[7].options.selectedIndex].text,
               quantity: Number(purchase.quantity) + Number(evt.target[4].value),
               total: Number(evt.target[2].value) * (Number(purchase.quantity) + Number(evt.target[4].value)),
-              idProvider: evt.target[7].value, amount: Number(purchase.quantity) + Number(evt.target[4].value)
+              idProvider: evt.target[7].value, amount: Number(purchase.quantity) + Number(evt.target[4].value),
+              dateofExpiry: evt.target[6].value || null
             };
           } else
             return purchase;
@@ -104,16 +87,30 @@ const ModalShopping = () => {
     setIsLoading(true);
     let listPurchases = dataNewShopping.map(purchase => {
       return {
-        ...purchase, isAdded: purchase.isAdded === 'true' ? true : false
+        ...purchase, isAdded: purchase.isAdded === 'true' ? true : false,
+        amountShopping: purchase.amount
       };
     });
-    insertPurchases({listPurchases});
-    setDataNewShopping([]);
-    setDataSelected({});
-    setDataSelected2({});
-    setDataProductTemp([]);
-    formRef.current.reset();
-    myModal.hide();
+    insertPurchases({listPurchases}).then(response => {
+      setIsLoading(false);
+      if (response) {
+        listPurchases.reverse();
+        let purchasesWithFolio = response.map((result, index) => {
+          return {
+            ...listPurchases[index], code: result.folio, id: result.folio,
+            folio: result.folio, date: result.date
+          };
+        });
+        //purchasesWithFolio.reverse();
+        setDataShopping([...purchasesWithFolio, ...dataShopping]);
+        setDataNewShopping([]);
+        setDataSelected({});
+        setDataSelected2({});
+        setDataProductTemp([]);
+        myModal.hide();
+        formRef.current.reset();
+      }
+    });
   };
   const handleDeleteArticle = () => {
     setDataNewShopping(dataNewShopping.filter(purchase => purchase.code !== dataSelected.code));
@@ -224,6 +221,11 @@ const ModalShopping = () => {
       </div>
     </div>
   );
+};
+
+ModalShopping.propTypes = {
+  dataShopping: PropTypes.array.isRequired,
+  setDataShopping: PropTypes.func.isRequired
 };
 
 export default ModalShopping;
