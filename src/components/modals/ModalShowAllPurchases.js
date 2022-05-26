@@ -24,31 +24,13 @@ const ModalShowAllPurchases = () => {
   const {getPurchases} = useShopping();
 
   useEffect(() => {
-    getPurchases({value: searcher});
-  }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting purchases search
-    window.electron.on('render:get-purchases', (err, data) => {
-      if (!err) {
-        console.log('error get purchases');
-        return null;
+    getPurchases({value: searcher}).then(response => {
+      if (response) {
+        setTotal(response.reduce((acc, current) => current.total + acc, 0));
+        setDataPurchases(response);
       }
-      if (data)
-        setDataPurchases(data.map(purchase => {
-          return {
-            ...purchase, code: purchase.folio,
-            date: purchase.date.toLocaleString()
-          };
-        }));
     });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-purchases');
-    };
-  }, []);
-  useEffect(() => {
-    setTotal(dataPurchases.reduce((acc, current) => current.total + acc, 0));
-  }, [dataPurchases]);
+  }, [searcher]);
 
   // Data lists to create the table
   let header = [
