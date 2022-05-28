@@ -17,10 +17,13 @@ const triggerEventsAdmin = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:is-there-an-admin', resultOperation);
   });
-  ipcMain.on('main:update-username-admin', async(_, { id, username, password }) => {
-    const resultOperation = await updateUsernameAdmin({id, username, password});
-    
-    windowToSend.webContents.send('render:update-username-admin', resultOperation);
+  ipcMain.handle('main:update-username-admin', async(_, { id, username, password }) => {
+    try {
+      const resultOperation = await updateUsernameAdmin({id, username, password});
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.handle('main:update-password-admin', async(_, { id, oldPassword, newPassword }) => {
     try {

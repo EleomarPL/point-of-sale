@@ -1,7 +1,7 @@
 import { Modal } from 'bootstrap';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
-import { notifyInfo, notifySuccess, notifyWarning } from '../../consts/notifications';
+import { notifyWarning } from '../../consts/notifications';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import useAdmin from '../../hooks/useAdmin';
 import Auth from '../../contexts/Auth';
@@ -24,47 +24,21 @@ const ModalUpdateUsernameAdmin = () => {
   const {updateUsernameAdmin} = useAdmin();
   const {userData} = useContext(Auth);
 
-  useEffect(() => {
-    // Wait for the result of updating username admin
-    window.electron.on('render:update-username-admin', (err, data) => {
-      setIsLoading(false);
-
-      if (!err) {
-        console.log('error update username admin');
-        return null;
-      }
-      let myModal = Modal.getInstance( document.getElementById('modalUpdateUsernameAdmin') );
-      setPassword('');
-
-      if (data) {
-        setUsername('');
-        myModal.hide();
-        notifySuccess('Administrador actualizado correctamente');
-      } else if (data === undefined) {
-        setUsername('');
-        myModal.hide();
-        notifyInfo('Administrador no encontrado');
-      } else if (data === null)
-        notifyWarning('Contraseña incorrecta');
-      else {
-        setUsername('');
-        notifyWarning('Ingrese un diferente nombre de usuario');
-      }
-      
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:update-username-admin');
-    };
-  }, []);
-
   const handleUpdateUsername = () => {
     if (password && username) {
       if (username.length < 6 || username > 50) {
         notifyWarning('Nuevo usuario debe tener de 6 a 50 caracteres');
       } else {
         setIsLoading(true);
-        updateUsernameAdmin({id: userData.id, password, username});
+        updateUsernameAdmin({id: userData.id, password, username}).then(response => {
+          setIsLoading(false);
+          let myModal = Modal.getInstance( document.getElementById('modalUpdateUsernameAdmin') );
+          if (response) {
+            setPassword('');
+            setUsername('');
+            myModal.hide();
+          }
+        });
       }
     } else {
       notifyWarning('Rellene todos los campos');
