@@ -1,8 +1,23 @@
+import {
+  notifyError, notifyInfo, notifySuccess, notifyWarning
+} from '../consts/notifications';
+
 const useAdmin = () => {
-  const updatePasswordAdmin = ({id, oldPassword, newPassword}) => {
-    window.electron.send('main:update-password-admin', {id, oldPassword, newPassword});
+  const updatePasswordAdmin = async({id, oldPassword, newPassword}) => {
+    const data = await window.electron.invoke('main:update-password-admin', {id, oldPassword, newPassword});
+    if (data) {
+      notifySuccess('Administrador actualizado correctamente');
+      return true;
+    } else if (data === undefined)
+      notifyInfo('Administrador no encontrado');
+    else if (data === null)
+      notifyWarning('Contraseña incorrecta');
+    else
+      notifyError('Error en la base de datos');
+
+    return false;
   };
-  const updateUsernameAdmin = ({id, username, password}) => {
+  const updateUsernameAdmin = async({id, username, password}) => {
     window.electron.send('main:update-username-admin', {id, username, password});
   };
   const insertAdmin = ({name, lastName, motherLastName, age, isAMan, username, password}) => {

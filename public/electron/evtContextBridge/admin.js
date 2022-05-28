@@ -22,10 +22,13 @@ const triggerEventsAdmin = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:update-username-admin', resultOperation);
   });
-  ipcMain.on('main:update-password-admin', async(_, { id, oldPassword, newPassword }) => {
-    const resultOperation = await updatePasswordAdmin({id, oldPassword, newPassword});
-    
-    windowToSend.webContents.send('render:update-password-admin', resultOperation);
+  ipcMain.handle('main:update-password-admin', async(_, { id, oldPassword, newPassword }) => {
+    try {
+      const resultOperation = await updatePasswordAdmin({id, oldPassword, newPassword});
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
 };
 
