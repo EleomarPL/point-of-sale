@@ -14,7 +14,10 @@ const ContainerShowProducts = ({
 
   useEffect(() => {
     getArticles({value: searcher, limit: 15}).then(response => {
-      if (response) setDataArticle(response);
+      if (response) {
+        if (!isQuery) setDataArticle(response.filter(article => article.statusArticle !== 'Bloqueado'));
+        else setDataArticle(response);
+      }
     });
   }, [searcher]);
 
