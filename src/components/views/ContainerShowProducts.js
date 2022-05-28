@@ -13,33 +13,10 @@ const ContainerShowProducts = ({
   const {getArticles} = useArticle();
 
   useEffect(() => {
-    getArticles({value: searcher, limit: 15});
-  }, [searcher]);
-  useEffect(() => {
-    // Wait for result when getting article by keyword
-    window.electron.on('render:get-article-by-keyword', (err, data) => {
-      if (!err) {
-        console.log('error get articles');
-        return null;
-      }
-      if (data) {
-        let filterData = data;
-        if (!isQuery) {
-          filterData = data.filter(article => article.statusArticle !== 'locked');
-        }
-        setDataArticle(filterData.map(article => {
-          return {
-            ...article, code: article.id,
-            statusArticle: article.statusArticle === 'locked' ? 'Bloqueado' : 'Activo'
-          };
-        }));
-      }
+    getArticles({value: searcher, limit: 15}).then(response => {
+      if (response) setDataArticle(response);
     });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:get-article-by-keyword');
-    };
-  }, []);
+  }, [searcher]);
 
   // Data lists to create the table
   let header = [
