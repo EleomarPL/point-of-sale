@@ -16,23 +16,10 @@ const AddDebtor = () => {
   const { getDebtors, insertDebtor, updateDebtor } = useDebts();
 
   useEffect(() => {
-    getDebtors({value: ''});
-
-    // Wait for result when getting debtors search
-    window.electron.on('render:get-debtors', (err, data) => {
-      if (!err) {
-        console.log('error get debtors');
-        return null;
-      }
-      
-      if (data)
-        setListDebtors(data.map(debtor => {
-          return {
-            ...debtor, code: debtor.id,
-            genderUpdated: debtor.gender === 'M' ? 'Masculino' : 'Femenino'
-          };
-        }));
+    getDebtors({value: ''}).then(response => {
+      if (response) setListDebtors(response);
     });
+
     // Wait for the result of inserting debtor
     window.electron.on('render:insert-debtor', (err, data) => {
       if (!err) {
@@ -60,7 +47,6 @@ const AddDebtor = () => {
     });
     // Delete previous events
     return () => {
-      window.electron.removeAllListeners('render:get-debtors');
       window.electron.removeAllListeners('render:insert-debtor');
       window.electron.removeAllListeners('render:update-debtor');
     };

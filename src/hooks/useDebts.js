@@ -3,8 +3,14 @@ const useDebts = () => {
     const data = await window.electron.invoke('main:get-debts', {value, isGroupByDebtor: true});
     return data;
   };
-  const getDebtors = ({value}) => {
-    window.electron.send('main:get-debtors', {value});
+  const getDebtors = async({value}) => {
+    const dataDebtors = await window.electron.invoke('main:get-debtors', {value});
+    if (!dataDebtors) return false;
+
+    return dataDebtors.map(debtor => ({
+      ...debtor, code: debtor.id,
+      genderUpdated: debtor.gender === 'M' ? 'Masculino' : 'Femenino'
+    }));
   };
   const getDebtsFromDebtor = ({idDebtor = 0}) => {
     window.electron.send('main:get-debts-from-debtor', {idDebtor});

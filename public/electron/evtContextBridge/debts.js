@@ -29,10 +29,13 @@ const triggerEventsDebts = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:update-debtor', resultOperation);
   });
-  ipcMain.on('main:get-debtors', async(_, { value }) => {
-    const dataDebtors = await getDebtors({value});
-    
-    windowToSend.webContents.send('render:get-debtors', dataDebtors);
+  ipcMain.handle('main:get-debtors', async(_, { value }) => {
+    try {
+      const dataDebtors = await getDebtors({value});
+      return dataDebtors;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.on('main:insert-debt', async(_, { idDebtor, idUser, listArticles }) => {
     const resultOperation = await listArticles.forEach(async article => {
