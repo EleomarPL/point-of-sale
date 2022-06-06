@@ -13,8 +13,24 @@ const useValidationAdmin = () => {
 
     return true;
   };
+  const validatePassword = ({oldPassword, newPassword, confirmNewPassword}) => {
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
+      notifyWarning('Rellene todos los campos');
+      return false;
+    }
+    if (newPassword !== confirmNewPassword) {
+      notifyWarning('Las contraseñas no coinciden');
+      return false;
+    }
+    if (confirmNewPassword.length < 6 || confirmNewPassword.length > 50) {
+      notifyWarning('Nueva contraseña debe tener de 6 a 50 caracteres');
+      return false;
+    }
 
-  return { validateUsername };
+    return true;
+  };
+
+  return { validateUsername, validatePassword };
 };
 
 export default useValidationAdmin;

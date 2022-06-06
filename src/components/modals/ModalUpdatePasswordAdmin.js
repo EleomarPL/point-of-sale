@@ -1,12 +1,12 @@
 import { Modal } from 'bootstrap';
 import { useState } from 'react';
 
-import { notifyWarning } from '../../consts/notifications';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import useAdmin from '../../hooks/useAdmin';
 import Auth from '../../contexts/Auth';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import { useContext } from 'react';
+import useValidationAdmin from '../../hooks/validations/useValidationAdmin';
 
 export const openmodalUpdatePasswordAdmin = () => {
   let myModal = new Modal(
@@ -23,29 +23,24 @@ const ModalUpdatePasswordAdmin = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {updatePasswordAdmin} = useAdmin();
-  const {userData} = useContext(Auth);
+  const { userData } = useContext(Auth);
+  const { updatePasswordAdmin } = useAdmin();
+  const { validatePassword } = useValidationAdmin();
 
   const handleUpdatePassword = () => {
-    if (newPassword !== confirmNewPassword) {
-      notifyWarning('Las contraseñas no coinciden');
-    } else {
-      if (confirmNewPassword.length < 6 || confirmNewPassword.length > 50) {
-        notifyWarning('Nueva contraseña debe tener de 6 a 50 caracteres');
-      } else {
-        setIsLoading(true);
-        updatePasswordAdmin({
-          id: userData.id, oldPassword: currentPassword, newPassword
-        }).then(response => {
-          setIsLoading(false);
-          setNewPassword('');
-          setConfirmNewPassword('');
-          if (response) {
-            let myModal = Modal.getInstance( document.getElementById('modalUpdatePasswordAdmin') );
-            myModal.hide();
-          }
-        });
-      }
+    if (validatePassword({newPassword, confirmNewPassword, oldPassword: currentPassword})) {
+      setIsLoading(true);
+      updatePasswordAdmin({
+        id: userData.id, oldPassword: currentPassword, newPassword
+      }).then(response => {
+        setIsLoading(false);
+        setNewPassword('');
+        setConfirmNewPassword('');
+        if (response) {
+          let myModal = Modal.getInstance( document.getElementById('modalUpdatePasswordAdmin') );
+          myModal.hide();
+        }
+      });
     }
   };
 
