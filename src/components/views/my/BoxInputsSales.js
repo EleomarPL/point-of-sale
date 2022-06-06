@@ -22,7 +22,21 @@ const BoxInputsSales = ({setDataSelected}) => {
 
   useEffect(() => {
     if (code)
-      getArticleById({id: code});
+      getArticleById({id: code}).then(response => {
+        setName('');
+        setStock('');
+        setPrice('');
+        setAmount('');
+        if (typeof response === 'object') {
+          setName(response.article);
+          setStock(response.amount);
+          setPrice(response.salesPrice);
+          inputAmountRef.current.focus();
+        } else if (!response) {
+          inputCodeRef.current.value = '';
+          setCode('');
+        }
+      });
     else {
       setDataSelected({});
       setName('');
@@ -31,46 +45,6 @@ const BoxInputsSales = ({setDataSelected}) => {
       setPrice('');
     }
   }, [code]);
-  useEffect(() => {
-    window.electron.on('render:get-article-by-id', (err, data) => {
-      if (!err) {
-        console.log('error get article by id');
-        return null;
-      }
-      setDataSelected({});
-      if (data[0]) {
-        if (data[0].statusArticle.toString() === 'locked') {
-          notifyInfo('Este producto se encuentra bloqueado');
-          setCode('');
-          setName('');
-          setStock('');
-          setPrice('');
-          setAmount('');
-        } else if (data[0].amount === 0) {
-          notifyInfo('Producto sin existencia');
-          setCode('');
-          setName('');
-          setStock('');
-          setPrice('');
-          setAmount('');
-        } else {
-          setName(data[0].article);
-          setStock(data[0].amount);
-          setPrice(data[0].salesPrice);
-          inputAmountRef.current.focus();
-        }
-      } else {
-        setName('');
-        setStock('');
-        setPrice('');
-        setAmount('');
-      }
-    });
-
-    return () => {
-      window.electron.removeAllListeners('render:get-article-by-id');
-    };
-  }, []);
 
   const handleSetFutureSales = () => {
     if (isInteger({name: 'Cantidad', value: amount})) {
