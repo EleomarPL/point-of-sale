@@ -1,11 +1,11 @@
 import { Modal } from 'bootstrap';
 import { useContext, useState } from 'react';
 
-import { notifyWarning } from '../../consts/notifications';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import useAdmin from '../../hooks/useAdmin';
 import Auth from '../../contexts/Auth';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
+import useValidationAdmin from '../../hooks/validations/useValidationAdmin';
 
 export const openmodalUpdateUsernameAdmin = () => {
   let myModal = new Modal(
@@ -21,27 +21,23 @@ const ModalUpdateUsernameAdmin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {updateUsernameAdmin} = useAdmin();
-  const {userData} = useContext(Auth);
+
+  const { updateUsernameAdmin } = useAdmin();
+  const { validateUsername } = useValidationAdmin();
+  const { userData } = useContext(Auth);
 
   const handleUpdateUsername = () => {
-    if (password && username) {
-      if (username.length < 6 || username > 50) {
-        notifyWarning('Nuevo usuario debe tener de 6 a 50 caracteres');
-      } else {
-        setIsLoading(true);
-        updateUsernameAdmin({id: userData.id, password, username}).then(response => {
-          setIsLoading(false);
-          let myModal = Modal.getInstance( document.getElementById('modalUpdateUsernameAdmin') );
-          if (response) {
-            setPassword('');
-            setUsername('');
-            myModal.hide();
-          }
-        });
-      }
-    } else {
-      notifyWarning('Rellene todos los campos');
+    if (validateUsername({password, username})) {
+      setIsLoading(true);
+      updateUsernameAdmin({id: userData.id, password, username}).then(response => {
+        setIsLoading(false);
+        let myModal = Modal.getInstance( document.getElementById('modalUpdateUsernameAdmin') );
+        if (response) {
+          setPassword('');
+          setUsername('');
+          myModal.hide();
+        }
+      });
     }
   };
 
