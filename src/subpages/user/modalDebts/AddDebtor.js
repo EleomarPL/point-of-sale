@@ -20,18 +20,6 @@ const AddDebtor = () => {
       if (response) setListDebtors(response);
     });
 
-    // Wait for the result of inserting debtor
-    window.electron.on('render:insert-debtor', (err, data) => {
-      if (!err) {
-        console.log('error get debts');
-        return null;
-      }
-      if (data) {
-        setIsLoadingAdd(false);
-        notifySuccess('Deudor agregado exitosamente');
-        window.electron.send('main:get-debtors', {value: ''});
-      }
-    });
     // Wait for the result of updating debts
     window.electron.on('render:update-debtor', (err, data) => {
       if (!err) {
@@ -47,7 +35,6 @@ const AddDebtor = () => {
     });
     // Delete previous events
     return () => {
-      window.electron.removeAllListeners('render:insert-debtor');
       window.electron.removeAllListeners('render:update-debtor');
     };
   }, []);
@@ -98,6 +85,22 @@ const AddDebtor = () => {
         motherLastName: dataDebtorForm.motherLastName.value,
         address: dataDebtorForm.address.value,
         isAMan: evt.target[4].checked
+      }).then(response => {
+        if (response) {
+          setIsLoadingAdd(false);
+          setListDebtors([
+            {
+              code: response.insertId,
+              id: response.insertId,
+              name: evt.target[0].value,
+              lastName: evt.target[1].value,
+              motherLastName: evt.target[2].value,
+              address: evt.target[3].value,
+              genderUpdated: evt.target[4].checked ? 'Masculino' : 'Femenino'
+            },
+            ...listDebtors
+          ]);
+        }
       });
     }
   };

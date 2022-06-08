@@ -1,3 +1,5 @@
+import { notifySuccess } from '../consts/notifications';
+
 const useDebts = () => {
   const getDebtsByKeyword = async({value}) => {
     const data = await window.electron.invoke('main:get-debts', {value, isGroupByDebtor: true});
@@ -15,8 +17,14 @@ const useDebts = () => {
   const getDebtsFromDebtor = ({idDebtor = 0}) => {
     window.electron.send('main:get-debts-from-debtor', {idDebtor});
   };
-  const insertDebtor = ({name, lastName, motherLastName, isAMan, address}) => {
-    window.electron.send('main:insert-debtor', {name, lastName, motherLastName, isAMan, address});
+  const insertDebtor = async({name, lastName, motherLastName, isAMan, address}) => {
+    const result = await window.electron.invoke('main:insert-debtor', {name, lastName, motherLastName, isAMan, address});
+    if (!result) return false;
+
+    if (result.affectedRows !== 0) {
+      notifySuccess('Deudor agregado exitosamente');
+      return result;
+    } else return false;
   };
   const updateDebtor = ({idDebtor, address}) => {
     window.electron.send('main:update-debtor', {idDebtor, address});

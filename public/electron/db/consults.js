@@ -196,7 +196,8 @@ const getDebtors = async({value}) => {
   const {connection, pool} = await getConnection();
   
   const getDataDebtors = await connection.query(
-    `SELECT * FROM debtor WHERE CONCAT(id, name, lastName) LIKE '%${value}%';`
+    `SELECT * FROM debtor WHERE CONCAT(id, name, lastName) LIKE '%${value}%' 
+    ORDER BY id DESC;`
   );
   closeConnection({connection, pool});
 

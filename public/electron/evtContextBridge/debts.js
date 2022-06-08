@@ -19,10 +19,13 @@ const triggerEventsDebts = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:get-debts-from-debtor', dataDebts);
   });
-  ipcMain.on('main:insert-debtor', async(_, { name, lastName, motherLastName, isAMan, address }) => {
-    const resultOperation = await insertDebtor({name, lastName, motherLastName, isAMan, address});
-    
-    windowToSend.webContents.send('render:insert-debtor', resultOperation);
+  ipcMain.handle('main:insert-debtor', async(_, { name, lastName, motherLastName, isAMan, address }) => {
+    try {
+      const resultOperation = await insertDebtor({name, lastName, motherLastName, isAMan, address});
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.on('main:update-debtor', async(_, { idDebtor, address }) => {
     const resultOperation = await updateDebtor({idDebtor, address});
