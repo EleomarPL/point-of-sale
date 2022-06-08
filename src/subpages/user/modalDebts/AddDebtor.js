@@ -6,7 +6,7 @@ import BoxInputsDebtors from '../../../components/views/my/BoxInputsDebtor';
 import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
 import useDebts from '../../../hooks/useDebts';
 import { isObjectValuesNull, validateLength } from '../../../services/validations/generalValidations';
-import { notifySuccess } from '../../../consts/notifications';
+import { updateArray } from '../../../utils/updateArray';
 
 const AddDebtor = () => {
   const [listDebtors, setListDebtors] = useState([]);
@@ -19,24 +19,6 @@ const AddDebtor = () => {
     getDebtors({value: ''}).then(response => {
       if (response) setListDebtors(response);
     });
-
-    // Wait for the result of updating debts
-    window.electron.on('render:update-debtor', (err, data) => {
-      if (!err) {
-        console.log('error update debtor');
-        return null;
-      }
-      if (data) {
-        setIsLoadingEdit(false);
-        setDataSelected({});
-        notifySuccess('Deudor actualizado exitosamente');
-        window.electron.send('main:get-debtors', {value: ''});
-      }
-    });
-    // Delete previous events
-    return () => {
-      window.electron.removeAllListeners('render:update-debtor');
-    };
   }, []);
   
   // Data lists to create the table
@@ -119,7 +101,21 @@ const AddDebtor = () => {
 
     if ( !isObjectValuesNull(dataDebtorForm) && validateLength(dataDebtorForm) ) {
       setIsLoadingEdit(true);
-      updateDebtor({idDebtor: dataSelected.code, address: dataDebtorForm.address.value});
+      updateDebtor({idDebtor: dataSelected.code, address: dataDebtorForm.address.value}).then(response => {
+        setIsLoadingEdit(false);
+        if (response) {
+          const arrayUpdate = updateArray({
+            array: [...listDebtors],
+            item: {
+              ...dataSelected,
+              address: valuesInputs[3].value
+            },
+            key: 'code'
+          });
+          setListDebtors(arrayUpdate);
+          setDataSelected({});
+        }
+      });
     }
   };
 

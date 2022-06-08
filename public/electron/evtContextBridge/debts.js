@@ -27,10 +27,13 @@ const triggerEventsDebts = ({windowToSend}) => {
       return false;
     }
   });
-  ipcMain.on('main:update-debtor', async(_, { idDebtor, address }) => {
-    const resultOperation = await updateDebtor({idDebtor, address});
-    
-    windowToSend.webContents.send('render:update-debtor', resultOperation);
+  ipcMain.handle('main:update-debtor', async(_, { idDebtor, address }) => {
+    try {
+      const resultOperation = await updateDebtor({idDebtor, address});
+      return resultOperation;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.handle('main:get-debtors', async(_, { value }) => {
     try {

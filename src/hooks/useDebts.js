@@ -1,4 +1,4 @@
-import { notifySuccess } from '../consts/notifications';
+import { notifyError, notifyInfo, notifySuccess } from '../consts/notifications';
 
 const useDebts = () => {
   const getDebtsByKeyword = async({value}) => {
@@ -26,8 +26,18 @@ const useDebts = () => {
       return result;
     } else return false;
   };
-  const updateDebtor = ({idDebtor, address}) => {
-    window.electron.send('main:update-debtor', {idDebtor, address});
+  const updateDebtor = async({idDebtor, address}) => {
+    const resultOperation = await window.electron.invoke('main:update-debtor', {idDebtor, address});
+    if (!resultOperation) {
+      notifyError('Error al actualizar el deudor');
+      return false;
+    }
+    if (resultOperation.affectedRows === 0) {
+      notifyInfo('Deudor no actualizado');
+      return false;
+    }
+    notifySuccess('Deudor actualizado exitosamente');
+    return true;
   };
   const addDebt = ({idDebtor, idUser, listArticles}) => {
     window.electron.send('main:insert-debt', {idDebtor, idUser, listArticles});
