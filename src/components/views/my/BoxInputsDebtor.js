@@ -1,78 +1,86 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { inputAddDebtor } from '../../../data/my/inputAddDebtor';
-
-
 const BoxInputsDebtors = ({dataSelected, isEdit = false}) => {
-  const [values, setValues] = useState({
-    code: '', name: '', lastName: '',
-    motherLastName: '', address: '', gender: 'M'
-  });
   const [gender, setGender] = useState(true);
 
+  const nameInputRef = useRef({});
+  const lastnameInputRef = useRef({});
+  const motherLastnameInputRef = useRef({});
+  const addressInputRef = useRef({});
+
   useEffect(() => {
-    setValues({
-      ...dataSelected
-    });
+    nameInputRef.current.value = dataSelected?.name ?? '';
+    lastnameInputRef.current.value = dataSelected?.lastName ?? '';
+    motherLastnameInputRef.current.value = dataSelected?.motherLastName ?? '';
+    addressInputRef.current.value = dataSelected?.address ?? '';
     setGender(dataSelected.gender === 'M');
   }, [dataSelected]);
 
-  const handleChangeValue = ({property, value}) => {
-    setValues({
-      ...values,
-      [property]: value
-    });
-  };
-
   return (
-    <table className="overflow-auto">
-      <tbody>
-        { inputAddDebtor &&
-          inputAddDebtor.map(inputDebtor =>
-            <tr
-              key={ inputDebtor.id }
-            >
-              <td style={ {paddingBottom: '2rem', verticalAlign: 'middle'} }>{ inputDebtor.placeholder }: </td>
-              <td style={ {paddingBottom: '2rem'} }>
-                <input type={ inputDebtor.type } className="form-control"
-                  placeholder={ inputDebtor.placeholder } aria-label={ inputDebtor.id.toUpperCase() }
-                  aria-describedby={ inputDebtor.id } value={ values[inputDebtor.id] || '' }
-                  onChange={ (evt) => handleChangeValue({property: inputDebtor.id, value: evt.target.value}) }
-                  style={ {backgroundColor: '#f6eded'} }
-                  disabled={ isEdit && inputDebtor.id !== 'address' }
-                />
-              </td>
-            </tr>
-          )
-        }
-        <tr>
-          <td>Sexo: </td>
-          <td>
-            <div>
-              <input className="form-check-input" type="radio"
-                id="radio1"
-                checked={ gender } disabled={ isEdit }
-                onChange={ () => setGender(!gender) }
-              />
-              <label className="form-check-label" htmlFor="radio1">
-                Masculino
-              </label>
-            </div>
-            <div>
-              <input className="form-check-input" type="radio"
-                id="radio2"
-                checked={ !gender } disabled={ isEdit }
-                onChange={ () => setGender(!gender) }
-              />
-              <label className="form-check-label" htmlFor="radio2">
-                Femenino
-              </label>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div className="w-100 overflow-auto row row-cols-lg-1 g-1">
+      <div className="input-group row row-cols-lg-3 g-1 text-truncate">
+        <label className="col-form-label" htmlFor="name">Nombre</label>
+        <input
+          placeholder="Nombre" ref={ nameInputRef }
+          id="name" type="text"
+          aria-label="Name" aria-describedby="name"
+          className="form-control flex-fill" style={ {backgroundColor: '#f6eded'} }
+          disabled={ isEdit }
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label" htmlFor="lastname">Apellido Paterno</label>
+        <input
+          placeholder="Apellido Paterno" ref={ lastnameInputRef }
+          id="lastname" type="text"
+          aria-label="Lastname" aria-describedby="lastname"
+          className="form-control flex-fill" style={ {backgroundColor: '#f6eded'} }
+          disabled={ isEdit }
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label" htmlFor="motherlastname">Apellido Materno</label>
+        <input
+          placeholder="Apellido Materno" ref={ motherLastnameInputRef }
+          id="motherlastname" type="text"
+          aria-label="Motherlastname" aria-describedby="motherlastname"
+          className="form-control flex-fill" style={ {backgroundColor: '#f6eded'} }
+          disabled={ isEdit }
+        />
+      </div>
+      <div className="input-group row row-cols-lg-3 g-1">
+        <label className="col-form-label" htmlFor="address">Domicilio</label>
+        <input
+          placeholder="Domicilio" ref={ addressInputRef }
+          id="address" type="text"
+          aria-label="Address" aria-describedby="address"
+          className="form-control flex-fill" style={ {backgroundColor: '#f6eded'} }
+        />
+      </div>
+      <div>
+        <div>
+          <input className="form-check-input" type="radio"
+            id="radio1"
+            checked={ gender } disabled={ isEdit }
+            onChange={ () => setGender(!gender) }
+          />
+          <label className="form-check-label" htmlFor="radio1">
+            Masculino
+          </label>
+        </div>
+        <div>
+          <input className="form-check-input" type="radio"
+            id="radio2"
+            checked={ !gender } disabled={ isEdit }
+            onChange={ () => setGender(!gender) }
+          />
+          <label className="form-check-label" htmlFor="radio2">
+            Femenino
+          </label>
+        </div>
+      </div>
+    </div>
   );
 };
 

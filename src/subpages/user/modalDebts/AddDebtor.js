@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import ButtonPersonalized from '../../../components/common/ButtonPersonalized';
 import TablePersonalized from '../../../components/common/TablePersonalized';
@@ -13,6 +13,8 @@ const AddDebtor = () => {
   const [dataSelected, setDataSelected] = useState({});
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
+
+  const formRef = useRef({});
   const { getDebtors, insertDebtor, updateDebtor } = useDebts();
 
   useEffect(() => {
@@ -82,6 +84,7 @@ const AddDebtor = () => {
             },
             ...listDebtors
           ]);
+          formRef.current.reset();
         }
       });
     }
@@ -114,6 +117,7 @@ const AddDebtor = () => {
           });
           setListDebtors(arrayUpdate);
           setDataSelected({});
+          formRef.current.reset();
         }
       });
     }
@@ -132,7 +136,9 @@ const AddDebtor = () => {
           />
         </div>
         <div className="col-md-3">
-          <form className="d-flex flex-column justify-content-center" onSubmit={ handleAddDebtor }>
+          <form className="d-flex flex-column justify-content-center" onSubmit={ handleAddDebtor }
+            ref={ formRef }
+          >
             <BoxInputsDebtors
               dataSelected={ dataSelected }
               isEdit={ dataSelected.code !== undefined }
