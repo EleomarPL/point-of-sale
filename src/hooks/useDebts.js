@@ -14,8 +14,13 @@ const useDebts = () => {
       genderUpdated: debtor.gender === 'M' ? 'Masculino' : 'Femenino'
     }));
   };
-  const getDebtsFromDebtor = ({idDebtor = 0}) => {
-    window.electron.send('main:get-debts-from-debtor', {idDebtor});
+  const getDebtsFromDebtor = async({idDebtor = 0}) => {
+    const data = await window.electron.send('main:get-debts-from-debtor', {idDebtor});
+    if (!data) return false;
+
+    return data.map(debtor => ({
+      ...debtor, code: debtor.id
+    }));
   };
   const insertDebtor = async({name, lastName, motherLastName, isAMan, address}) => {
     const result = await window.electron.invoke('main:insert-debtor', {name, lastName, motherLastName, isAMan, address});

@@ -14,10 +14,13 @@ const triggerEventsDebts = ({windowToSend}) => {
       return false;
     }
   });
-  ipcMain.on('main:get-debts-from-debtor', async(_, { idDebtor }) => {
-    const dataDebts = await getDebtsFromADebtor({idDebtor});
-    
-    windowToSend.webContents.send('render:get-debts-from-debtor', dataDebts);
+  ipcMain.handle('main:get-debts-from-debtor', async(_, { idDebtor }) => {
+    try {
+      const dataDebts = await getDebtsFromADebtor({idDebtor});
+      return dataDebts;
+    } catch (e) {
+      return false;
+    }
   });
   ipcMain.handle('main:insert-debtor', async(_, { name, lastName, motherLastName, isAMan, address }) => {
     try {
