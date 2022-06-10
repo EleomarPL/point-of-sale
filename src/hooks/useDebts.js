@@ -15,7 +15,7 @@ const useDebts = () => {
     }));
   };
   const getDebtsFromDebtor = async({idDebtor = 0}) => {
-    const data = await window.electron.send('main:get-debts-from-debtor', {idDebtor});
+    const data = await window.electron.invoke('main:get-debts-from-debtor', {idDebtor});
     if (!data) return false;
 
     return data.map(debtor => ({
