@@ -44,8 +44,11 @@ const useDebts = () => {
     notifySuccess('Deudor actualizado exitosamente');
     return true;
   };
-  const addDebt = ({idDebtor, idUser, listArticles}) => {
-    window.electron.send('main:insert-debt', {idDebtor, idUser, listArticles});
+  const addDebt = async({idDebtor, idUser, listArticles}) => {
+    const result = await window.electron.invoke('main:insert-debt', {idDebtor, idUser, listArticles});
+    if (result) notifySuccess('Deuda agregada exitosamente');
+
+    return result;
   };
   const payDebt = ({idUser, total, salesRecords}) => {
     window.electron.send('main:pay-debt', {idUser, total, salesRecords});

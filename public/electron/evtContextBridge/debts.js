@@ -46,15 +46,24 @@ const triggerEventsDebts = ({windowToSend}) => {
       return false;
     }
   });
-  ipcMain.on('main:insert-debt', async(_, { idDebtor, idUser, listArticles }) => {
-    const resultOperation = await listArticles.forEach(async article => {
+  ipcMain.handle('main:insert-debt', async(_, { idDebtor, idUser, listArticles }) => {
+    let resultOperation = true;
+    
+    for ( const article of listArticles ) {
+      let result = await insertDebt({
+        idDebtor, idArticle: article.idArticle, idUser,
+        amount: article.amount, price: article.salesPrice, total: article.total
+      });
+      if (!result) resultOperation = false;
+    }
+    return resultOperation;
+    /* const resultOperation = await listArticles.forEach(async article => {
       return await insertDebt({
         idDebtor, idArticle: article.idArticle, idUser,
         amount: article.amount, price: article.salesPrice, total: article.total
       });
-    });
-    
-    windowToSend.webContents.send('render:insert-debt', resultOperation);
+    }); */
+    //return resultOperation;
   });
   ipcMain.on('main:pay-debt', async(_, { idUser, total, salesRecords }) => {
     const resultOperation = await payDebt({idUser, total, salesRecords});
