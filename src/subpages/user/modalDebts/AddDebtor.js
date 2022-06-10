@@ -5,8 +5,8 @@ import TablePersonalized from '../../../components/common/TablePersonalized';
 import BoxInputsDebtors from '../../../components/views/my/BoxInputsDebtor';
 import SpinnerButtonLoading from '../../../components/common/SpinnerButtonLoading';
 import useDebts from '../../../hooks/useDebts';
-import { isObjectValuesNull, validateLength } from '../../../services/validations/generalValidations';
 import { updateArray } from '../../../utils/updateArray';
+import useValidationDebtor from '../../../hooks/validations/useValidationDebtor';
 
 const AddDebtor = () => {
   const [listDebtors, setListDebtors] = useState([]);
@@ -16,6 +16,7 @@ const AddDebtor = () => {
 
   const formRef = useRef({});
   const { getDebtors, insertDebtor, updateDebtor } = useDebts();
+  const { validateCreationDebtor, validateUpdateDebtor } = useValidationDebtor();
 
   useEffect(() => {
     getDebtors({value: ''}).then(response => {
@@ -36,38 +37,12 @@ const AddDebtor = () => {
   const handleAddDebtor = (evt) => {
     evt.preventDefault();
 
-    let dataDebtorForm = {
-      name: {
-        name: 'Nombre',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[0].value
-      },
-      lastName: {
-        name: 'Apellido paterno',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[1].value
-      },
-      motherLastName: {
-        name: 'Apellido materno',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[2].value
-      },
-      address: {
-        name: 'Dirección',
-        minLength: 6,
-        maxLength: 80,
-        value: evt.target[3].value
-      }
-    };
-    if ( !isObjectValuesNull(dataDebtorForm) && validateLength(dataDebtorForm) ) {
+    if (validateCreationDebtor({event: evt})) {
       setIsLoadingAdd(true);
       insertDebtor({
-        name: dataDebtorForm.name.value, lastName: dataDebtorForm.lastName.value,
-        motherLastName: dataDebtorForm.motherLastName.value,
-        address: dataDebtorForm.address.value,
+        name: evt.target[0].value, lastName: evt.target[1].value,
+        motherLastName: evt.target[2].value,
+        address: evt.target[3].value,
         isAMan: evt.target[4].checked
       }).then(response => {
         if (response) {
@@ -93,18 +68,9 @@ const AddDebtor = () => {
     const valuesInputs =
       evt.target.form || evt.target.parentNode.form || evt.target.parentNode.parentNode.form;
 
-    let dataDebtorForm = {
-      address: {
-        name: 'Dirección',
-        minLength: 6,
-        maxLength: 80,
-        value: valuesInputs[3].value
-      }
-    };
-
-    if ( !isObjectValuesNull(dataDebtorForm) && validateLength(dataDebtorForm) ) {
+    if (validateUpdateDebtor({event: valuesInputs})) {
       setIsLoadingEdit(true);
-      updateDebtor({idDebtor: dataSelected.code, address: dataDebtorForm.address.value}).then(response => {
+      updateDebtor({idDebtor: dataSelected.code, address: valuesInputs[3].value}).then(response => {
         setIsLoadingEdit(false);
         if (response) {
           const arrayUpdate = updateArray({
