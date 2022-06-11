@@ -65,10 +65,9 @@ const triggerEventsDebts = ({windowToSend}) => {
     }); */
     //return resultOperation;
   });
-  ipcMain.on('main:pay-debt', async(_, { idUser, total, salesRecords }) => {
+  ipcMain.handle('main:pay-debt', async(_, { idUser, total, salesRecords }) => {
     const resultOperation = await payDebt({idUser, total, salesRecords});
-    
-    windowToSend.webContents.send('render:pay-debt', resultOperation);
+    return resultOperation;
   });
 
 };

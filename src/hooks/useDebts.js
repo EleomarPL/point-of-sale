@@ -50,8 +50,15 @@ const useDebts = () => {
 
     return result;
   };
-  const payDebt = ({idUser, total, salesRecords}) => {
-    window.electron.send('main:pay-debt', {idUser, total, salesRecords});
+  const payDebt = async({idUser, total, salesRecords}) => {
+    const result = await window.electron.invoke('main:pay-debt', {idUser, total, salesRecords});
+    if (!result) {
+      notifyError('Operación no realizada');
+      return false;
+    }
+
+    notifySuccess('Operación realizada correctamente');
+    return true;
   };
 
   return {

@@ -7,15 +7,15 @@ import SelectDebtor from '../../common/SelectDebtor';
 import SpinnerButtonLoading from '../../common/SpinnerButtonLoading';
 import useDebts from '../../../hooks/useDebts';
 import Auth from '../../../contexts/Auth';
-import { notifySuccess } from '../../../consts/notifications';
 
 const BoxInputsPayDebt = ({listDebts, debtorSelect, setDebtorSelect}) => {
   const [total, setTotal] = useState(0);
   const [payment, setPayment] = useState(0);
   const [change, setChange] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const {payDebt} = useDebts();
-  const {userData} = useContext(Auth);
+  
+  const { payDebt } = useDebts();
+  const { userData } = useContext(Auth);
 
   useEffect(() => {
     setTotal (
@@ -26,25 +26,6 @@ const BoxInputsPayDebt = ({listDebts, debtorSelect, setDebtorSelect}) => {
       }, 0)
     );
   }, [listDebts]);
-  useEffect(() => {
-    window.electron.on('render:pay-debt', (err, data) => {
-      if (!err) {
-        console.log('error insert debt');
-        return null;
-      }
-      setIsLoading(false);
-      if (data) {
-        setDebtorSelect('none');
-        setPayment(0);
-        setChange(0);
-        notifySuccess('Operación realizada correctamente');
-      }
-    });
-
-    return () => {
-      window.electron.removeAllListeners('render:pay-debt');
-    };
-  }, []);
 
   const handlePayDebt = () => {
     setIsLoading(true);
@@ -60,7 +41,14 @@ const BoxInputsPayDebt = ({listDebts, debtorSelect, setDebtorSelect}) => {
         };
       });
       
-    payDebt({idUser: userData.id, salesRecords: reOrderListDebts, total});
+    payDebt({idUser: userData.id, salesRecords: reOrderListDebts, total}).then(response => {
+      setIsLoading(false);
+      if (response) {
+        setDebtorSelect('none');
+        setPayment(0);
+        setChange(0);
+      }
+    });
   };
 
   const handlePayment = (evt) => {
@@ -110,7 +98,7 @@ const BoxInputsPayDebt = ({listDebts, debtorSelect, setDebtorSelect}) => {
       </table>
       <div className="d-flex justify-content-evenly mt-4">
         <button type="button" className="button-btn-modals"
-          disabled={ isLoading || payment < total }
+          disabled={ isLoading || payment < total || listDebts.length === 0 }
           onClick={ handlePayDebt }
         >
           <ButtonPersonalized classNameIcon="bi bi-check-circle-fill" isColumn={ true }>
