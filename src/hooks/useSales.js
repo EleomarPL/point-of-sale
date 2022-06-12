@@ -1,4 +1,4 @@
-import { notifyInfo } from '../consts/notifications';
+import { notifyError, notifyInfo, notifySuccess } from '../consts/notifications';
 
 const useSales = () => {
   const getStandardSales = async({value, startDate, endDate, limit}) => {
@@ -29,8 +29,16 @@ const useSales = () => {
 
     return data;
   };
-  const executeSales = ({idUser, total, salesRecords}) => {
-    window.electron.send('main:insert-sales', {idUser, total, salesRecords});
+  const executeSales = async({idUser, total, salesRecords}) => {
+    const resultSales = await window.electron.invoke('main:insert-sales', {idUser, total, salesRecords});
+    if (resultSales) {
+      notifySuccess('Venta generada exitosamente');
+      return true;
+    } else {
+      notifyError('Error al generar venta');
+      return false;
+    }
+  
   };
 
   return {

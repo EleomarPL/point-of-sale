@@ -65,11 +65,16 @@ export const SalesProvider = ({ children }) => {
   const handleDeleteSale = ({idArticle}) => {
     setListSales(listSales.filter(sales => sales.idArticle !== idArticle));
   };
-  const handleExecuteSales = () => {
+  const handleExecuteSales = ({callback}) => {
     const total = listSales.reduce((acc, current) => acc + Number(current.total), 0);
     const idUser = userData.id;
 
-    executeSales({idUser, total, salesRecords: listSales});
+    executeSales({idUser, total, salesRecords: listSales}).then(response => {
+      if (response) {
+        callback();
+        setListSales([]);
+      }
+    });
   };
 
   return (

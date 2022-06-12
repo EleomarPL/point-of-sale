@@ -5,20 +5,19 @@ import ButtonPersonalized from '../../common/ButtonPersonalized';
 import { openmodalDebts } from '../../modals/ModalDebts';
 import SalesContext from '../../../contexts/Sales';
 import { isNumberValue } from '../../../services/validations/generalValidations';
-import { notifySuccess } from '../../../consts/notifications';
 
 const BoxStatusSales = ({dataSelected, setDataSelected}) => {
   const [totalSales, setTotalSales] = useState(0);
   const [payment, setPayment] = useState(0);
 
-  const {listSales, setListSales, handleExecuteSales} = useContext(SalesContext);
+  const {listSales, handleExecuteSales} = useContext(SalesContext);
 
   useEffect(() => {
     setTotalSales(listSales.reduce((acc, current) => acc + current.total, 0));
     setPayment(0);
   }, [listSales]);
   useEffect(() => {
-    window.electron.on('render:insert-sales', (err, data) => {
+    /*window.electron.on('render:insert-sales', (err, data) => {
 
       if (!err) {
         console.log('error execute sales');
@@ -34,7 +33,7 @@ const BoxStatusSales = ({dataSelected, setDataSelected}) => {
 
     return () => {
       window.electron.removeAllListeners('render:insert-sales');
-    };
+    };*/
   }, []);
 
   const handleValidatePayment = (evt) => {
@@ -61,7 +60,7 @@ const BoxStatusSales = ({dataSelected, setDataSelected}) => {
           type="button"
           className="button-personalized is-menu text-black text-decoration-none w-75"
           disabled={ totalSales ? payment < totalSales : true }
-          onClick={ handleExecuteSales }
+          onClick={ () => handleExecuteSales({callback: () => setDataSelected({})}) }
         >
           <ButtonPersonalized isColumn={ true } classNameIcon="bi bi-archive-fill">
             Cobrar

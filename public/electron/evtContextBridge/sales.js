@@ -20,10 +20,9 @@ const triggerEventsSales = ({windowToSend}) => {
       return false;
     }
   });
-  ipcMain.on('main:insert-sales', async(_, { idUser, total, salesRecords }) => {
+  ipcMain.handle('main:insert-sales', async(_, { idUser, total, salesRecords }) => {
     const dataSales = await insertSales({idUser, total, salesRecords});
-    
-    windowToSend.webContents.send('render:insert-sales', dataSales);
+    return dataSales;
   });
 };
 
