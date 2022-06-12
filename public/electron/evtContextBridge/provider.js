@@ -14,10 +14,13 @@ const triggerEventsProvider = ({windowToSend}) => {
       return false;
     }
   });
-  ipcMain.on('main:get-provider-forselect', async() => {
-    const dataProviders = await getProviderIdCompany();
-    
-    windowToSend.webContents.send('render:get-provider-forselect', dataProviders);
+  ipcMain.handle('main:get-provider-forselect', async() => {
+    try {
+      const dataProviders = await getProviderIdCompany();
+      return dataProviders;
+    } catch (error) {
+      return false;
+    }
   });
   ipcMain.handle('main:insert-provider', async(_, { name, lastName, motherLastName, company }) => {
     try {

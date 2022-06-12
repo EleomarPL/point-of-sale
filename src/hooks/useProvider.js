@@ -21,8 +21,11 @@ const useProvider = () => {
 
     return data.affectedRows;
   };
-  const getProviderForSelect = () => {
-    window.electron.send('main:get-provider-forselect');
+  const getProviderForSelect = async() => {
+    const dataProviders = await window.electron.invoke('main:get-provider-forselect');
+    if (!dataProviders) return false;
+
+    return dataProviders;
   };
   return {
     createProvider, getProviders, editProvider, getProviderForSelect
