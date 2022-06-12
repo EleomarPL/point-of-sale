@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import InputPersonalized from '../components/common/InputPersonalized';
 import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
-import { notifyError, notifyInfo, notifyWarning } from '../consts/notifications';
+import { notifyError, notifyInfo } from '../consts/notifications';
 import useLogin from '../hooks/useLogin';
 import useAdmin from '../hooks/useAdmin';
 import useValidationLogin from '../hooks/validations/useValidationLogin';
@@ -16,8 +16,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { validateLogin } = useValidationLogin();
-  const {login, setNewUserData} = useLogin();
-  const {isThereAnAdmin} = useAdmin();
+  const { login } = useLogin();
+  const { isThereAnAdmin } = useAdmin();
 
   useEffect(() => {
     isThereAnAdmin();
@@ -35,28 +35,8 @@ const Home = () => {
         setIsLoading(false);
       }
     });
-    window.electron.on('render:login', (err, data) => {
-      if (!err) {
-        console.log('err');
-        return null;
-      }
-      setIsLoading(false);
-      if (data) {
-        if (data.statusUser === 'unlocked') {
-          setNewUserData({
-            ...data,
-            type: data.type === 'employee' ? 1 : 0
-          });
-        } else {
-          notifyWarning('Usuario bloqueado');
-        }
-      } else {
-        notifyInfo('Usuario y/o contraseña invalidos');
-      }
-    });
 
     return () => {
-      window.electron.removeAllListeners('render:login');
       window.electron.removeAllListeners('render:is-there-an-admin');
     };
   }, []);
@@ -65,7 +45,7 @@ const Home = () => {
     e.preventDefault();
     if (validateLogin({event: e})) {
       setIsLoading(true);
-      login({userName, password});
+      login({userName, password, setState: setIsLoading});
     }
   };
 
