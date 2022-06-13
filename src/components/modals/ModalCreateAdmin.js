@@ -4,8 +4,8 @@ import { Modal } from 'bootstrap';
 import {inputEmployees} from '../../data/admin/modalEmployee';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
-import { isObjectValuesNull, validateLength } from '../../services/validations/generalValidations';
 import useAdmin from '../../hooks/useAdmin';
+import useValidationAdmin from '../../hooks/validations/useValidationAdmin';
 
 export const openmodalCreateAdmin = () => {
   let myModal = new Modal(
@@ -24,50 +24,19 @@ const ModalCreateAdmin = () => {
     user: '', password: '', gender: 'M', age: 18
   });
   const [isLoading, setIsLoading] = useState(false);
-  const {insertAdmin} = useAdmin();
+
+  const { insertAdmin } = useAdmin();
+  const { validateCreationAdmin } = useValidationAdmin();
 
   const handleSubmitEmployee = (evt) => {
     evt.preventDefault();
 
-    let dataAdminForm = {
-      name: {
-        name: 'Nombre',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[0].value
-      },
-      lastName: {
-        name: 'Apellido paterno',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[1].value
-      },
-      motherLastName: {
-        name: 'Apellido materno',
-        minLength: 2,
-        maxLength: 50,
-        value: evt.target[2].value
-      },
-      userName: {
-        name: 'Usuario',
-        minLength: 6,
-        maxLength: 50,
-        value: evt.target[3].value
-      },
-      password: {
-        name: 'Contraseña',
-        minLength: 6,
-        maxLength: 50,
-        value: evt.target[4].value
-      }
-    };
-    
-    if ( !isObjectValuesNull(dataAdminForm) && validateLength(dataAdminForm) ) {
+    if (validateCreationAdmin({event: evt})) {
       setIsLoading(true);
       insertAdmin({
-        name: dataAdminForm.name.value, lastName: dataAdminForm.lastName.value,
-        motherLastName: dataAdminForm.motherLastName.value,
-        username: dataAdminForm.userName.value, password: dataAdminForm.password.value,
+        name: evt.target[0].value, lastName: evt.target[1].value,
+        motherLastName: evt.target[2].value,
+        username: evt.target[3].value, password: evt.target[4].value,
         age: evt.target[7].value, isAMan: evt.target[5].checked
       }).then(response => {
         setIsLoading(false);
