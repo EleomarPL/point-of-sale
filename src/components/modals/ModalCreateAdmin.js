@@ -19,10 +19,6 @@ export const openmodalCreateAdmin = () => {
 
 const ModalCreateAdmin = () => {
   const [radio1, setRadio1] = useState(true);
-  const [valueUser, setValueUser] = useState({
-    code: '', name: '', lastName: '', motherLastName: '',
-    user: '', password: '', gender: 'M', age: 18
-  });
   const [isLoading, setIsLoading] = useState(false);
 
   const { insertAdmin } = useAdmin();
@@ -74,11 +70,6 @@ const ModalCreateAdmin = () => {
                             placeholder={ employee.placeholder } aria-label={ employee.id.toUpperCase() }
                             aria-describedby={ employee.id }
                             style={ {backgroundColor: '#f6eded'} }
-                            value={ valueUser[employee.id] || '' }
-                            onChange={ (evt) => setValueUser({
-                              ...valueUser,
-                              [employee.id]: evt.target.value
-                            }) }
                           />
                         </td>
                       </tr>
@@ -110,12 +101,7 @@ const ModalCreateAdmin = () => {
                   <tr>
                     <td>Edad</td>
                     <td>
-                      <select className="form-select"
-                        value={ valueUser.age || 18 } onChange={ (evt => setValueUser({
-                          ...valueUser,
-                          age: evt.target.value
-                        })) }
-                      >
+                      <select className="form-select">
                         {
                           Array(42).fill(0).map((_, i) =>
                             <option
