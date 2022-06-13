@@ -5,12 +5,12 @@ const { insertAdmin } = require('../db/inserts');
 const { updateUsernameAdmin, updatePasswordAdmin } = require('../db/updates');
 
 const triggerEventsAdmin = ({windowToSend}) => {
-  ipcMain.on('main:insert-admin', async(_, { name, lastName, motherLastName, age, isAMan, username, password }) => {
+  ipcMain.handle('main:insert-admin', async(_, { name, lastName, motherLastName, age, isAMan, username, password }) => {
     const resultOperation = await insertAdmin({
       name, lastName, motherLastName, age, isAMan, username, password
     });
-    
-    windowToSend.webContents.send('render:insert-admin', resultOperation);
+
+    return resultOperation;
   });
   ipcMain.handle('main:is-there-an-admin', async() => {
     const resultOperation = await isThereAnAdmin();

@@ -31,10 +31,17 @@ const useAdmin = () => {
     
     return false;
   };
-  const insertAdmin = ({name, lastName, motherLastName, age, isAMan, username, password}) => {
-    window.electron.send('main:insert-admin', {
+  const insertAdmin = async({name, lastName, motherLastName, age, isAMan, username, password}) => {
+    const result = await window.electron.invoke('main:insert-admin', {
       name, lastName, motherLastName, age, isAMan, username, password
     });
+    if (result) {
+      notifySuccess('Administrador agregado correctamente');
+      return true;
+    } else {
+      notifySuccess('Error al crear administrador');
+      return false;
+    }
   };
   const isThereAnAdmin = async() => {
     const result = await window.electron.invoke('main:is-there-an-admin');
