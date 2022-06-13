@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Modal } from 'bootstrap';
 
-import {inputEmployees} from '../../data/admin/modalEmployee';
 import ButtonPersonalized from '../common/ButtonPersonalized';
 import SpinnerButtonLoading from '../common/SpinnerButtonLoading';
 import useAdmin from '../../hooks/useAdmin';
@@ -59,64 +58,84 @@ const ModalCreateAdmin = () => {
           </div>
           <div className="modal-body">
             <form onSubmit={ handleSubmitEmployee } id="form-create-admin">
-              <table className="w-100">
-                <tbody>
-                  { inputEmployees &&
-                    inputEmployees.map(employee =>
-                      <tr key={ employee.id } >
-                        <td>{ employee.placeholder }</td>
-                        <td>
-                          <input type={ employee.type } className="form-control mb-2"
-                            placeholder={ employee.placeholder } aria-label={ employee.id.toUpperCase() }
-                            aria-describedby={ employee.id }
-                            style={ {backgroundColor: '#f6eded'} }
-                          />
-                        </td>
-                      </tr>
+              <div className="input-group row row-cols-lg-3 g-1">
+                <label className="col-form-label">Nombre</label>
+                <input type="text" className="form-control mb-2"
+                  placeholder="Nombre" aria-label="Name"
+                  aria-describedby="name"
+                  style={ {backgroundColor: '#f6eded'} }
+                />
+              </div>
+              <div className="input-group row row-cols-lg-3 g-1">
+                <label className="col-form-label">Apellido Paterno</label>
+                <input type="text" className="form-control mb-2"
+                  placeholder="Apellido Paterno" aria-label="Lastname"
+                  aria-describedby="lastname"
+                  style={ {backgroundColor: '#f6eded'} }
+                />
+              </div>
+              <div className="input-group row row-cols-lg-3 g-1">
+                <label className="col-form-label">Apellido Materno</label>
+                <input type="text" className="form-control mb-2"
+                  placeholder="Apellido Materno" aria-label="MotherLastname"
+                  aria-describedby="motherlastname"
+                  style={ {backgroundColor: '#f6eded'} }
+                />
+              </div>
+              <div className="input-group row row-cols-lg-3 g-1">
+                <label className="col-form-label">Usuario</label>
+                <input type="text" className="form-control mb-2"
+                  placeholder="Usuario" aria-label="Username"
+                  aria-describedby="username"
+                  style={ {backgroundColor: '#f6eded'} }
+                />
+              </div>
+              <div className="input-group row row-cols-lg-3 g-1">
+                <label className="col-form-label">Contraseña</label>
+                <input type="password" className="form-control mb-2"
+                  placeholder="Contraseña" aria-label="Password"
+                  aria-describedby="password"
+                  style={ {backgroundColor: '#f6eded'} }
+                />
+              </div>
+              <div className="input-group row row-cols-lg-3 g-1">
+                <label className="col-form-label">Sexo</label>
+                <div>
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio"
+                      name="flexRadioDefault" id="flexRadioDefault1"
+                      checked={ radio1 } onChange={ () => setRadio1(!radio1) }
+                    />
+                    <label className="form-check-label" htmlFor="flexRadioDefault1">
+                      Masculino
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio"
+                      name="flexRadioDefault" id="flexRadioDefault2"
+                      checked={ !radio1 } onChange={ () => setRadio1(!radio1) }
+                    />
+                    <label className="form-check-label" htmlFor="flexRadioDefault2">
+                      Femenino
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div className="input-group row row-cols-lg-3 g-1">
+                <label className="col-form-label">Edad</label>
+                <select className="form-select">
+                  {
+                    Array(42).fill(0).map((_, i) =>
+                      <option
+                        key={ i }
+                        value={ i + 18 }
+                      >
+                        { i + 18 }
+                      </option>
                     )
                   }
-                  <tr>
-                    <td>Sexo:</td>
-                    <td>
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio"
-                          name="flexRadioDefault" id="flexRadioDefault1"
-                          checked={ radio1 } onChange={ () => setRadio1(!radio1) }
-                        />
-                        <label className="form-check-label" htmlFor="flexRadioDefault1">
-                          Masculino
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio"
-                          name="flexRadioDefault" id="flexRadioDefault2"
-                          checked={ !radio1 } onChange={ () => setRadio1(!radio1) }
-                        />
-                        <label className="form-check-label" htmlFor="flexRadioDefault2">
-                          Femenino
-                        </label>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Edad</td>
-                    <td>
-                      <select className="form-select">
-                        {
-                          Array(42).fill(0).map((_, i) =>
-                            <option
-                              key={ i }
-                              value={ i + 18 }
-                            >
-                              { i + 18 }
-                            </option>
-                          )
-                        }
-                      </select>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                </select>
+              </div>
             </form>
           </div>
           <div className="modal-footer d-flex justify-content-evenly">
