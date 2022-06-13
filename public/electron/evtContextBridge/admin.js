@@ -12,10 +12,9 @@ const triggerEventsAdmin = ({windowToSend}) => {
     
     windowToSend.webContents.send('render:insert-admin', resultOperation);
   });
-  ipcMain.on('main:is-there-an-admin', async() => {
+  ipcMain.handle('main:is-there-an-admin', async() => {
     const resultOperation = await isThereAnAdmin();
-    
-    windowToSend.webContents.send('render:is-there-an-admin', resultOperation);
+    return resultOperation;
   });
   ipcMain.handle('main:update-username-admin', async(_, { id, username, password }) => {
     try {

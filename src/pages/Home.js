@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import InputPersonalized from '../components/common/InputPersonalized';
 import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
-import { notifyError, notifyInfo } from '../consts/notifications';
 import useLogin from '../hooks/useLogin';
 import useAdmin from '../hooks/useAdmin';
 import useValidationLogin from '../hooks/validations/useValidationLogin';
@@ -20,25 +19,11 @@ const Home = () => {
   const { isThereAnAdmin } = useAdmin();
 
   useEffect(() => {
-    isThereAnAdmin();
-    window.electron.on('render:is-there-an-admin', (err, data) => {
-      if (!err) {
-        console.log('err');
-        return null;
-      }
-      if (data === null) {
-        notifyError('Error en la base de datos');
-      } else if (!data) {
-        notifyInfo('Cree su perfil de administrador');
+    isThereAnAdmin().then(response => {
+      setIsLoading(false);
+      if (!response)
         openmodalCreateAdmin();
-      } else {
-        setIsLoading(false);
-      }
     });
-
-    return () => {
-      window.electron.removeAllListeners('render:is-there-an-admin');
-    };
   }, []);
 
   const handleLogin = (e) => {

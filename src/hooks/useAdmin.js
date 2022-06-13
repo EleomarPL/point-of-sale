@@ -36,8 +36,14 @@ const useAdmin = () => {
       name, lastName, motherLastName, age, isAMan, username, password
     });
   };
-  const isThereAnAdmin = () => {
-    window.electron.send('main:is-there-an-admin');
+  const isThereAnAdmin = async() => {
+    const result = await window.electron.invoke('main:is-there-an-admin');
+    if (result === null)
+      notifyError('Error en la base de datos');
+    else if (!result)
+      notifyInfo('Cree su perfil de administrador');
+
+    return result;
   };
   
   return {
