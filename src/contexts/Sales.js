@@ -2,60 +2,26 @@
 import { useState, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import { notifyError } from '../consts/notifications';
 import useSales from '../hooks/useSales';
 import Auth from './Auth';
+import useValidationSales from '../hooks/validations/useValidationSales';
 
 const SalesContext = createContext({});
 
 export const SalesProvider = ({ children }) => {
   const [listSales, setListSales] = useState([]);
-  const {executeSales} = useSales();
-  const {userData} = useContext(Auth);
+
+  const { userData } = useContext(Auth);
+  const { executeSales } = useSales();
+  const { validateFutureSales } = useValidationSales();
 
   const handleAddedArticleInTable = ({code, stock, amount, price, name}) => {
-    const findArticle = listSales.findIndex(sales => sales.idArticle === Number(code));
-    let newListSales = [];
-
-    let resultOperation = false;
-
-    if (findArticle !== -1) {
-
-      const isValid = !(listSales[findArticle].amount + Number(amount) > listSales[findArticle].stock);
-          
-      if (isValid) {
-        resultOperation = true;
-
-        newListSales = listSales.map((sales, index) => {
-          if (index === findArticle) {
-            return {
-              ...sales,
-              amount: sales.amount + Number(amount),
-              total: sales.total + Number(amount) * Number(price)
-            };
-          }
-          return { ...sales };
-        });
-      } else {
-        newListSales = [...listSales];
-        notifyError('Movimiento no valido: Futura venta ha excedido la existencia');
-      }
-    } else {
-      if (Number(amount) > Number(stock)) {
-        newListSales = [...listSales];
-        notifyError('Movimiento no valido: Futura venta ha excedido la existencia');
-      } else {
-        resultOperation = true;
-        newListSales = [
-          ...listSales,
-          {
-            idArticle: Number(code), salesPrice: Number(price), amount: Number(amount),
-            total: Number(price) * Number(amount), article: name, stock: Number(stock)
-          }
-        ];
-      }
-    }
-    setListSales(newListSales);
+    const { resultOperation, newListSales } = validateFutureSales({
+      listSales: [...listSales], name,
+      code, stock, amount, price
+    });
+    if (resultOperation)
+      setListSales(newListSales);
 
     return resultOperation;
   };
