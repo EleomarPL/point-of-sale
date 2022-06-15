@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 
@@ -12,6 +12,7 @@ import '@fontsource/roboto';
 import PublicRoute from './components/router/PublicRouter';
 import MyRouter from './components/router/MyRouter';
 import AdminRouter from './components/router/AdminRouter';
+
 import SpinnerLoadingPage from './components/common/SpinnerLoadingPage';
 import useConnection from './hooks/useConnection';
 
@@ -25,17 +26,9 @@ const Connection = lazy(() => import('./pages/Connection'));
 
 const App = () => {
   const { validateConnectionToDB } = useConnection();
-  const navigate = useNavigate();
 
   useEffect(() => {
     validateConnectionToDB();
-    window.electron.on('render:validate-connection-to-db', (err, data) => {
-      if (!err) {
-        console.log('error validate connection to db');
-        return null;
-      }
-      if (!data) navigate('/create-connection-to-db');
-    });
   }, []);
 
   return (

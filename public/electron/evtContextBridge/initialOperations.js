@@ -5,10 +5,9 @@ const {
 } = require('../db/initialOperations');
 
 const triggerEventsInitialOperations = ({windowToSend}) => {
-  ipcMain.on('main:validate-connection-to-db', async() => {
+  ipcMain.handle('main:validate-connection-to-db', async() => {
     const isSuccessfulConnection = await validateConnectionToDB();
-    
-    windowToSend.webContents.send('render:validate-connection-to-db', isSuccessfulConnection);
+    return isSuccessfulConnection;
   });
   ipcMain.on('main:create-sql-structure', async() => {
     await createSQLStructure();
