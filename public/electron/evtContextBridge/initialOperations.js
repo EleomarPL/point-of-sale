@@ -4,7 +4,7 @@ const {
   validateConnectionToDB, createSQLStructure
 } = require('../db/initialOperations');
 
-const triggerEventsInitialOperations = ({windowToSend}) => {
+const triggerEventsInitialOperations = () => {
   ipcMain.handle('main:validate-connection-to-db', async() => {
     const isSuccessfulConnection = await validateConnectionToDB();
     return isSuccessfulConnection;

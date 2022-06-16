@@ -2,7 +2,7 @@ const { ipcMain } = require('electron');
 
 const { login } = require('../db/consults');
 
-const triggerEventsLogin = ({windowToSend}) => {
+const triggerEventsLogin = () => {
   ipcMain.handle('main:login', async(_, { username, password }) => {
     const dataUser = await login({username, password});
     return dataUser;

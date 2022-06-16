@@ -4,7 +4,7 @@ const { getProviders, getProviderIdCompany } = require('../db/consults');
 const { insertProvider } = require('../db/inserts');
 const { updateProvider } = require('../db/updates');
 
-const triggerEventsProvider = ({windowToSend}) => {
+const triggerEventsProvider = () => {
 
   ipcMain.handle('main:get-provider', async(event, { keyword, limit }) => {
     try {

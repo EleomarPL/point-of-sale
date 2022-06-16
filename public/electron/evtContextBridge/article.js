@@ -7,7 +7,7 @@ const {
   getArticleById, getArticlesByIdArticle, getArticleForAuxTable, getArticleByIdArticleCompany
 } = require('../db/consults');
 
-const triggerEventsArticle = ({windowToSend}) => {
+const triggerEventsArticle = () => {
   ipcMain.handle('main:update-salesprice-article', async(_, { id, salesPrice }) => {
     const resultUpdate = await updateSalesPriceArticle({id, salesPrice});
     

@@ -5,7 +5,7 @@ const { insertDebtor, insertDebt } = require('../db/inserts');
 const { payDebt } = require('../db/delete');
 const { updateDebtor } = require('../db/updates');
 
-const triggerEventsDebts = ({windowToSend}) => {
+const triggerEventsDebts = () => {
   ipcMain.handle('main:get-debts', async(_, { value, isGroupByDebtor }) => {
     try {
       const dataDebts = await getDebts({value, isGroupByDebtor});

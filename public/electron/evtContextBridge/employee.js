@@ -4,7 +4,7 @@ const { getEmployees } = require('../db/consults');
 const { insertEmployee } = require('../db/inserts');
 const { updateUsernamePasswordAgeEmployee, updateStatusEmployee } = require('../db/updates');
 
-const triggerEventsEmployee = ({windowToSend}) => {
+const triggerEventsEmployee = () => {
   ipcMain.handle('main:get-employees', async(_, { value, limit }) => {
     try {
       const dataEmployees = await getEmployees({value, limit});

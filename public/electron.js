@@ -38,15 +38,15 @@ function createWindow() {
   /*
     trigger events between the main and the render by passing the main window
   */
-  triggerEventsProvider({ windowToSend: createMainWindow });
-  triggerEventsShopping({ windowToSend: createMainWindow });
-  triggerEventsArticle({ windowToSend: createMainWindow });
-  triggerEventsEmployee({ windowToSend: createMainWindow });
-  triggerEventsSales({ windowToSend: createMainWindow });
-  triggerEventsAdmin({ windowToSend: createMainWindow });
-  triggerEventsDebts({ windowToSend: createMainWindow });
-  triggerEventsLogin({ windowToSend: createMainWindow });
-  triggerEventsInitialOperations({ windowToSend: createMainWindow });
+  triggerEventsProvider();
+  triggerEventsShopping();
+  triggerEventsArticle();
+  triggerEventsEmployee();
+  triggerEventsSales();
+  triggerEventsAdmin();
+  triggerEventsDebts();
+  triggerEventsLogin();
+  triggerEventsInitialOperations();
 }
 
 app.whenReady().then(createWindow);

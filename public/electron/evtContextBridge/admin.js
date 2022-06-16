@@ -4,7 +4,7 @@ const { isThereAnAdmin } = require('../db/consults');
 const { insertAdmin } = require('../db/inserts');
 const { updateUsernameAdmin, updatePasswordAdmin } = require('../db/updates');
 
-const triggerEventsAdmin = ({windowToSend}) => {
+const triggerEventsAdmin = () => {
   ipcMain.handle('main:insert-admin', async(_, { name, lastName, motherLastName, age, isAMan, username, password }) => {
     const resultOperation = await insertAdmin({
       name, lastName, motherLastName, age, isAMan, username, password

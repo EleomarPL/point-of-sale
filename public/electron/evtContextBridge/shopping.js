@@ -3,7 +3,7 @@ const { ipcMain } = require('electron');
 const { getPurchases } = require('../db/consults');
 const { addPurchases } = require('../db/inserts');
 
-const triggerEventsShopping = ({windowToSend}) => {
+const triggerEventsShopping = () => {
   
   ipcMain.handle('main:get-purchases', async(_, {value, startDate, endDate, limit}) => {
     try {
