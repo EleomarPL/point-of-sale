@@ -12,12 +12,12 @@ const validateConnectionToDB = async() => {
 };
 const createSQLStructure = async() => {
   const { pool, connection } = await getConnection();
+  try {
+    await connection.query('CREATE DATABASE IF NOT EXISTS point_of_sale');
+    await connection.query('USE point_of_sale');
 
-  await connection.query('CREATE DATABASE IF NOT EXISTS point_of_sale');
-  await connection.query('USE point_of_sale');
-
-  await connection.query('DROP TABLE IF EXISTS user;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS user;');
+    await connection.query(`
     CREATE TABLE user (
       id int NOT NULL AUTO_INCREMENT,
       name varchar(50) NOT NULL,
@@ -34,8 +34,8 @@ const createSQLStructure = async() => {
     ) ENGINE=InnoDB;
   `);
 
-  await connection.query('DROP TABLE IF EXISTS provider;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS provider;');
+    await connection.query(`
     CREATE TABLE provider (
       id int NOT NULL AUTO_INCREMENT,
       company varchar(30) NOT NULL,
@@ -46,8 +46,8 @@ const createSQLStructure = async() => {
     ) ENGINE=InnoDB;
   `);
 
-  await connection.query('DROP TABLE IF EXISTS article;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS article;');
+    await connection.query(`
     CREATE TABLE article (
       id bigint NOT NULL,
       id_provider int NOT NULL,
@@ -63,8 +63,8 @@ const createSQLStructure = async() => {
     ) ENGINE=InnoDB;
   `);
 
-  await connection.query('DROP TABLE IF EXISTS shopping;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS shopping;');
+    await connection.query(`
     CREATE TABLE shopping (
       folio bigint NOT NULL AUTO_INCREMENT,
       id_article bigint NOT NULL,
@@ -76,8 +76,8 @@ const createSQLStructure = async() => {
     ) ENGINE=InnoDB;
   `);
 
-  await connection.query('DROP TABLE IF EXISTS debtor;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS debtor;');
+    await connection.query(`
     CREATE TABLE debtor (
       id int NOT NULL AUTO_INCREMENT,
       name varchar(50) NOT NULL,
@@ -89,8 +89,8 @@ const createSQLStructure = async() => {
     ) ENGINE=InnoDB;
   `);
 
-  await connection.query('DROP TABLE IF EXISTS debts;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS debts;');
+    await connection.query(`
     CREATE TABLE debts (
       id int NOT NULL AUTO_INCREMENT,
       id_debtor int NOT NULL,
@@ -108,8 +108,8 @@ const createSQLStructure = async() => {
     ) ENGINE=InnoDB;
   `);
   
-  await connection.query('DROP TABLE IF EXISTS ticketf;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS ticketf;');
+    await connection.query(`
     CREATE TABLE ticketf (
       folio bigint NOT NULL AUTO_INCREMENT,
       date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -121,8 +121,8 @@ const createSQLStructure = async() => {
     ) ENGINE=InnoDB;
   `);
 
-  await connection.query('DROP TABLE IF EXISTS salesrecord;');
-  await connection.query(`
+    await connection.query('DROP TABLE IF EXISTS salesrecord;');
+    await connection.query(`
     CREATE TABLE salesrecord (
       folio bigint NOT NULL,
       id_article bigint NOT NULL,
@@ -135,8 +135,12 @@ const createSQLStructure = async() => {
       CONSTRAINT salesrecord_ibfk_7 FOREIGN KEY (id_article) REFERENCES article (id)
     ) ENGINE=InnoDB;
   `);
-
-  await closeConnection({pool, connection});
+    await closeConnection({pool, connection});
+    return true;
+  } catch (e) {
+    await closeConnection({pool, connection});
+    return false;
+  }
 };
 
 module.exports = { validateConnectionToDB, createSQLStructure };

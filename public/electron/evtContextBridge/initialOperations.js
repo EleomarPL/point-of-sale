@@ -9,10 +9,9 @@ const triggerEventsInitialOperations = ({windowToSend}) => {
     const isSuccessfulConnection = await validateConnectionToDB();
     return isSuccessfulConnection;
   });
-  ipcMain.on('main:create-sql-structure', async() => {
-    await createSQLStructure();
-    
-    windowToSend.webContents.send('render:create-sql-structure', {result: true});
+  ipcMain.handle('main:create-sql-structure', async() => {
+    const result = await createSQLStructure();
+    return result;
   });
 };
 
