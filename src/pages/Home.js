@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import ButtonPersonalized from '../components/common/ButtonPersonalized';
 import InputPersonalized from '../components/common/InputPersonalized';
 import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
+import ModalCreateAdmin, { openmodalCreateAdmin } from '../components/modals/ModalCreateAdmin';
 import useLogin from '../hooks/useLogin';
 import useAdmin from '../hooks/useAdmin';
 import useValidationLogin from '../hooks/validations/useValidationLogin';
-import ModalCreateAdmin, { openmodalCreateAdmin } from '../components/modals/ModalCreateAdmin';
+
+import PresentationImg from '../img/presentation-img.png';
 
 const Home = () => {
 
@@ -42,7 +44,7 @@ const Home = () => {
         <h1>Abarrotes { '"El Paso"' }</h1>
       </div>
       <div className="text-center" style={ {height: '70vh', overflow: 'hidden'} }>
-        <img src={ require('../img/presentation-img.png').default }
+        <img src={ PresentationImg }
           alt="Presentación"
           style={ {height: '100%', objectFit: 'cover'} }
         />
