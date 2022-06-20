@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
 import SpinnerButtonLoading from '../components/common/SpinnerButtonLoading';
+import useValidationConnnection from '../hooks/validations/useValidationConnnection';
 
 const Connection = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { validateCreationLogForMariadb } = useValidationConnnection();
 
   const inputHostRef = useRef({});
   const inputPortRef = useRef({});
@@ -20,8 +22,9 @@ const Connection = () => {
 
   const handleVerifyConnection = (evt) => {
     evt.preventDefault();
-
-    setIsLoading(true);
+    if (validateCreationLogForMariadb({event: evt})) {
+      setIsLoading(true);
+    }
   };
 
   return (
