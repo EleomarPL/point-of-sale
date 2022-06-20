@@ -16,25 +16,6 @@ const BoxStatusSales = ({dataSelected, setDataSelected}) => {
     setTotalSales(listSales.reduce((acc, current) => acc + current.total, 0));
     setPayment(0);
   }, [listSales]);
-  useEffect(() => {
-    /*window.electron.on('render:insert-sales', (err, data) => {
-
-      if (!err) {
-        console.log('error execute sales');
-        return null;
-      }
-      if (data) {
-        setDataSelected({});
-        setListSales([]);
-        notifySuccess('Venta generada exitosamente');
-        window.electron.send('main:get-article-by-keyword', {value: '', limit: 15});
-      }
-    });
-
-    return () => {
-      window.electron.removeAllListeners('render:insert-sales');
-    };*/
-  }, []);
 
   const handleValidatePayment = (evt) => {
     if (isNumberValue({name: 'Pago', value: evt.target.value}))
