@@ -1,4 +1,8 @@
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+
 const { getConnection, closeConnection } = require('../connection');
+const db = new sqlite3.Database(path.join(__dirname, '../', 'sqlite', 'mariadb.db'));
 
 const validateConnectionToDB = async() => {
   let isSuccessfulConnection = true;
@@ -10,6 +14,46 @@ const validateConnectionToDB = async() => {
 
   return isSuccessfulConnection;
 };
+
+const insertValueSQLite = async({ port, host, username, password, database }) => {
+  if (!(port, host, username, password, database)) {
+    return false;
+  }
+  let result = false;
+
+  db.serialize(async() => {
+    db.get('SELECT * FROM mariadbInfo', (err, row) => {
+      if (err) {
+        console.log('error select');
+        return true;
+      }
+      if (row !== undefined)
+        db.exec('DELETE FROM mariadbInfo', (err) => {
+          if (err) {
+            console.log('error');
+            return true;
+          }
+          console.log('deleted');
+        });
+    });
+
+    const stmt = db.prepare('INSERT INTO mariadbInfo VALUES (?, ?, ?, ?, ?)');
+    stmt.run([port, host, username, password, database]);
+    stmt.finalize((err) => {
+      if (err) {
+        console.log('error');
+        return true;
+      }
+      result = true;
+      console.log('inserted');
+    });
+  });
+
+  db.close();
+
+  return result;
+};
+
 const createSQLStructure = async() => {
   const { pool, connection } = await getConnection();
   try {
@@ -143,4 +187,4 @@ const createSQLStructure = async() => {
   }
 };
 
-module.exports = { validateConnectionToDB, createSQLStructure };
+module.exports = { validateConnectionToDB, createSQLStructure, insertValueSQLite };
