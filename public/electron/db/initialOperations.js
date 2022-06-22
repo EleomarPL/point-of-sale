@@ -19,39 +19,43 @@ const insertValueSQLite = async({ port, host, username, password, database }) =>
   if (!(port, host, username, password, database)) {
     return false;
   }
-  let result = false;
 
-  db.serialize(async() => {
+  await new Promise((resolve, reject) => {
     db.get('SELECT * FROM mariadbInfo', (err, row) => {
-      if (err) {
-        console.log('error select');
-        return true;
-      }
+      if (err) reject(false);
+      
       if (row !== undefined)
         db.exec('DELETE FROM mariadbInfo', (err) => {
-          if (err) {
-            console.log('error');
-            return true;
-          }
-          console.log('deleted');
+          if (err) reject(false);
+           
+          resolve(true);
         });
-    });
-
-    const stmt = db.prepare('INSERT INTO mariadbInfo VALUES (?, ?, ?, ?, ?)');
-    stmt.run([port, host, username, password, database]);
-    stmt.finalize((err) => {
-      if (err) {
-        console.log('error');
-        return true;
-      }
-      result = true;
-      console.log('inserted');
+      resolve(true);
     });
   });
+  
+  return new Promise((resolve, reject) => {
+    const stmt = db.prepare('INSERT INTO mariadbInfo VALUES (?, ?, ?, ?, ?)');
+    stmt.run([port, host, username, password, database]);
 
-  db.close();
+    stmt.finalize((err) => {
+      if (err) reject(false);
+      
+      resolve(true);
+    });
+  });
+};
 
-  return result;
+const testConnection = async({ port, host, username, password, database }) => {
+  try {
+    await insertValueSQLite({port, host, username, password, database});
+    let connectionIsValid = await validateConnectionToDB();
+
+    return connectionIsValid;
+  } catch (e) {
+    
+    return false;
+  }
 };
 
 const createSQLStructure = async() => {
@@ -187,4 +191,4 @@ const createSQLStructure = async() => {
   }
 };
 
-module.exports = { validateConnectionToDB, createSQLStructure, insertValueSQLite };
+module.exports = { validateConnectionToDB, createSQLStructure, testConnection };
