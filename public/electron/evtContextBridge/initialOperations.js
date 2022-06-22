@@ -13,7 +13,7 @@ const triggerEventsInitialOperations = () => {
     const result = await createSQLStructure();
     return result;
   });
-  ipcMain.handle('main:test-connection', async(event, port, host, username, password, database) => {
+  ipcMain.handle('main:test-connection', async(_, { port, host, username, password, database }) => {
     const result = await testConnection({port, host, username, password, database});
     return result;
   });
