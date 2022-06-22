@@ -1,7 +1,7 @@
 const { ipcMain } = require('electron');
 
 const {
-  validateConnectionToDB, createSQLStructure
+  validateConnectionToDB, createSQLStructure, testConnection
 } = require('../db/initialOperations');
 
 const triggerEventsInitialOperations = () => {
@@ -11,6 +11,10 @@ const triggerEventsInitialOperations = () => {
   });
   ipcMain.handle('main:create-sql-structure', async() => {
     const result = await createSQLStructure();
+    return result;
+  });
+  ipcMain.handle('main:test-connection', async(event, port, host, username, password, database) => {
+    const result = await testConnection({port, host, username, password, database});
     return result;
   });
 };
