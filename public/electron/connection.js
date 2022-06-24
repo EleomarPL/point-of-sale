@@ -24,11 +24,11 @@ const getConnection = async() => {
   if (!result) return {connection: null, pool: null};
 
   const pool = createPool({
-    host: data.host,
-    port: data.port,
-    user: data.username,
-    password: data.password,
-    database: data.database
+    host: data.host || '',
+    port: data.port || '',
+    user: data.username || '',
+    password: data.password || '',
+    database: data.database || ''
   });
 
   const connection = await pool.getConnection().catch(() => null);
