@@ -1,0 +1,11 @@
+services:
+  db:
+    image: mariadb:latest
+    container_name: poinfofsalemariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: admin123
+      MYSQL_ROOT_PASSWORD: admin123
+    volumes:
+      # [YOUR_PATH_HERE]:/var/lib/mysql
+    ports:
+      - 3307:3306
