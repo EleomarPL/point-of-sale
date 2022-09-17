@@ -107,7 +107,7 @@ const insertEmployee = async({name, lastName, motherLastName, isAMan, age, usern
   }
   
 };
-const insertSales = async({idUser, total, salesRecords}) => {
+const insertSales = async({idUser, total, salesRecords, change}) => {
   if (!(idUser && total)) {
     return false;
   }
@@ -115,8 +115,8 @@ const insertSales = async({idUser, total, salesRecords}) => {
   
   try {
     const resultInsert = await connection.query(
-      'INSERT INTO ticketf VALUES(null, default, ?, ?);',
-      [idUser, total]
+      'INSERT INTO ticketf VALUES(null, default, ?, ?, ?);',
+      [idUser, total, change]
     );
 
     if (resultInsert.affectedRows) {

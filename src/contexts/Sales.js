@@ -31,11 +31,11 @@ export const SalesProvider = ({ children }) => {
   const handleDeleteSale = ({idArticle}) => {
     setListSales(listSales.filter(sales => sales.idArticle !== idArticle));
   };
-  const handleExecuteSales = ({callback}) => {
+  const handleExecuteSales = ({callback, change}) => {
     const total = listSales.reduce((acc, current) => acc + Number(current.total), 0);
     const idUser = userData.id;
 
-    executeSales({idUser, total, salesRecords: listSales}).then(response => {
+    executeSales({idUser, total, change, salesRecords: listSales}).then(response => {
       if (response) {
         callback();
         setListSales([]);

@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS point_of_sale;
 USE point_of_sale;
 
-DROP TABLE IF EXISTS user;
 CREATE TABLE user (
   id int NOT NULL AUTO_INCREMENT,
   name varchar(50) NOT NULL,
@@ -17,7 +16,6 @@ CREATE TABLE user (
   UNIQUE (username)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS provider;
 CREATE TABLE provider (
   id int NOT NULL AUTO_INCREMENT,
   company varchar(30) NOT NULL,
@@ -27,7 +25,6 @@ CREATE TABLE provider (
   PRIMARY KEY (Id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS article;
 CREATE TABLE article (
   id bigint NOT NULL,
   id_provider int NOT NULL,
@@ -42,7 +39,6 @@ CREATE TABLE article (
   CONSTRAINT provider_ibfk_1 FOREIGN KEY (id_provider) REFERENCES provider (id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS shopping;
 CREATE TABLE shopping (
   folio bigint NOT NULL AUTO_INCREMENT,
   id_article bigint NOT NULL,
@@ -53,7 +49,6 @@ CREATE TABLE shopping (
   CONSTRAINT shopping_ibfk_2 FOREIGN KEY (id_article) REFERENCES article (id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS debtor;
 CREATE TABLE debtor (
   id int NOT NULL AUTO_INCREMENT,
   name varchar(50) NOT NULL,
@@ -64,7 +59,6 @@ CREATE TABLE debtor (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS debts;
 CREATE TABLE debts (
   id int NOT NULL AUTO_INCREMENT,
   id_debtor int NOT NULL,
@@ -81,18 +75,17 @@ CREATE TABLE debts (
   CONSTRAINT debts_ibfk_4 FOREIGN KEY (id_article) REFERENCES article (id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS ticketf;
 CREATE TABLE ticketf (
   folio bigint NOT NULL AUTO_INCREMENT,
   date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   id_user int NOT NULL,
   total float NOT NULL,
+  change_total float NOT NULL,
   PRIMARY KEY (folio),
   KEY id_user (id_user),
   CONSTRAINT ticketf_ibfk_5 FOREIGN KEY (id_user) REFERENCES user (id)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS salesrecord;
 CREATE TABLE salesrecord (
   folio bigint NOT NULL,
   id_article bigint NOT NULL,

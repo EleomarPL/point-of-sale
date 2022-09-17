@@ -41,7 +41,10 @@ const BoxStatusSales = ({dataSelected, setDataSelected}) => {
           type="button"
           className="button-personalized is-menu text-black text-decoration-none w-75"
           disabled={ totalSales ? payment < totalSales : true }
-          onClick={ () => handleExecuteSales({callback: () => setDataSelected({})}) }
+          onClick={ () => handleExecuteSales({
+            change: Number(payment - totalSales).toFixed(2),
+            callback: () => setDataSelected({})
+          }) }
         >
           <ButtonPersonalized isColumn={ true } classNameIcon="bi bi-archive-fill">
             Cobrar

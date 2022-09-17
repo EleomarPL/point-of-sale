@@ -29,8 +29,8 @@ const useSales = () => {
 
     return data;
   };
-  const executeSales = async({idUser, total, salesRecords}) => {
-    const resultSales = await window.electron.invoke('main:insert-sales', {idUser, total, salesRecords});
+  const executeSales = async({idUser, total, change, salesRecords}) => {
+    const resultSales = await window.electron.invoke('main:insert-sales', {idUser, total, change, salesRecords});
     if (resultSales) {
       notifySuccess('Venta generada exitosamente');
       return true;

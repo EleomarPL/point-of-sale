@@ -20,8 +20,8 @@ const triggerEventsSales = () => {
       return false;
     }
   });
-  ipcMain.handle('main:insert-sales', async(_, { idUser, total, salesRecords }) => {
-    const dataSales = await insertSales({idUser, total, salesRecords});
+  ipcMain.handle('main:insert-sales', async(_, { idUser, total, change, salesRecords }) => {
+    const dataSales = await insertSales({idUser, total, change, salesRecords});
     return dataSales;
   });
 };
