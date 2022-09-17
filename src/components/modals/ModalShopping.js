@@ -28,6 +28,7 @@ const ModalShopping = ({dataShopping, setDataShopping}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const formRef = useRef({});
+  const codeRef = useRef({});
 
   const { insertPurchases } = useShopping();
   const { validatePossiblePurchase } = useValidationShopping();
@@ -80,6 +81,7 @@ const ModalShopping = ({dataShopping, setDataShopping}) => {
         ]);
       }
       formRef.current.reset();
+      codeRef.current.focus();
     }
   };
   const handleAddPurchase = () => {
@@ -144,6 +146,7 @@ const ModalShopping = ({dataShopping, setDataShopping}) => {
                     setDataProductTemp={ setDataProductTemp }
                     dataSelected2={ dataSelected2 }
                     setDataSelected2={ setDataSelected2 }
+                    codeRef={ codeRef }
                   />
                 </form>
                 <div className="w-100 mt-1">

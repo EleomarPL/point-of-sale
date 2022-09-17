@@ -6,13 +6,15 @@ import DebounceInput from '../../common/DebounceInput';
 import useArticle from '../../../hooks/useArticles';
 import { convertDateYYYYMMDD } from '../../../utils/convertDateYMD';
 
-const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelected2}) => {
+const BoxInputsShoppingModal = ({
+  setDataProductTemp, dataSelected2,
+  setDataSelected2, codeRef
+}) => {
   const [code, setCode] = useState('');
   const [article, setArticle] = useState('');
   const [providerSelect, setProviderSelect] = useState('');
   const [isProductExist, setIsProductExist] = useState(false);
 
-  const codeRef = useRef({});
   const nameRef = useRef({});
   const purchasePriceRef = useRef({});
   const salesPriceRef = useRef({});
@@ -41,6 +43,8 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
             dateofExpiryRef.current.value = convertDateYYYYMMDD({day: splitDate[0], month: splitDate[1], year: splitDate[2]});
           } else
             dateofExpiryRef.current.value = '';
+
+          amountRef.current.focus();
           
         } else {
           setIsProductExist(false);
@@ -75,6 +79,8 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
         salesPriceRef.current.value = dataSelected2.salesPrice;
         stockRef.current.value = dataSelected2.amount;
         amountRef.current.value = '';
+
+        amountRef.current.focus();
       } else {
         setIsProductExist(false);
         purchasePriceRef.current.value = '';
@@ -83,6 +89,10 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
         dateofExpiryRef.current.value = '';
       }
   }, [dataSelected2]);
+  useEffect(() => {
+    setCode(codeRef.current.value);
+  }, [codeRef.current.value]);
+
 
   return (
     <div className="w-100 row row-cols-lg-1 g-1">
@@ -162,7 +172,11 @@ const BoxInputsShoppingModal = ({setDataProductTemp, dataSelected2, setDataSelec
 BoxInputsShoppingModal.propTypes = {
   setDataProductTemp: PropTypes.func.isRequired,
   dataSelected2: PropTypes.object.isRequired,
-  setDataSelected2: PropTypes.func.isRequired
+  setDataSelected2: PropTypes.func.isRequired,
+  codeRef: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ])
 };
 
 export default BoxInputsShoppingModal;
