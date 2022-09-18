@@ -17,7 +17,7 @@ const { triggerEventsDebts } = require('./electron/evtContextBridge/debts');
 const { triggerEventsLogin } = require('./electron/evtContextBridge/login');
 const { triggerEventsInitialOperations } = require('./electron/evtContextBridge/initialOperations');
  
-//Menu.setApplicationMenu(null);
+Menu.setApplicationMenu(null);
 
 function createWindow() {
   const createMainWindow = new BrowserWindow({
@@ -31,8 +31,8 @@ function createWindow() {
       preload: path.join(__dirname, 'electron', 'preload.js')
     }
   });
-  createMainWindow.loadURL('http://localhost:3000/');
-  //createMainWindow.loadFile(path.join(__dirname, '../', 'build', 'index.html'));
+  //createMainWindow.loadURL('http://localhost:3000/');
+  createMainWindow.loadFile(path.join(__dirname, '../', 'build', 'index.html'));
   createMainWindow.maximize();
 
   /*

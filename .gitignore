@@ -11,6 +11,8 @@
 
 # production
 /build
+/dist
+/out
 .env
 
 # misc
