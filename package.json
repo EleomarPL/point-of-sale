@@ -33,7 +33,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build:react": "react-scripts build",
+    "build:electron": "electron-builder",
     "test": "react-scripts test",
     "electron": "electron .",
     "eject": "react-scripts eject"
