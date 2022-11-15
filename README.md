@@ -2,7 +2,7 @@
 
 Punto de venta creado con ElectronJS y ReactJS y usando MariaDB como sistema gestor de base de datos.
 
-# Comenzando 🚀
+## Comenzando 🚀
 
 Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas.
 
@@ -15,19 +15,19 @@ Estas instrucciones te permitirán obtener una copia del proyecto en funcionamie
 
 Tal vez suene muy obvio pero primero clone el repositorio
 
-```
+```git
     git clone https://github.com/EleomarPL/point-of-sale
 ```
 
 Instale las dependencias. Las depedencias ya se encuentran implicitas en el Package del proyecto, solo basta ejecutar la siguiente instrucción:
 
-```
+```npm
     npm i
 ```
 
 Ejecute el proyecto mediante el script:
 
-```
+```npm
     npm run electron-dev
 ```
 
